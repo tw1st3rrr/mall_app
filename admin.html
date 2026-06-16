@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админ-панель — ЭНКА ТЦ Афиша</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F5F6FA; color: #1C1C1C; font-size: 14px; }
+    a { text-decoration: none; color: inherit; }
+    button { font-family: inherit; cursor: pointer; }
+    input, select, textarea { font-family: inherit; }
+
+    /* ===== LOGIN ===== */
+    #loginScreen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: #fff; border-radius: 16px; padding: 48px 40px;
+      width: 380px; box-shadow: 0 8px 40px rgba(0,0,0,.1);
+    }
+    .login-box h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .login-box p { color: #787878; margin-bottom: 32px; font-size: 13px; }
+    .login-box label { display: block; font-size: 12px; font-weight: 600; color: #787878; margin-bottom: 6px; text-transform: uppercase; letter-spacing: .5px; }
+    .login-box input[type="password"] {
+      width: 100%; padding: 11px 14px; border: 1px solid #E5E5E5; border-radius: 8px;
+      font-size: 14px; margin-bottom: 20px; outline: none; transition: border-color .15s;
+    }
+    .login-box input[type="password"]:focus { border-color: #1C1C1C; }
+    .login-box .btn-login {
+      width: 100%; padding: 12px; background: #1C1C1C; color: #fff; border: none;
+      border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background .15s;
+    }
+    .login-box .btn-login:hover { background: #333; }
+    .login-error { color: #e74c3c; font-size: 13px; margin-top: 12px; display: none; }
+
+    /* ===== MAIN LAYOUT ===== */
+    #adminScreen { display: none; min-height: 100vh; }
+    .admin-layout { display: flex; min-height: 100vh; }
+
+    .sidebar {
+      width: 220px; background: #1C1C1C; color: #fff; flex-shrink: 0;
+      display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh;
+    }
+    .sidebar__logo {
+      padding: 24px 20px 20px; font-size: 15px; font-weight: 700;
+      border-bottom: 1px solid rgba(255,255,255,.1);
+    }
+    .sidebar__logo small { display: block; font-size: 11px; font-weight: 400; color: rgba(255,255,255,.5); margin-top: 2px; }
+    .sidebar__nav { padding: 16px 12px; flex: 1; }
+    .sidebar__tab {
+      display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 12px;
+      background: none; border: none; color: rgba(255,255,255,.65); border-radius: 8px;
+      font-size: 13px; font-weight: 500; text-align: left; margin-bottom: 4px;
+      transition: background .15s, color .15s; cursor: pointer;
+    }
+    .sidebar__tab .tab-icon { font-size: 16px; }
+    .sidebar__tab:hover { background: rgba(255,255,255,.08); color: #fff; }
+    .sidebar__tab.active { background: rgba(255,255,255,.15); color: #fff; }
+    .sidebar__bottom { padding: 16px 12px; border-top: 1px solid rgba(255,255,255,.1); }
+    .sidebar__logout {
+      display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 12px;
+      background: none; border: 1px solid rgba(255,255,255,.2); color: rgba(255,255,255,.65);
+      border-radius: 8px; font-size: 12px; cursor: pointer; transition: .15s;
+    }
+    .sidebar__logout:hover { border-color: rgba(255,255,255,.5); color: #fff; }
+
+    .admin-main { margin-left: 220px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+    .admin-topbar {
+      background: #fff; padding: 16px 28px; border-bottom: 1px solid #E5E5E5;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .admin-topbar__title { font-size: 18px; font-weight: 700; }
+    .admin-topbar__user { font-size: 12px; color: #787878; }
+
+    .admin-content { padding: 28px; flex: 1; }
+
+    /* ===== TABS ===== */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ===== STATS ===== */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #E5E5E5;
+    }
+    .stat-card__val { font-size: 28px; font-weight: 700; }
+    .stat-card__label { font-size: 12px; color: #787878; margin-top: 4px; }
+
+    /* ===== TOOLBAR ===== */
+    .toolbar {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .toolbar__search {
+      padding: 8px 12px; border: 1px solid #E5E5E5; border-radius: 8px;
+      font-size: 13px; width: 220px; outline: none; transition: border-color .15s;
+    }
+    .toolbar__search:focus { border-color: #1C1C1C; }
+    .toolbar__select {
+      padding: 8px 10px; border: 1px solid #E5E5E5; border-radius: 8px;
+      font-size: 13px; background: #fff; cursor: pointer; outline: none;
+    }
+    .toolbar__sep { flex: 1; }
+    .btn-primary {
+      padding: 8px 16px; background: #1C1C1C; color: #fff; border: none;
+      border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background .15s;
+    }
+    .btn-primary:hover { background: #333; }
+    .btn-secondary {
+      padding: 7px 14px; background: #fff; color: #1C1C1C; border: 1px solid #E5E5E5;
+      border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer; transition: .15s;
+    }
+    .btn-secondary:hover { border-color: #1C1C1C; }
+    .btn-danger {
+      padding: 5px 10px; background: none; color: #e74c3c; border: 1px solid #fad0cc;
+      border-radius: 6px; font-size: 12px; cursor: pointer; transition: .15s;
+    }
+    .btn-danger:hover { background: #fef0ee; }
+
+    /* ===== TABLE ===== */
+    .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #E5E5E5; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 12px 14px; text-align: left; font-size: 11px; font-weight: 600; color: #787878; text-transform: uppercase; letter-spacing: .4px; background: #FAFAFA; border-bottom: 1px solid #E5E5E5; }
+    td { padding: 12px 14px; border-bottom: 1px solid #F0F0F0; font-size: 13px; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #FAFAFA; }
+
+    .td-actions { display: flex; gap: 6px; align-items: center; }
+    .btn-edit {
+      padding: 5px 10px; background: none; border: 1px solid #E5E5E5;
+      border-radius: 6px; font-size: 12px; cursor: pointer; transition: .15s;
+    }
+    .btn-edit:hover { border-color: #1C1C1C; }
+    .btn-dup {
+      padding: 5px 10px; background: none; border: 1px solid #E5E5E5;
+      border-radius: 6px; font-size: 12px; cursor: pointer; transition: .15s;
+    }
+    .btn-dup:hover { border-color: #6c5ce7; color: #6c5ce7; }
+
+    /* ===== STATUS BADGES ===== */
+    .status-badge {
+      display: inline-block; padding: 3px 9px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+    }
+    .status-active  { background: #d4f0e8; color: #00864a; }
+    .status-sold    { background: #fee9e9; color: #c0392b; }
+    .status-draft   { background: #efefef; color: #787878; }
+    .status-archive { background: #f5f0e8; color: #8B6914; }
+    .bk-new        { background: #dce8ff; color: #1a5ce6; }
+    .bk-processing { background: #fff3d4; color: #9a6d00; }
+    .bk-confirmed  { background: #d4f0e8; color: #00864a; }
+    .bk-rejected   { background: #fee9e9; color: #c0392b; }
+
+    .badge-type {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; color: #fff;
+    }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      z-index: 300; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #fff; border-radius: 16px; width: 100%; max-width: 620px;
+      max-height: 90vh; overflow-y: auto; padding: 32px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.2);
+    }
+    .modal__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+    .modal__title { font-size: 18px; font-weight: 700; }
+    .modal__close { background: none; border: none; font-size: 22px; cursor: pointer; color: #787878; line-height: 1; }
+    .modal__close:hover { color: #1C1C1C; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-field { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: #787878; margin-bottom: 5px; text-transform: uppercase; letter-spacing: .3px; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 9px 12px; border: 1px solid #E5E5E5; border-radius: 8px;
+      font-size: 13px; outline: none; transition: border-color .15s; background: #fff;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #1C1C1C; }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .form-input.error, .form-select.error { border-color: #e74c3c; }
+
+    .modal__footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; border-top: 1px solid #E5E5E5; padding-top: 20px; }
+
+    /* Photo drop zone */
+    .photo-drop {
+      border: 2px dashed #E5E5E5; border-radius: 10px; padding: 24px;
+      text-align: center; cursor: pointer; transition: border-color .15s;
+      position: relative; overflow: hidden;
+    }
+    .photo-drop:hover { border-color: #1C1C1C; }
+    .photo-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .photo-drop__text { font-size: 13px; color: #787878; }
+    .photo-drop__preview { max-width: 200px; max-height: 120px; object-fit: cover; border-radius: 6px; margin: 8px auto 0; display: none; }
+
+    /* ===== PHOTOS TAB ===== */
+    .photos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .photo-card {
+      background: #fff; border-radius: 12px; border: 1px solid #E5E5E5; overflow: hidden;
+    }
+    .photo-card__img { width: 100%; height: 130px; object-fit: cover; display: block; background: #F5F5F5; }
+    .photo-card__body { padding: 12px; }
+    .photo-card__title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .photo-card__note { font-size: 11px; color: #787878; margin-bottom: 10px; }
+    .photo-card--default .photo-card__img { filter: brightness(.85); }
+    .photo-card--default .photo-card__note { color: #e67e22; }
+
+    /* ===== BOOKING DETAIL ===== */
+    .booking-detail { font-size: 13px; line-height: 1.7; }
+    .booking-detail dt { font-weight: 600; color: #787878; font-size: 11px; text-transform: uppercase; margin-top: 10px; }
+    .booking-detail dd { margin: 0; }
+
+    /* ===== CONFIRM ===== */
+    .confirm-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5);
+      z-index: 400; align-items: center; justify-content: center;
+    }
+    .confirm-overlay.open { display: flex; }
+    .confirm-box {
+      background: #fff; border-radius: 14px; padding: 28px; max-width: 340px; width: 100%;
+      box-shadow: 0 10px 40px rgba(0,0,0,.2); text-align: center;
+    }
+    .confirm-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .confirm-box p { font-size: 13px; color: #787878; margin-bottom: 20px; }
+    .confirm-box .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state { text-align: center; padding: 60px 20px; color: #787878; }
+    .empty-state__icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state p { font-size: 14px; }
+
+    /* CSV button */
+    .btn-csv {
+      padding: 7px 14px; background: #fff; border: 1px solid #E5E5E5;
+      border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
+      display: flex; align-items: center; gap: 6px; transition: .15s;
+    }
+    .btn-csv:hover { border-color: #1C1C1C; }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; height: auto; position: static; }
+      .admin-main { margin-left: 0; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>Админ-панель</h1>
+    <p>ЭНКА ТЦ — Управление афишей</p>
+    <form id="loginForm">
+      <label for="pwdInput">Пароль</label>
+      <input type="password" id="pwdInput" placeholder="Введите пароль" autocomplete="current-password">
+      <button type="submit" class="btn-login">Войти</button>
+      <div class="login-error" id="loginError">Неверный пароль. Попробуйте ещё раз.</div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div id="adminScreen">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar__logo">
+        ЭНКА ТЦ
+        <small>Администратор афиши</small>
+      </div>
+      <nav class="sidebar__nav">
+        <button class="sidebar__tab active" data-tab="events">
+          <span class="tab-icon">🗓</span> Мероприятия
+        </button>
+        <button class="sidebar__tab" data-tab="photos">
+          <span class="tab-icon">🖼</span> Фотографии
+        </button>
+        <button class="sidebar__tab" data-tab="bookings">
+          <span class="tab-icon">📋</span> Заявки аренды
+        </button>
+      </nav>
+      <div class="sidebar__bottom">
+        <button class="sidebar__logout" id="logoutBtn">🚪 Выйти</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div class="admin-topbar__title" id="topbarTitle">Мероприятия</div>
+        <div class="admin-topbar__user">admin</div>
+      </div>
+
+      <div class="admin-content">
+
+        <!-- ===== EVENTS TAB ===== -->
+        <div class="tab-panel active" id="tabEvents">
+
+          <div class="stats-row" id="eventsStats"></div>
+
+          <div class="toolbar">
+            <input class="toolbar__search" id="evtSearch" type="text" placeholder="Поиск по названию…">
+            <select class="toolbar__select" id="evtFilterTc">
+              <option value="">Все ТЦ</option>
+              <option value="kuntsevo">Кунцево Плаза</option>
+              <option value="kashirskaya">Каширская Плаза</option>
+              <option value="kapitoliy">Капитолий</option>
+            </select>
+            <select class="toolbar__select" id="evtFilterType">
+              <option value="">Все типы</option>
+              <option value="quiz">Квиз / Турнир</option>
+              <option value="master-class">Мастер-класс</option>
+              <option value="kids">Детское</option>
+              <option value="concert">Концерт</option>
+              <option value="exhibition">Выставка</option>
+              <option value="sports">Спортивное</option>
+            </select>
+            <div class="toolbar__sep"></div>
+            <button class="btn-primary" id="addEventBtn">+ Добавить</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Название</th>
+                  <th>ТЦ</th>
+                  <th>Тип</th>
+                  <th>Дата / Время</th>
+                  <th>Статус</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="eventsTableBody"></tbody>
+            </table>
+            <div class="empty-state" id="eventsEmpty" style="display:none;">
+              <div class="empty-state__icon">🗓</div>
+              <p>Мероприятий не найдено</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PHOTOS TAB ===== -->
+        <div class="tab-panel" id="tabPhotos">
+          <div class="toolbar">
+            <span style="font-size:13px;color:#787878;">Отображаются обложки всех мероприятий. Выделены те, у которых нет загруженного фото.</span>
+          </div>
+          <div class="photos-grid" id="photosGrid"></div>
+        </div>
+
+        <!-- ===== BOOKINGS TAB ===== -->
+        <div class="tab-panel" id="tabBookings">
+
+          <div class="stats-row" id="bookingsStats"></div>
+
+          <div class="toolbar">
+            <input class="toolbar__search" id="bkSearch" type="text" placeholder="Поиск по имени или ТЦ…">
+            <select class="toolbar__select" id="bkFilterStatus">
+              <option value="">Все статусы</option>
+              <option value="new">Новая</option>
+              <option value="processing">В обработке</option>
+              <option value="confirmed">Подтверждена</option>
+              <option value="rejected">Отклонена</option>
+            </select>
+            <div class="toolbar__sep"></div>
+            <button class="btn-csv" id="exportCsvBtn">⬇ Экспорт CSV</button>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Дата заявки</th>
+                  <th>Имя</th>
+                  <th>ТЦ</th>
+                  <th>Мероприятие</th>
+                  <th>Дата аренды</th>
+                  <th>Статус</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody"></tbody>
+            </table>
+            <div class="empty-state" id="bookingsEmpty" style="display:none;">
+              <div class="empty-state__icon">📋</div>
+              <p>Заявок пока нет.<br>Они появятся здесь когда пользователь заполнит форму на сайте.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /admin-content -->
+    </div><!-- /admin-main -->
+  </div>
+</div>
+
+<!-- ===== MODAL: EDIT/ADD EVENT ===== -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal">
+    <div class="modal__header">
+      <div class="modal__title" id="eventModalTitle">Добавить мероприятие</div>
+      <button class="modal__close" data-close="eventModal">×</button>
+    </div>
+    <form id="eventForm" novalidate>
+      <input type="hidden" id="ef_id">
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="ef_tc">Торговый центр *</label>
+          <select class="form-select" id="ef_tc" required>
+            <option value="">— выбрать —</option>
+            <option value="kuntsevo">Кунцево Плаза</option>
+            <option value="kashirskaya">Каширская Плаза</option>
+            <option value="kapitoliy">Капитолий</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ef_type">Тип мероприятия *</label>
+          <select class="form-select" id="ef_type" required>
+            <option value="">— выбрать —</option>
+            <option value="quiz">Квиз / Турнир</option>
+            <option value="master-class">Мастер-класс</option>
+            <option value="kids">Детское</option>
+            <option value="concert">Концерт</option>
+            <option value="exhibition">Выставка</option>
+            <option value="sports">Спортивное</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="ef_title">Название *</label>
+        <input class="form-input" id="ef_title" type="text" placeholder="Название мероприятия" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="ef_date">Дата *</label>
+          <input class="form-input" id="ef_date" type="date" required>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ef_time">Время начала *</label>
+          <input class="form-input" id="ef_time" type="time" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="ef_duration">Продолжительность</label>
+          <input class="form-input" id="ef_duration" type="text" placeholder="90 мин">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ef_price">Цена / Билеты</label>
+          <input class="form-input" id="ef_price" type="text" placeholder="Бесплатно / 800 баллов">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="ef_seats">Мест всего</label>
+          <input class="form-input" id="ef_seats" type="number" min="0" placeholder="60">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ef_seats_left">Мест осталось</label>
+          <input class="form-input" id="ef_seats_left" type="number" min="0" placeholder="22">
+        </div>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="ef_desc">Описание</label>
+        <textarea class="form-textarea" id="ef_desc" placeholder="Описание мероприятия…"></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Обложка мероприятия</label>
+        <div class="photo-drop" id="photoDropZone">
+          <input type="file" id="ef_photo_file" accept="image/*">
+          <img class="photo-drop__preview" id="photoPreview" alt="">
+          <div class="photo-drop__text" id="photoDropText">📸 Перетащите фото или нажмите для выбора<br><small style="color:#aaa;">JPG/PNG до 5 МБ</small></div>
+        </div>
+        <input type="hidden" id="ef_photo">
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="ef_status">Статус</label>
+        <select class="form-select" id="ef_status">
+          <option value="active">Активно</option>
+          <option value="draft">Черновик</option>
+          <option value="sold">Мест нет</option>
+          <option value="archive">Архив</option>
+        </select>
+      </div>
+    </form>
+    <div class="modal__footer">
+      <button class="btn-secondary" data-close="eventModal">Отмена</button>
+      <button class="btn-primary" id="saveEventBtn">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL: BOOKING DETAIL ===== -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal" style="max-width:500px;">
+    <div class="modal__header">
+      <div class="modal__title">Детали заявки</div>
+      <button class="modal__close" data-close="bookingModal">×</button>
+    </div>
+    <dl class="booking-detail" id="bookingDetailBody"></dl>
+    <div class="modal__footer">
+      <button class="btn-secondary" data-close="bookingModal">Закрыть</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFIRM ===== -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h3>Подтвердите действие</h3>
+    <p id="confirmMsg">Вы уверены?</p>
+    <div class="confirm-actions">
+      <button class="btn-secondary" id="confirmNo">Отмена</button>
+      <button class="btn-danger" id="confirmYes">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================================================
+   CONFIG
+   =================================================== */
+var ADMIN_PASSWORD = 'admin123';  /* ← изменить при необходимости */
+
+var TC_LABELS = { kuntsevo: 'Кунцево Плаза', kashirskaya: 'Каширская Плаза', kapitoliy: 'Капитолий' };
+var TYPE_LABELS = { quiz: 'Квиз / Турнир', 'master-class': 'Мастер-класс', kids: 'Детское', concert: 'Концерт', exhibition: 'Выставка', sports: 'Спортивное' };
+var TYPE_COLORS = { quiz: '#6c5ce7', 'master-class': '#00b894', kids: '#fd79a8', concert: '#6c5ce7', exhibition: '#e17055', sports: '#d63031' };
+var BK_LABELS  = { new: 'Новая', processing: 'В обработке', confirmed: 'Подтверждена', rejected: 'Отклонена' };
+var BK_CLASSES = { new: 'bk-new', processing: 'bk-processing', confirmed: 'bk-confirmed', rejected: 'bk-rejected' };
+var EV_LABELS  = { active: 'Активно', draft: 'Черновик', sold: 'Мест нет', archive: 'Архив' };
+var EV_CLASSES = { active: 'status-active', draft: 'status-draft', sold: 'status-sold', archive: 'status-archive' };
+
+var SEED_EVENTS = [
+  { id:'evt-001', title:'Квиз «Угадай мелодию»', type:'quiz', tc:'kuntsevo', date:'2026-06-07', time:'19:00', duration:'120 мин', price:'800 баллов', seats:60, seatsLeft:22, status:'active', photo:'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png', photoType:'uploaded', desc:'Командный музыкальный квиз для всей семьи.' },
+  { id:'evt-002', title:'Мастер-класс по лепке из глины', type:'master-class', tc:'kashirskaya', date:'2026-06-08', time:'12:00', duration:'90 мин', price:'Бесплатно', seats:30, seatsLeft:15, status:'active', photo:'img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png', photoType:'uploaded', desc:'Мастер-класс по лепке из глины.' },
+  { id:'evt-003', title:'Ярмарка котят — погладь и возьми домой', type:'kids', tc:'kuntsevo', date:'2026-06-14', time:'11:00', duration:'3 часа', price:'Бесплатно', seats:100, seatsLeft:40, status:'active', photo:'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png', photoType:'uploaded', desc:'Ярмарка котят.' },
+  { id:'evt-004', title:'Открытый шахматный турнир', type:'quiz', tc:'kapitoliy', date:'2026-06-15', time:'10:00', duration:'4 часа', price:'500 баллов', seats:32, seatsLeft:5, status:'active', photo:'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png', photoType:'uploaded', desc:'Открытый шахматный турнир.' },
+  { id:'evt-005', title:'Детский праздник «Лето начинается!»', type:'kids', tc:'kashirskaya', date:'2026-06-21', time:'13:00', duration:'2 часа', price:'Бесплатно', seats:50, seatsLeft:3, status:'active', photo:'img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png', photoType:'uploaded', desc:'Детский праздник.' },
+  { id:'evt-006', title:'Семейный концерт «Лето в ритме джаза»', type:'concert', tc:'kapitoliy', date:'2026-06-28', time:'18:00', duration:'90 мин', price:'1200 баллов', seats:0, seatsLeft:0, status:'sold', photo:'img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png', photoType:'uploaded', desc:'Семейный концерт.' }
+];
+
+/* ===================================================
+   AUTH
+   =================================================== */
+function isLoggedIn() { return sessionStorage.getItem('afisha_admin_ok') === '1'; }
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  var pwd = document.getElementById('pwdInput').value;
+  if (pwd === ADMIN_PASSWORD) {
+    sessionStorage.setItem('afisha_admin_ok', '1');
+    showAdmin();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+  sessionStorage.removeItem('afisha_admin_ok');
+  location.reload();
+});
+
+function showAdmin() {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminScreen').style.display = 'block';
+  initAdmin();
+}
+
+if (isLoggedIn()) showAdmin();
+
+/* ===================================================
+   DATA HELPERS
+   =================================================== */
+function getEvents() {
+  try {
+    var raw = localStorage.getItem('afisha_events');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  localStorage.setItem('afisha_events', JSON.stringify(SEED_EVENTS));
+  return JSON.parse(JSON.stringify(SEED_EVENTS));
+}
+function saveEvents(arr) { localStorage.setItem('afisha_events', JSON.stringify(arr)); }
+
+function getBookings() {
+  try { return JSON.parse(localStorage.getItem('afisha_bookings') || '[]'); } catch(e) { return []; }
+}
+function saveBookings(arr) { localStorage.setItem('afisha_bookings', JSON.stringify(arr)); }
+
+function genId(prefix) { return prefix + '-' + Date.now(); }
+
+/* ===================================================
+   TAB SWITCHING
+   =================================================== */
+var TAB_TITLES = { events: 'Мероприятия', photos: 'Фотографии', bookings: 'Заявки на аренду' };
+
+document.querySelectorAll('.sidebar__tab').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.sidebar__tab').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    var tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+    document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+    document.getElementById('topbarTitle').textContent = TAB_TITLES[tab];
+    if (tab === 'photos') renderPhotos();
+    if (tab === 'bookings') renderBookings();
+  });
+});
+
+/* close modals */
+document.querySelectorAll('[data-close]').forEach(function(el) {
+  el.addEventListener('click', function() { closeModal(el.dataset.close); });
+});
+document.querySelectorAll('.modal-overlay').forEach(function(ov) {
+  ov.addEventListener('click', function(e) { if (e.target === ov) closeModal(ov.id); });
+});
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+/* ===================================================
+   EVENTS TAB
+   =================================================== */
+function renderEventsStats() {
+  var evts = getEvents();
+  var active = evts.filter(function(e) { return e.status === 'active'; }).length;
+  var sold   = evts.filter(function(e) { return e.status === 'sold';   }).length;
+  var draft  = evts.filter(function(e) { return e.status === 'draft';  }).length;
+  var el = document.getElementById('eventsStats');
+  el.innerHTML = [
+    { val: evts.length,  label: 'Всего мероприятий' },
+    { val: active,       label: 'Активных' },
+    { val: sold,         label: 'Мест нет' },
+    { val: draft,        label: 'Черновиков' }
+  ].map(function(s) {
+    return '<div class="stat-card"><div class="stat-card__val">' + s.val + '</div><div class="stat-card__label">' + s.label + '</div></div>';
+  }).join('');
+}
+
+function renderEventsTable() {
+  var evts = getEvents();
+  var q    = document.getElementById('evtSearch').value.toLowerCase();
+  var tc   = document.getElementById('evtFilterTc').value;
+  var type = document.getElementById('evtFilterType').value;
+
+  var filtered = evts.filter(function(ev) {
+    return (!q    || ev.title.toLowerCase().includes(q)) &&
+           (!tc   || ev.tc === tc) &&
+           (!type || ev.type === type);
+  });
+
+  var tbody = document.getElementById('eventsTableBody');
+  var empty = document.getElementById('eventsEmpty');
+
+  if (!filtered.length) {
+    tbody.innerHTML = '';
+    empty.style.display = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(function(ev) {
+    var tcLbl   = TC_LABELS[ev.tc]   || ev.tc;
+    var typeLbl = TYPE_LABELS[ev.type] || ev.type;
+    var col     = TYPE_COLORS[ev.type] || '#888';
+    var evCls   = EV_CLASSES[ev.status] || 'status-draft';
+    var evLbl   = EV_LABELS[ev.status]  || ev.status;
+    var dateStr = ev.date ? ev.date.split('-').reverse().join('.') : '—';
+    return '<tr>' +
+      '<td><strong>' + esc(ev.title) + '</strong></td>' +
+      '<td>' + esc(tcLbl) + '</td>' +
+      '<td><span class="badge-type" style="background:' + col + '">' + esc(typeLbl) + '</span></td>' +
+      '<td>' + dateStr + (ev.time ? ', ' + ev.time : '') + '</td>' +
+      '<td><span class="status-badge ' + evCls + '">' + evLbl + '</span></td>' +
+      '<td><div class="td-actions">' +
+        '<button class="btn-edit" onclick="editEvent(\'' + ev.id + '\')">✏️ Ред.</button>' +
+        '<button class="btn-dup"  onclick="dupEvent(\'' + ev.id + '\')">⧉ Дубль</button>' +
+        '<button class="btn-danger" onclick="deleteEvent(\'' + ev.id + '\')">🗑</button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+function renderEvents() { renderEventsStats(); renderEventsTable(); }
+
+['evtSearch','evtFilterTc','evtFilterType'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderEventsTable);
+  if (el && el.tagName === 'SELECT') el.addEventListener('change', renderEventsTable);
+});
+
+/* Add event */
+document.getElementById('addEventBtn').addEventListener('click', function() {
+  document.getElementById('eventModalTitle').textContent = 'Добавить мероприятие';
+  document.getElementById('eventForm').reset();
+  document.getElementById('ef_id').value = '';
+  document.getElementById('ef_photo').value = '';
+  resetPhotoPreview();
+  openModal('eventModal');
+});
+
+/* Photo drag & drop */
+document.getElementById('ef_photo_file').addEventListener('change', function() {
+  var f = this.files[0];
+  if (!f) return;
+  if (f.size > 5 * 1024 * 1024) { alert('Файл слишком большой (макс. 5 МБ)'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('ef_photo').value = e.target.result;
+    var preview = document.getElementById('photoPreview');
+    preview.src = e.target.result;
+    preview.style.display = 'block';
+    document.getElementById('photoDropText').style.display = 'none';
+  };
+  reader.readAsDataURL(f);
+});
+function resetPhotoPreview() {
+  document.getElementById('photoPreview').style.display = 'none';
+  document.getElementById('photoPreview').src = '';
+  document.getElementById('photoDropText').style.display = '';
+}
+
+/* Save event */
+document.getElementById('saveEventBtn').addEventListener('click', function() {
+  var required = ['ef_tc', 'ef_type', 'ef_title', 'ef_date', 'ef_time'];
+  var ok = true;
+  required.forEach(function(id) {
+    var el = document.getElementById(id);
+    el.classList.remove('error');
+    if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+  });
+  if (!ok) return;
+
+  var evts = getEvents();
+  var id = document.getElementById('ef_id').value;
+  var photo = document.getElementById('ef_photo').value || '';
+  var photoType = photo ? (photo.startsWith('data:') ? 'custom' : 'uploaded') : 'default';
+
+  var payload = {
+    id:        id || genId('evt'),
+    title:     document.getElementById('ef_title').value.trim(),
+    type:      document.getElementById('ef_type').value,
+    tc:        document.getElementById('ef_tc').value,
+    date:      document.getElementById('ef_date').value,
+    time:      document.getElementById('ef_time').value,
+    duration:  document.getElementById('ef_duration').value.trim(),
+    price:     document.getElementById('ef_price').value.trim(),
+    seats:     parseInt(document.getElementById('ef_seats').value) || 0,
+    seatsLeft: parseInt(document.getElementById('ef_seats_left').value) || 0,
+    desc:      document.getElementById('ef_desc').value.trim(),
+    status:    document.getElementById('ef_status').value,
+    photo:     photo,
+    photoType: photoType
+  };
+
+  if (id) {
+    var idx = evts.findIndex(function(e) { return e.id === id; });
+    if (idx !== -1) evts[idx] = payload; else evts.unshift(payload);
+  } else {
+    evts.unshift(payload);
+  }
+  saveEvents(evts);
+  closeModal('eventModal');
+  renderEvents();
+});
+
+function editEvent(id) {
+  var evts = getEvents();
+  var ev = evts.find(function(e) { return e.id === id; });
+  if (!ev) return;
+  document.getElementById('eventModalTitle').textContent = 'Редактировать мероприятие';
+  document.getElementById('ef_id').value        = ev.id;
+  document.getElementById('ef_tc').value        = ev.tc        || '';
+  document.getElementById('ef_type').value      = ev.type      || '';
+  document.getElementById('ef_title').value     = ev.title     || '';
+  document.getElementById('ef_date').value      = ev.date      || '';
+  document.getElementById('ef_time').value      = ev.time      || '';
+  document.getElementById('ef_duration').value  = ev.duration  || '';
+  document.getElementById('ef_price').value     = ev.price     || '';
+  document.getElementById('ef_seats').value     = ev.seats     || '';
+  document.getElementById('ef_seats_left').value= ev.seatsLeft || '';
+  document.getElementById('ef_desc').value      = ev.desc      || '';
+  document.getElementById('ef_status').value    = ev.status    || 'active';
+  document.getElementById('ef_photo').value     = ev.photo     || '';
+  if (ev.photo) {
+    var preview = document.getElementById('photoPreview');
+    preview.src = ev.photo;
+    preview.style.display = 'block';
+    document.getElementById('photoDropText').style.display = 'none';
+  } else {
+    resetPhotoPreview();
+  }
+  openModal('eventModal');
+}
+
+function dupEvent(id) {
+  var evts = getEvents();
+  var ev = evts.find(function(e) { return e.id === id; });
+  if (!ev) return;
+  var copy = Object.assign({}, ev, { id: genId('evt'), title: ev.title + ' (копия)', status: 'draft' });
+  evts.unshift(copy);
+  saveEvents(evts);
+  renderEvents();
+}
+
+function deleteEvent(id) {
+  showConfirm('Удалить мероприятие? Это действие необратимо.', function() {
+    var evts = getEvents().filter(function(e) { return e.id !== id; });
+    saveEvents(evts);
+    renderEvents();
+  });
+}
+
+/* ===================================================
+   PHOTOS TAB
+   =================================================== */
+function renderPhotos() {
+  var evts = getEvents();
+  var grid = document.getElementById('photosGrid');
+  if (!evts.length) { grid.innerHTML = '<div class="empty-state"><div class="empty-state__icon">🖼</div><p>Нет мероприятий</p></div>'; return; }
+  grid.innerHTML = evts.map(function(ev) {
+    var isDefault = !ev.photo || ev.photoType === 'default';
+    var cls = isDefault ? 'photo-card photo-card--default' : 'photo-card';
+    var note = isDefault ? '⚠️ Нет фото — используется заглушка' : '✓ Загружено фото';
+    var imgSrc = ev.photo || '';
+    var imgTag = imgSrc
+      ? '<img class="photo-card__img" src="' + esc(imgSrc) + '" alt="" onerror="this.style.background=\'#eee\';this.removeAttribute(\'src\')">'
+      : '<div class="photo-card__img" style="background:#eee;display:flex;align-items:center;justify-content:center;font-size:30px;">🖼</div>';
+    return '<div class="' + cls + '">' +
+      imgTag +
+      '<div class="photo-card__body">' +
+        '<div class="photo-card__title">' + esc(ev.title) + '</div>' +
+        '<div class="photo-card__note">' + note + '</div>' +
+        '<button class="btn-secondary" style="width:100%;font-size:12px;" onclick="editEvent(\'' + ev.id + '\');switchToEventsTab()">✏️ Изменить фото</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function switchToEventsTab() {
+  closeModal('eventModal');
+  document.querySelector('.sidebar__tab[data-tab="events"]').click();
+}
+
+/* ===================================================
+   BOOKINGS TAB
+   =================================================== */
+function renderBookingsStats() {
+  var bks = getBookings();
+  var counts = { new: 0, processing: 0, confirmed: 0, rejected: 0 };
+  bks.forEach(function(b) { if (counts[b.status] !== undefined) counts[b.status]++; });
+  var el = document.getElementById('bookingsStats');
+  el.innerHTML = [
+    { val: bks.length,          label: 'Всего заявок' },
+    { val: counts.new,          label: 'Новых' },
+    { val: counts.processing,   label: 'В обработке' },
+    { val: counts.confirmed,    label: 'Подтверждено' }
+  ].map(function(s) {
+    return '<div class="stat-card"><div class="stat-card__val">' + s.val + '</div><div class="stat-card__label">' + s.label + '</div></div>';
+  }).join('');
+}
+
+function renderBookings() {
+  renderBookingsStats();
+  var bks = getBookings();
+  var q      = document.getElementById('bkSearch').value.toLowerCase();
+  var status = document.getElementById('bkFilterStatus').value;
+
+  var filtered = bks.filter(function(b) {
+    var tcLbl = TC_LABELS[b.tc] || b.tc || '';
+    return (!q      || b.name.toLowerCase().includes(q) || tcLbl.toLowerCase().includes(q)) &&
+           (!status || b.status === status);
+  });
+
+  var tbody = document.getElementById('bookingsTableBody');
+  var empty = document.getElementById('bookingsEmpty');
+
+  if (!filtered.length) { tbody.innerHTML = ''; empty.style.display = ''; return; }
+  empty.style.display = 'none';
+
+  tbody.innerHTML = filtered.map(function(bk) {
+    var tcLbl  = TC_LABELS[bk.tc] || bk.tc || '—';
+    var cls    = BK_CLASSES[bk.status] || 'bk-new';
+    var lbl    = BK_LABELS[bk.status]  || bk.status;
+    var subDate = bk.submitted ? bk.submitted.slice(0,10).split('-').reverse().join('.') : '—';
+    var rentDate = bk.date ? bk.date.split('-').reverse().join('.') : '—';
+    return '<tr>' +
+      '<td>' + subDate + '</td>' +
+      '<td><strong>' + esc(bk.name || '—') + '</strong><br><small style="color:#787878">' + esc(bk.phone || '') + '</small></td>' +
+      '<td>' + esc(tcLbl) + '</td>' +
+      '<td>' + esc((bk.eventName || '').slice(0,40)) + '</td>' +
+      '<td>' + rentDate + (bk.timeFrom ? ', ' + bk.timeFrom : '') + '</td>' +
+      '<td>' +
+        '<select class="toolbar__select" style="font-size:11px;padding:4px 6px;" onchange="changeBookingStatus(\'' + bk.id + '\',this.value)">' +
+          ['new','processing','confirmed','rejected'].map(function(s) {
+            return '<option value="' + s + '"' + (bk.status === s ? ' selected' : '') + '>' + BK_LABELS[s] + '</option>';
+          }).join('') +
+        '</select>' +
+      '</td>' +
+      '<td><div class="td-actions">' +
+        '<button class="btn-edit" onclick="viewBooking(\'' + bk.id + '\')">👁 Просмотр</button>' +
+        '<button class="btn-danger" onclick="deleteBooking(\'' + bk.id + '\')">🗑</button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+['bkSearch'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', renderBookings);
+});
+document.getElementById('bkFilterStatus').addEventListener('change', renderBookings);
+
+function changeBookingStatus(id, status) {
+  var bks = getBookings();
+  var bk = bks.find(function(b) { return b.id === id; });
+  if (bk) { bk.status = status; saveBookings(bks); renderBookingsStats(); }
+}
+
+function viewBooking(id) {
+  var bks = getBookings();
+  var bk = bks.find(function(b) { return b.id === id; });
+  if (!bk) return;
+  var tcLbl = TC_LABELS[bk.tc] || bk.tc || '—';
+  var rows = [
+    ['Дата заявки', bk.submitted ? bk.submitted.replace('T',' ').slice(0,16) : '—'],
+    ['Торговый центр', tcLbl],
+    ['Контактное лицо', bk.name || '—'],
+    ['Телефон', bk.phone || '—'],
+    ['Email', bk.email || '—'],
+    ['Название мероприятия', bk.eventName || '—'],
+    ['Описание', bk.eventDesc || '—'],
+    ['Зал', bk.hall || '—'],
+    ['Дата аренды', bk.date ? bk.date.split('-').reverse().join('.') : '—'],
+    ['Время', (bk.timeFrom || '—') + ' – ' + (bk.timeTo || '—')],
+    ['Комментарий', bk.comment || '—'],
+    ['Статус', BK_LABELS[bk.status] || bk.status]
+  ];
+  document.getElementById('bookingDetailBody').innerHTML = rows.map(function(r) {
+    return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>';
+  }).join('');
+  openModal('bookingModal');
+}
+
+function deleteBooking(id) {
+  showConfirm('Удалить заявку?', function() {
+    saveBookings(getBookings().filter(function(b) { return b.id !== id; }));
+    renderBookings();
+  });
+}
+
+/* CSV export */
+document.getElementById('exportCsvBtn').addEventListener('click', function() {
+  var bks = getBookings();
+  if (!bks.length) { alert('Нет заявок для экспорта'); return; }
+  var headers = ['ID','Дата заявки','ТЦ','Имя','Телефон','Email','Мероприятие','Зал','Дата аренды','Время с','Время по','Статус','Комментарий'];
+  var rows = bks.map(function(b) {
+    return [b.id, b.submitted||'', TC_LABELS[b.tc]||b.tc||'', b.name||'', b.phone||'', b.email||'', b.eventName||'', b.hall||'', b.date||'', b.timeFrom||'', b.timeTo||'', BK_LABELS[b.status]||b.status||'', b.comment||''].map(function(v) { return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  });
+  var csv = '﻿' + headers.join(',') + '\n' + rows.join('\n');
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
+  a.download = 'bookings-' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+});
+
+/* ===================================================
+   CONFIRM DIALOG
+   =================================================== */
+var _confirmCb = null;
+function showConfirm(msg, cb) {
+  document.getElementById('confirmMsg').textContent = msg;
+  _confirmCb = cb;
+  document.getElementById('confirmOverlay').classList.add('open');
+}
+document.getElementById('confirmYes').addEventListener('click', function() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  if (_confirmCb) { _confirmCb(); _confirmCb = null; }
+});
+document.getElementById('confirmNo').addEventListener('click', function() {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  _confirmCb = null;
+});
+
+/* ===================================================
+   UTILS
+   =================================================== */
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ===================================================
+   INIT
+   =================================================== */
+function initAdmin() {
+  renderEvents();
+}
+</script>
+
+</body>
+</html>

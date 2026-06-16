@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мероприятия — ЭНКА ТЦ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html { scroll-behavior: smooth; }
+    #venue-booking { scroll-margin-top: 80px; }
+
+    /* TC Dropdown */
+    .tc-dropdown { position: relative; display: inline-flex; }
+    .tc-dropdown__trigger {
+      display: flex; align-items: center; gap: 6px; padding: 6px 14px;
+      border: 1px solid #E5E5E5; border-radius: 50px; background: #fff;
+      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+      transition: border-color .18s, background .18s, color .18s;
+    }
+    .tc-dropdown__trigger:hover,
+    .tc-dropdown__trigger.open { border-color: #1C1C1C; background: #1C1C1C; color: #fff; }
+    .tc-dropdown__arrow { font-size: 10px; display: inline-block; transition: transform .18s; }
+    .tc-dropdown__trigger.open .tc-dropdown__arrow { transform: rotate(180deg); }
+    .tc-dropdown__menu {
+      display: none; position: absolute; top: calc(100% + 6px); left: 0;
+      background: #fff; border: 1px solid #E5E5E5; border-radius: 10px;
+      padding: 8px; min-width: 210px; z-index: 200;
+      box-shadow: 0 6px 24px rgba(0,0,0,.1);
+    }
+    .tc-dropdown__menu.open { display: block; }
+    .tc-dropdown__actions {
+      display: flex; gap: 10px; padding: 2px 6px 8px;
+      border-bottom: 1px solid #E5E5E5; margin-bottom: 6px;
+    }
+    .tc-dropdown__action {
+      font-size: 12px; color: #787878; background: none;
+      border: none; cursor: pointer; padding: 0;
+    }
+    .tc-dropdown__action:hover { color: #1C1C1C; text-decoration: underline; }
+    .tc-dropdown__item {
+      display: flex; align-items: center; gap: 8px; padding: 7px 8px;
+      border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500;
+      user-select: none;
+    }
+    .tc-dropdown__item:hover { background: #F5F5F5; }
+    .tc-dropdown__item input[type="checkbox"] { width: 15px; height: 15px; accent-color: #1C1C1C; cursor: pointer; }
+
+    /* Default image overlay */
+    .event-card__img-wrap--default::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,.18); pointer-events: none;
+    }
+
+    /* === Reviews === */
+    .reviews-section { padding: 64px 0; background: #fff; }
+    .reviews-section__header { margin-bottom: 24px; }
+    .reviews-section__eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #E8A020; margin-bottom: 8px; }
+    .reviews-section__title { font-size: 28px; font-weight: 800; letter-spacing: -.4px; }
+    .reviews-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .reviews-filter__btn {
+      padding: 6px 14px; border: 1px solid #E5E5E5; border-radius: 20px;
+      background: #fff; font-size: 13px; font-weight: 500; cursor: pointer; transition: .15s;
+    }
+    .reviews-filter__btn:hover { border-color: #1C1C1C; }
+    .reviews-filter__btn.active { background: #1C1C1C; color: #fff; border-color: #1C1C1C; }
+
+    /* Reviews collapse */
+    .reviews-grid-wrap { position: relative; }
+    .reviews-grid-wrap.collapsed .reviews-grid { max-height: 480px; overflow: hidden; }
+    .reviews-grid-wrap.collapsed::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 120px; background: linear-gradient(to bottom, transparent, #fff);
+      pointer-events: none;
+    }
+    .reviews-expand-btn {
+      display: block; margin: 20px auto 0; padding: 10px 28px;
+      border: 1.5px solid #1C1C1C; border-radius: 50px;
+      background: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+    .reviews-expand-btn:hover { background: #1C1C1C; color: #fff; }
+
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; transition: max-height .5s ease; }
+    .review-item {
+      background: #F7F7F7; border-radius: 14px; padding: 22px; transition: opacity .2s;
+    }
+    .review-item.hidden { display: none; }
+    .review-item__tag {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 20px; font-size: 11px; font-weight: 600; margin-bottom: 12px;
+    }
+    /* Tag color palettes by event type */
+    .review-item__tag--kids    { background: #d4f1e1; color: #1a6e42; }
+    .review-item__tag--quiz    { background: #dde8ff; color: #3044b8; }
+    .review-item__tag--master  { background: #fff0d4; color: #b06b00; }
+    .review-item__tag--concert { background: #ede0f8; color: #6d28d9; }
+    .review-item__tag--party   { background: #fde0ec; color: #b5175a; }
+    .review-item__tag--sport   { background: #d4eef5; color: #0e6e8a; }
+    .review-item__tag--default { background: #F0F0F0; color: #555; }
+
+    .review-item__text { font-size: 14px; line-height: 1.6; color: #333; margin-bottom: 16px; }
+    .review-item__author { display: flex; align-items: center; gap: 10px; }
+    .review-item__avatar {
+      width: 36px; height: 36px; border-radius: 50%; background: #1C1C1C; color: #fff;
+      font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .review-item__name { font-size: 13px; font-weight: 600; }
+    .review-item__date { font-size: 12px; color: #787878; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Enka Project Hall</a>
+      <nav class="header__nav">
+        <a href="kids-landings/kuntsevo/index.html">Детский клуб</a>
+        <a href="index.html" class="active">Мероприятия</a>
+        <a href="#venue-booking">Аренда площадок</a>
+        <a href="how-it-works.html">Как это работает</a>
+      </nav>
+      <div class="header__util">
+        <div class="header__util-item">
+          <a href="#">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Карта ТЦ
+          </a>
+        </div>
+        <div class="header__util-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+          10:00–22:00
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+    <div class="container">
+
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="#">Главная</a>
+        <span class="breadcrumbs__sep">/</span>
+        <span>Мероприятия</span>
+      </nav>
+
+      <!-- Date tabs -->
+      <div class="date-tabs" id="dateTabs">
+        <button class="date-tab active" data-date="all">Все даты</button>
+        <button class="date-tab" id="tabToday"   data-date="today"></button>
+        <button class="date-tab" id="tabTomorrow" data-date="tomorrow"></button>
+        <button class="date-tab" id="tabDayAfter" data-date="dayafter"></button>
+        <button class="date-tab date-tab--picker" id="tabPicker" data-date="picker">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span id="tabPickerLabel">Выбрать дату</span>
+        </button>
+      </div>
+
+      <div class="filters" id="filters">
+        <div class="tc-dropdown" id="tcDropdown">
+          <button class="tc-dropdown__trigger" id="tcDropdownTrigger" type="button">
+            <span class="tc-dropdown__label">Торговый центр</span>
+            <span class="tc-dropdown__arrow">▾</span>
+          </button>
+          <div class="tc-dropdown__menu" id="tcDropdownMenu">
+            <div class="tc-dropdown__actions">
+              <button class="tc-dropdown__action" id="tcSelectAll" type="button">Выбрать все</button>
+              <button class="tc-dropdown__action" id="tcReset" type="button">Сбросить</button>
+            </div>
+            <label class="tc-dropdown__item"><input type="checkbox" value="kuntsevo"> Кунцево Плаза</label>
+            <label class="tc-dropdown__item"><input type="checkbox" value="kashirskaya"> Каширская Плаза</label>
+            <label class="tc-dropdown__item"><input type="checkbox" value="kapitoliy"> Капитолий</label>
+          </div>
+        </div>
+        <div class="filters__sep"></div>
+        <button class="filter-btn active" data-group="type" data-value="all">Все типы</button>
+        <button class="filter-btn" data-group="type" data-value="kids">Детское</button>
+        <button class="filter-btn" data-group="type" data-value="quiz">Квиз</button>
+        <button class="filter-btn" data-group="type" data-value="master-class">Мастер-класс</button>
+        <button class="filter-btn" data-group="type" data-value="concert">Концерт</button>
+      </div>
+
+      <div class="events-grid" id="eventsGrid">
+
+        <article class="event-card" data-tc="kuntsevo" data-type="quiz" data-date="2026-06-07">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Квиз Угадай мелодию" loading="lazy">
+              <span class="event-card__badge">Квиз</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Кунцево Плаза</span>
+              <h3 class="event-card__title">Квиз «Угадай мелодию»</h3>
+              <div class="event-card__meta">
+                <span>📅 7 июня, 19:00</span>
+                <span>⏱ 120 мин</span>
+                <span>🎟 800 баллов</span>
+              </div>
+              <div class="event-card__seats">Осталось мест: 22 из 60</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="event-card" data-tc="kashirskaya" data-type="master-class" data-date="2026-06-08">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс по лепке" loading="lazy">
+              <span class="event-card__badge">Мастер-класс</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Каширская Плаза</span>
+              <h3 class="event-card__title">Мастер-класс по лепке из глины</h3>
+              <div class="event-card__meta">
+                <span>📅 8 июня, 12:00</span>
+                <span>⏱ 90 мин</span>
+                <span>🎟 Бесплатно</span>
+              </div>
+              <div class="event-card__seats">Осталось мест: 15 из 30</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="event-card" data-tc="kuntsevo" data-type="kids" data-date="2026-06-14">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Ярмарка котят" loading="lazy">
+              <span class="event-card__badge">Детское</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Кунцево Плаза</span>
+              <h3 class="event-card__title">Ярмарка котят — погладь и возьми домой</h3>
+              <div class="event-card__meta">
+                <span>📅 14 июня, 11:00</span>
+                <span>⏱ 3 часа</span>
+                <span>🎟 Бесплатно</span>
+              </div>
+              <div class="event-card__seats">Осталось мест: 40 из 100</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="event-card" data-tc="kapitoliy" data-type="quiz" data-date="2026-06-15">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Шахматный турнир" loading="lazy">
+              <span class="event-card__badge">Турнир</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Капитолий</span>
+              <h3 class="event-card__title">Открытый шахматный турнир</h3>
+              <div class="event-card__meta">
+                <span>📅 15 июня, 10:00</span>
+                <span>⏱ 4 часа</span>
+                <span>🎟 500 баллов</span>
+              </div>
+              <div class="event-card__seats event-card__seats--low">Осталось мест: 5 из 32</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="event-card" data-tc="kashirskaya" data-type="kids" data-date="2026-06-21">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png" alt="Детский праздник" loading="lazy">
+              <span class="event-card__badge">Детское</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Каширская Плаза</span>
+              <h3 class="event-card__title">Детский праздник «Лето начинается!»</h3>
+              <div class="event-card__meta">
+                <span>📅 21 июня, 13:00</span>
+                <span>⏱ 2 часа</span>
+                <span>🎟 Бесплатно</span>
+              </div>
+              <div class="event-card__seats event-card__seats--low">Осталось мест: 3 из 50</div>
+            </div>
+          </a>
+        </article>
+
+        <article class="event-card" data-tc="kapitoliy" data-type="concert" data-date="2026-06-28">
+          <a href="event.html#ticket-booking" class="event-card__link">
+            <div class="event-card__img-wrap">
+              <img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Семейный концерт" loading="lazy">
+              <span class="event-card__badge">Концерт</span>
+            </div>
+            <div class="event-card__body">
+              <span class="event-card__tc">Капитолий</span>
+              <h3 class="event-card__title">Семейный концерт «Лето в ритме джаза»</h3>
+              <div class="event-card__meta">
+                <span>📅 28 июня, 18:00</span>
+                <span>⏱ 90 мин</span>
+                <span>🎟 1200 баллов</span>
+              </div>
+              <div class="event-card__seats event-card__seats--sold">Мест нет</div>
+            </div>
+          </a>
+        </article>
+
+      </div>
+
+      <div class="no-results" id="noResults">
+        <div class="no-results__icon">🗓</div>
+        <p>Мероприятий по выбранным фильтрам нет.<br>Попробуйте изменить параметры поиска.</p>
+      </div>
+
+    </div><!-- /container -->
+
+  </main>
+
+  <!-- ===== REVIEWS SECTION ===== -->
+  <section class="reviews-section">
+    <div class="container">
+      <div class="reviews-section__header">
+        <div class="reviews-section__eyebrow">Отзывы</div>
+        <div class="reviews-section__title">Что говорят посетители</div>
+      </div>
+      <div class="reviews-filter">
+        <button class="reviews-filter__btn active" data-filter="all">Все</button>
+        <button class="reviews-filter__btn" data-filter="kuntsevo">Кунцево Плаза</button>
+        <button class="reviews-filter__btn" data-filter="kashirskaya">Каширская Плаза</button>
+        <button class="reviews-filter__btn" data-filter="kapitoliy">Капитолий</button>
+      </div>
+      <div class="reviews-grid-wrap collapsed" id="reviewsWrap">
+        <div class="reviews-grid" id="reviewsGrid">
+
+          <div class="review-item" data-tc="kuntsevo">
+            <div class="review-item__tag review-item__tag--kids">Детский клуб Кунцево Плаза</div>
+            <p class="review-item__text">«Водим дочку уже полгода. Каждый раз она в восторге! Организаторы очень внимательные, дети всегда под присмотром. Рекомендую всем родителям.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">А</div>
+              <div><div class="review-item__name">Анна К.</div><div class="review-item__date">май 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kuntsevo">
+            <div class="review-item__tag review-item__tag--quiz">Квиз «Угадай мелодию»</div>
+            <p class="review-item__text">«Сын посещал квиз — был в восторге! Познакомился с новыми ребятами, выиграл приз. Обязательно придём ещё. Формат очень живой и вовлекающий.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">Д</div>
+              <div><div class="review-item__name">Дмитрий В.</div><div class="review-item__date">апрель 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kuntsevo">
+            <div class="review-item__tag review-item__tag--master">Мастер-класс по рисованию</div>
+            <p class="review-item__text">«Отличные мастер-классы. Педагоги терпеливые и профессиональные. Дочка принесла домой картину, которой сама очень гордится!»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">М</div>
+              <div><div class="review-item__name">Мария Т.</div><div class="review-item__date">апрель 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kuntsevo">
+            <div class="review-item__tag review-item__tag--party">Детский праздник</div>
+            <p class="review-item__text">«Провели день рождения дочки — всё прошло на высшем уровне. Аниматоры, оформление, угощения — всё включено. Спасибо команде!»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">Е</div>
+              <div><div class="review-item__name">Елена С.</div><div class="review-item__date">март 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kuntsevo">
+            <div class="review-item__tag review-item__tag--party">Ярмарка котят</div>
+            <p class="review-item__text">«Дети не хотели уходить! Очень интересный формат. Котята такие милые, дочка хотела забрать всех. Спасибо за такое необычное мероприятие.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">О</div>
+              <div><div class="review-item__name">Ольга И.</div><div class="review-item__date">март 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kashirskaya">
+            <div class="review-item__tag review-item__tag--kids">Детский клуб Каширская Плаза</div>
+            <p class="review-item__text">«Записали сына на шахматный турнир — он занял 2-е место! Организация отличная, атмосфера соревновательная, но дружелюбная. Будем участвовать снова.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">С</div>
+              <div><div class="review-item__name">Сергей П.</div><div class="review-item__date">май 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kashirskaya">
+            <div class="review-item__tag review-item__tag--kids">Детский клуб Каширская Плаза</div>
+            <p class="review-item__text">«Прекрасная площадка — просторно, светло, чисто. Персонал всегда рад детям. Мастер-классы по лепке — просто восторг, вся семья теперь увлеклась.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">Н</div>
+              <div><div class="review-item__name">Наталья Л.</div><div class="review-item__date">апрель 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kashirskaya">
+            <div class="review-item__tag review-item__tag--master">Мастер-класс по лепке из глины</div>
+            <p class="review-item__text">«Ходили с дочкой на мастер-класс по лепке. Всё включено — материалы, фартуки, работа педагога. Работу обожгли и вернули домой — храним как реликвию!»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">И</div>
+              <div><div class="review-item__name">Ирина К.</div><div class="review-item__date">апрель 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kashirskaya">
+            <div class="review-item__tag review-item__tag--party">Детский праздник «Лето начинается!»</div>
+            <p class="review-item__text">«Детский праздник прошёл замечательно. Программа насыщенная, дети были заняты всё время. Очень понравилось, что никакой суеты — всё чётко по расписанию.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">Т</div>
+              <div><div class="review-item__name">Татьяна В.</div><div class="review-item__date">май 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kapitoliy">
+            <div class="review-item__tag review-item__tag--concert">Семейный концерт</div>
+            <p class="review-item__text">«Концерт «Лето в ритме джаза» был просто потрясающий. Живая музыка, профессиональные музыканты, дети слушали с открытым ртом. Отличное культурное мероприятие.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">А</div>
+              <div><div class="review-item__name">Алексей М.</div><div class="review-item__date">май 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kapitoliy">
+            <div class="review-item__tag review-item__tag--kids">Детский клуб Капитолий</div>
+            <p class="review-item__text">«Очень удобное расположение — у главного входа. Детей не нужно далеко вести, можно самому сходить в магазин пока ребёнок на занятии. Очень продуманно!»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">П</div>
+              <div><div class="review-item__name">Павел Н.</div><div class="review-item__date">март 2026</div></div>
+            </div>
+          </div>
+
+          <div class="review-item" data-tc="kapitoliy">
+            <div class="review-item__tag review-item__tag--sport">Шахматный турнир</div>
+            <p class="review-item__text">«Открытый шахматный турнир — отличная инициатива. Уровень участников разный, поэтому и новичкам интересно. Призы реальные, организация на высоте.»</p>
+            <div class="review-item__author">
+              <div class="review-item__avatar">Ю</div>
+              <div><div class="review-item__name">Юлия Р.</div><div class="review-item__date">апрель 2026</div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button class="reviews-expand-btn" id="reviewsExpandBtn">Показать все отзывы ↓</button>
+    </div>
+  </section>
+
+  <!-- ===== VENUE BOOKING SECTION ===== -->
+  <section class="venue-booking" id="venue-booking">
+    <div class="container">
+
+      <div class="venue-booking__head">
+        <h2 class="venue-booking__title">Аренда ивент-площадок</h2>
+        <p class="venue-booking__sub">Организуйте мероприятие в одном из наших ТЦ — выберите дату и оставьте заявку</p>
+      </div>
+
+      <div class="venue-booking__layout">
+
+        <!-- Calendar -->
+        <div>
+          <div class="avail-cal">
+            <div class="avail-cal__header">
+              <button class="avail-cal__nav" id="availPrev">‹</button>
+              <span class="avail-cal__title" id="availTitle"></span>
+              <button class="avail-cal__nav" id="availNext">›</button>
+            </div>
+            <div class="avail-cal__legend">
+              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--free"></div>Свободен</div>
+              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--partial"></div>Частично занят</div>
+              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--busy"></div>Полностью занят</div>
+              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--past"></div>Прошедшая дата</div>
+            </div>
+            <div class="avail-grid" id="availGrid"></div>
+          </div>
+        </div>
+
+        <!-- Booking form -->
+        <div class="booking-form-wrap" id="venueFormWrap">
+          <h3 class="booking-form-title">Оставить заявку на бронирование</h3>
+          <form id="venueForm" novalidate>
+            <input type="hidden" id="vf_tc" name="tc" value="kuntsevo">
+
+            <div class="form-field">
+              <label class="form-label" for="venueTcSelect">Торговый центр <em>*</em></label>
+              <select class="form-select" id="venueTcSelect" name="tc_display" required>
+                <option value="">— Выберите торговый центр —</option>
+                <option value="kuntsevo">Кунцево Плаза</option>
+                <option value="kashirskaya">Каширская Плаза</option>
+                <option value="kapitoliy">Капитолий</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="vf_event_name">Название мероприятия <em>*</em></label>
+              <input class="form-input" id="vf_event_name" name="event_name" type="text" placeholder="День рождения, корпоратив, конференция…" required>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="vf_event_desc">Описание мероприятия <em>*</em></label>
+              <textarea class="form-textarea" id="vf_event_desc" name="event_desc" placeholder="Расскажите подробнее о формате, количестве гостей…" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label" for="vf_date">Желаемая дата <em>*</em></label>
+                <input class="form-input" id="vf_date" name="date" type="date" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="vf_hall">Зал / площадка <em>*</em></label>
+                <select class="form-select" id="vf_hall" name="hall" required></select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label" for="vf_time_from">Начало <em>*</em></label>
+                <input class="form-input" id="vf_time_from" name="time_from" type="time" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="vf_time_to">Окончание <em>*</em></label>
+                <input class="form-input" id="vf_time_to" name="time_to" type="time" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-field">
+                <label class="form-label" for="vf_name">Контактное лицо <em>*</em></label>
+                <input class="form-input" id="vf_name" name="name" type="text" placeholder="Имя и фамилия" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label" for="vf_phone">Телефон <em>*</em></label>
+                <input class="form-input" id="vf_phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="vf_email">Email <em>*</em></label>
+              <input class="form-input" id="vf_email" name="email" type="email" placeholder="mail@example.com" required>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Баннер мероприятия (jpg/png, до 5 МБ)</label>
+              <label class="form-file-label" for="vf_banner">
+                📎 Прикрепить изображение
+              </label>
+              <input class="form-file-input" id="vf_banner" name="banner" type="file" accept="image/jpeg,image/png">
+              <span class="form-file-name" id="vf_banner_name"></span>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label">Презентация (pdf/pptx, до 20 МБ)</label>
+              <label class="form-file-label" for="vf_pres">
+                📎 Прикрепить файл
+              </label>
+              <input class="form-file-input" id="vf_pres" name="presentation" type="file" accept=".pdf,.pptx,application/pdf">
+              <span class="form-file-name" id="vf_pres_name"></span>
+            </div>
+
+            <div class="form-field">
+              <label class="form-label" for="vf_comment">Комментарий</label>
+              <textarea class="form-textarea" id="vf_comment" name="comment" placeholder="Дополнительные пожелания…"></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="vfSubmit">Отправить заявку</button>
+            <div class="form-success" id="vfSuccess">✓ Заявка принята! Мы свяжемся с вами в ближайшее время.</div>
+            <div class="form-error-msg" id="vfError">Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Availability slot popup -->
+  <div class="avail-overlay" id="availOverlay"></div>
+  <div class="avail-popup" id="availPopup">
+    <div class="avail-popup__header">
+      <div class="avail-popup__date" id="availPopupDate"></div>
+      <button class="avail-popup__close" id="availPopupClose">×</button>
+    </div>
+    <div id="availPopupBody"></div>
+    <div class="avail-popup__footer">
+      <button class="btn-popup-cancel" id="availPopupCancel">Закрыть</button>
+      <button class="btn-popup-book" id="availPopupBook">Забронировать этот день</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__logo">ЭНКА ТЦ</div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Москва, ул. Ярцевская, 19
+        </div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          +7 (495) 726-60-30
+        </div>
+        <div class="footer__hours-label">Режим работы</div>
+        <div class="footer__hours-row">
+          <div class="footer__hours-cell"><span>Пн</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Вт</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Ср</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Чт</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Пт</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Сб</span><strong>10:00–22:00</strong></div>
+          <div class="footer__hours-cell"><span>Вс</span><strong>10:00–22:00</strong></div>
+        </div>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Разделы</div>
+        <a href="#">Магазины</a>
+        <a href="#">Кафе и Рестораны</a>
+        <a href="#">Услуги и Сервисы</a>
+        <a href="#">Развлечения</a>
+        <a href="index.html">Мероприятия</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Компания</div>
+        <a href="#">Новости и Акции</a>
+        <a href="#">О нас</a>
+        <a href="#">Программа лояльности</a>
+        <a href="#">Вакансии</a>
+        <a href="#">Арендаторам</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Торговые центры</div>
+        <a href="https://www.kuntsevoplaza.ru" target="_blank" rel="noopener">Кунцево Плаза</a>
+        <a href="https://www.kashirskaya-plaza.ru" target="_blank" rel="noopener">Каширская Плаза</a>
+        <a href="https://www.kapitoliy.ru" target="_blank" rel="noopener">Капитолий</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Соцсети</div>
+        <div class="footer__social">
+          <a href="#" aria-label="ВКонтакте">ВК</a>
+          <a href="#" aria-label="YouTube">YT</a>
+          <a href="#" aria-label="Telegram">TG</a>
+        </div>
+        <button class="footer__write-btn">Написать нам</button>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>2024 ЭНКА ТЦ. Все права защищены.</span>
+      <a href="#">Пользовательское соглашение</a>
+    </div>
+  </footer>
+
+  <!-- Calendar overlay + popup (outside document flow) -->
+  <div class="cal-overlay" id="calOverlay"></div>
+  <div class="cal-popup" id="calPopup">
+    <div class="cal-header">
+      <button class="cal-nav" id="calPrev">‹</button>
+      <span class="cal-title" id="calTitle"></span>
+      <button class="cal-nav" id="calNext">›</button>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <script>
+  /* ===== VENUE BOOKING: availability calendar + form ===== */
+  (function () {
+    'use strict';
+
+    /* ---- Schedule data (mirrors /data/venue-schedule.json) ---- */
+    var SCHEDULE = {
+      kuntsevo: {
+        halls: ['Зал «Сказочный»', 'Зал «Космический»'],
+        schedule: {
+          '2026-06-10': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'busy', '14:00–18:00': 'free',  '18:00–22:00': 'free'  },
+            'Зал «Космический»':{ '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'busy'  }
+          },
+          '2026-06-14': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'busy', '14:00–18:00': 'busy',  '18:00–22:00': 'busy'  },
+            'Зал «Космический»':{ '10:00–14:00': 'busy', '14:00–18:00': 'busy',  '18:00–22:00': 'busy'  }
+          },
+          '2026-06-19': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'free', '14:00–18:00': 'busy',  '18:00–22:00': 'free'  },
+            'Зал «Космический»':{ '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'busy'  }
+          },
+          '2026-06-21': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'free'  },
+            'Зал «Космический»':{ '10:00–14:00': 'busy', '14:00–18:00': 'free',  '18:00–22:00': 'free'  }
+          },
+          '2026-06-28': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'busy', '14:00–18:00': 'busy',  '18:00–22:00': 'free'  },
+            'Зал «Космический»':{ '10:00–14:00': 'busy', '14:00–18:00': 'busy',  '18:00–22:00': 'busy'  }
+          },
+          '2026-07-05': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'free'  },
+            'Зал «Космический»':{ '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'free'  }
+          },
+          '2026-07-12': {
+            'Зал «Сказочный»':  { '10:00–14:00': 'free', '14:00–18:00': 'busy',  '18:00–22:00': 'busy'  },
+            'Зал «Космический»':{ '10:00–14:00': 'free', '14:00–18:00': 'free',  '18:00–22:00': 'busy'  }
+          }
+        }
+      },
+      kashirskaya: {
+        halls: ['Банкетный зал', 'Конференц-зал', 'Лофт'],
+        schedule: {
+          '2026-06-07': {
+            'Банкетный зал':  { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'busy' },
+            'Конференц-зал':  { '10:00–14:00': 'busy',  '14:00–18:00': 'free',  '18:00–22:00': 'free' },
+            'Лофт':           { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'free' }
+          },
+          '2026-06-13': {
+            'Банкетный зал':  { '10:00–14:00': 'busy',  '14:00–18:00': 'busy',  '18:00–22:00': 'busy' },
+            'Конференц-зал':  { '10:00–14:00': 'busy',  '14:00–18:00': 'busy',  '18:00–22:00': 'busy' },
+            'Лофт':           { '10:00–14:00': 'busy',  '14:00–18:00': 'busy',  '18:00–22:00': 'busy' }
+          },
+          '2026-06-20': {
+            'Банкетный зал':  { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'free' },
+            'Конференц-зал':  { '10:00–14:00': 'free',  '14:00–18:00': 'busy',  '18:00–22:00': 'free' },
+            'Лофт':           { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'busy' }
+          },
+          '2026-07-04': {
+            'Банкетный зал':  { '10:00–14:00': 'busy',  '14:00–18:00': 'free',  '18:00–22:00': 'free' },
+            'Конференц-зал':  { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'free' },
+            'Лофт':           { '10:00–14:00': 'free',  '14:00–18:00': 'free',  '18:00–22:00': 'free' }
+          }
+        }
+      },
+      kapitoliy: {
+        halls: ['Большой зал', 'Малый зал'],
+        schedule: {
+          '2026-06-06': {
+            'Большой зал': { '10:00–14:00': 'free', '14:00–18:00': 'busy', '18:00–22:00': 'free' },
+            'Малый зал':   { '10:00–14:00': 'busy', '14:00–18:00': 'free', '18:00–22:00': 'free' }
+          },
+          '2026-06-13': {
+            'Большой зал': { '10:00–14:00': 'busy', '14:00–18:00': 'busy', '18:00–22:00': 'busy' },
+            'Малый зал':   { '10:00–14:00': 'busy', '14:00–18:00': 'free', '18:00–22:00': 'busy' }
+          },
+          '2026-06-27': {
+            'Большой зал': { '10:00–14:00': 'free', '14:00–18:00': 'free', '18:00–22:00': 'free' },
+            'Малый зал':   { '10:00–14:00': 'free', '14:00–18:00': 'free', '18:00–22:00': 'free' }
+          },
+          '2026-07-11': {
+            'Большой зал': { '10:00–14:00': 'busy', '14:00–18:00': 'busy', '18:00–22:00': 'free' },
+            'Малый зал':   { '10:00–14:00': 'free', '14:00–18:00': 'busy', '18:00–22:00': 'free' }
+          }
+        }
+      }
+    };
+
+    var MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+                     'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+    var MONTHS_RU_GEN = ['января','февраля','марта','апреля','мая','июня',
+                         'июля','августа','сентября','октября','ноября','декабря'];
+    var WEEKDAYS = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
+
+    var now = new Date(); now.setHours(0,0,0,0);
+    var availYear  = now.getFullYear();
+    var availMonth = now.getMonth();
+    var currentTc  = 'kuntsevo';
+    var selectedDateYMD = null;
+    var selectedHall    = null;
+
+    var tcSelect    = document.getElementById('venueTcSelect');
+    var availGrid   = document.getElementById('availGrid');
+    var availTitle  = document.getElementById('availTitle');
+    var overlay     = document.getElementById('availOverlay');
+    var popup       = document.getElementById('availPopup');
+    var popupDate   = document.getElementById('availPopupDate');
+    var popupBody   = document.getElementById('availPopupBody');
+    var popupClose  = document.getElementById('availPopupClose');
+    var popupCancel = document.getElementById('availPopupCancel');
+    var popupBook   = document.getElementById('availPopupBook');
+    var hallSelect  = document.getElementById('vf_hall');
+    var tcHidden    = document.getElementById('vf_tc');
+
+    function toYMD(d) {
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+
+    function getDayStatus(tc, ymd) {
+      var dateObj = new Date(ymd + 'T00:00:00');
+      if (dateObj < now) return 'past';
+      var data = SCHEDULE[tc];
+      if (!data || !data.schedule[ymd]) return 'free';
+      var dayData = data.schedule[ymd];
+      var total = 0, busy = 0;
+      Object.keys(dayData).forEach(function (hall) {
+        Object.values(dayData[hall]).forEach(function (v) {
+          total++;
+          if (v === 'busy') busy++;
+        });
+      });
+      if (busy === 0) return 'free';
+      if (busy === total) return 'busy';
+      return 'partial';
+    }
+
+    function updateHallSelect(tc) {
+      var halls = SCHEDULE[tc] ? SCHEDULE[tc].halls : [];
+      hallSelect.innerHTML = halls.map(function (h) {
+        return '<option value="' + h + '">' + h + '</option>';
+      }).join('');
+    }
+
+    function renderAvailCalendar() {
+      availTitle.textContent = MONTHS_RU[availMonth] + ' ' + availYear;
+      availGrid.innerHTML = '';
+
+      ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].forEach(function (n) {
+        var el = document.createElement('div');
+        el.className = 'avail-day-name';
+        el.textContent = n;
+        availGrid.appendChild(el);
+      });
+
+      var firstDow = (new Date(availYear, availMonth, 1).getDay() + 6) % 7;
+      var prevLast = new Date(availYear, availMonth, 0).getDate();
+      for (var i = firstDow - 1; i >= 0; i--) {
+        var el = document.createElement('div');
+        el.className = 'avail-day avail-day--other';
+        el.textContent = prevLast - i;
+        availGrid.appendChild(el);
+      }
+
+      var daysInMonth = new Date(availYear, availMonth+1, 0).getDate();
+      var todayYMD = toYMD(now);
+      for (var d = 1; d <= daysInMonth; d++) {
+        var ymd = availYear + '-' +
+          String(availMonth+1).padStart(2,'0') + '-' +
+          String(d).padStart(2,'0');
+        var status = getDayStatus(currentTc, ymd);
+        var el = document.createElement('div');
+        el.className = 'avail-day avail-day--' + status;
+        el.textContent = d;
+        el.dataset.ymd = ymd;
+        if (ymd === todayYMD) el.classList.add('avail-day--today');
+        if (ymd === selectedDateYMD) el.classList.add('avail-day--selected');
+        if (status !== 'past' && status !== 'busy') {
+          el.addEventListener('click', function () { openAvailPopup(this.dataset.ymd); });
+        }
+        availGrid.appendChild(el);
+      }
+
+      var total = firstDow + daysInMonth;
+      var rem   = (7 - (total % 7)) % 7;
+      for (var r = 1; r <= rem; r++) {
+        var el = document.createElement('div');
+        el.className = 'avail-day avail-day--other';
+        el.textContent = r;
+        availGrid.appendChild(el);
+      }
+    }
+
+    function openAvailPopup(ymd) {
+      var parts = ymd.split('-');
+      var d = new Date(ymd + 'T00:00:00');
+      popupDate.textContent = WEEKDAYS[d.getDay()] + ', ' + parseInt(parts[2]) + ' ' + MONTHS_RU_GEN[d.getMonth()];
+
+      var data = SCHEDULE[currentTc];
+      var dayData = (data && data.schedule[ymd]) ? data.schedule[ymd] : null;
+      var halls   = data ? data.halls : [];
+
+      popupBody.innerHTML = '';
+      halls.forEach(function (hall) {
+        var hallDiv = document.createElement('div');
+        hallDiv.className = 'avail-popup__hall';
+        var nameEl = document.createElement('div');
+        nameEl.className = 'avail-popup__hall-name';
+        nameEl.textContent = hall;
+        var slotsEl = document.createElement('div');
+        slotsEl.className = 'avail-popup__slots';
+
+        var slots = (dayData && dayData[hall]) ? dayData[hall] : {
+          '10:00–14:00': 'free', '14:00–18:00': 'free', '18:00–22:00': 'free'
+        };
+        Object.keys(slots).forEach(function (time) {
+          var st = slots[time];
+          var slotEl = document.createElement('div');
+          slotEl.className = 'avail-slot avail-slot--' + st;
+          var timeEl = document.createElement('span');
+          timeEl.className = 'avail-slot__time';
+          timeEl.textContent = time;
+          var statusEl = document.createElement('span');
+          statusEl.className = 'avail-slot__status';
+          statusEl.textContent = st === 'free' ? 'Свободно' : 'Занято';
+          slotEl.appendChild(timeEl);
+          slotEl.appendChild(statusEl);
+          if (st === 'free') {
+            var btn = document.createElement('button');
+            btn.className = 'avail-slot__btn';
+            btn.textContent = 'Выбрать';
+            btn.addEventListener('click', function () {
+              fillFormFromSlot(ymd, hall, time);
+              closeAvailPopup();
+            });
+            slotEl.appendChild(btn);
+          }
+          slotsEl.appendChild(slotEl);
+        });
+
+        hallDiv.appendChild(nameEl);
+        hallDiv.appendChild(slotsEl);
+        popupBody.appendChild(hallDiv);
+      });
+
+      popup.dataset.ymd = ymd;
+      popup.classList.add('open');
+      overlay.classList.add('open');
+    }
+
+    function closeAvailPopup() {
+      popup.classList.remove('open');
+      overlay.classList.remove('open');
+    }
+
+    function fillFormFromSlot(ymd, hall, timeSlot) {
+      selectedDateYMD = ymd;
+      selectedHall    = hall;
+
+      var dateInput = document.getElementById('vf_date');
+      dateInput.value = ymd;
+      dateInput.classList.add('highlight');
+
+      var hallEl = document.getElementById('vf_hall');
+      hallEl.value = hall;
+      hallEl.classList.add('highlight');
+
+      /* parse time range into from/to fields */
+      var parts = timeSlot.split('–');
+      if (parts.length === 2) {
+        var fromEl = document.getElementById('vf_time_from');
+        var toEl   = document.getElementById('vf_time_to');
+        fromEl.value = parts[0].trim().replace(':', ':');
+        toEl.value   = parts[1].trim().replace(':', ':');
+        fromEl.classList.add('highlight');
+        toEl.classList.add('highlight');
+      }
+
+      renderAvailCalendar();
+
+      /* scroll to form */
+      var form = document.getElementById('venueFormWrap');
+      if (form) {
+        setTimeout(function () {
+          form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 120);
+      }
+    }
+
+    /* "Забронировать этот день" fills date only */
+    popupBook.addEventListener('click', function () {
+      var ymd = popup.dataset.ymd;
+      selectedDateYMD = ymd;
+      var dateInput = document.getElementById('vf_date');
+      dateInput.value = ymd;
+      dateInput.classList.add('highlight');
+      renderAvailCalendar();
+      closeAvailPopup();
+      var form = document.getElementById('venueFormWrap');
+      if (form) setTimeout(function () {
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 120);
+    });
+
+    popupClose.addEventListener('click', closeAvailPopup);
+    popupCancel.addEventListener('click', closeAvailPopup);
+    overlay.addEventListener('click', closeAvailPopup);
+
+    document.getElementById('availPrev').addEventListener('click', function () {
+      availMonth--;
+      if (availMonth < 0) { availMonth = 11; availYear--; }
+      renderAvailCalendar();
+    });
+    document.getElementById('availNext').addEventListener('click', function () {
+      availMonth++;
+      if (availMonth > 11) { availMonth = 0; availYear++; }
+      renderAvailCalendar();
+    });
+
+    tcSelect.addEventListener('change', function () {
+      currentTc = this.value;
+      tcHidden.value = currentTc;
+      updateHallSelect(currentTc);
+      selectedDateYMD = null;
+      selectedHall = null;
+      /* update URL param */
+      var url = new URL(window.location.href);
+      url.searchParams.set('venue', currentTc);
+      history.replaceState(null, '', url.toString());
+      renderAvailCalendar();
+    });
+
+    /* File inputs — show filename */
+    ['vf_banner','vf_pres'].forEach(function (id) {
+      var input = document.getElementById(id);
+      var nameEl = document.getElementById(id + '_name');
+      if (!input || !nameEl) return;
+      input.addEventListener('change', function () {
+        var f = this.files[0];
+        if (!f) { nameEl.textContent = ''; return; }
+        var maxMb = id === 'vf_banner' ? 5 : 20;
+        if (f.size > maxMb * 1024 * 1024) {
+          nameEl.textContent = '⚠️ Файл слишком большой (макс. ' + maxMb + ' МБ)';
+          this.value = '';
+        } else {
+          nameEl.textContent = '✓ ' + f.name;
+        }
+      });
+    });
+
+    /* Venue form submit */
+    document.getElementById('venueForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var required = ['venueTcSelect','vf_event_name','vf_event_desc','vf_date','vf_hall','vf_time_from','vf_time_to','vf_name','vf_phone','vf_email'];
+      var ok = true;
+      required.forEach(function (id) {
+        var el = document.getElementById(id);
+        el.classList.remove('error');
+        if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+      });
+      var emailEl = document.getElementById('vf_email');
+      if (emailEl.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+        emailEl.classList.add('error'); ok = false;
+      }
+      if (!ok) return;
+
+      var btn = document.getElementById('vfSubmit');
+      btn.disabled = true;
+      btn.textContent = 'Отправляем…';
+      document.getElementById('vfError').classList.remove('visible');
+
+      /* === Replace with real endpoint ===
+      var formData = new FormData(document.getElementById('venueForm'));
+      fetch('/api/venue-booking', { method: 'POST', body: formData })
+        .then(function (r) { if (!r.ok) throw new Error(); })
+        .then(showVenueSuccess).catch(showVenueError);
+      */
+
+      /* Prototype: simulate */
+      setTimeout(showVenueSuccess, 900);
+    });
+
+    function showVenueSuccess() {
+      try {
+        var booking = {
+          id: 'bk-' + Date.now(),
+          submitted: new Date().toISOString(),
+          tc: document.getElementById('venueTcSelect').value,
+          eventName: document.getElementById('vf_event_name').value,
+          eventDesc: document.getElementById('vf_event_desc').value,
+          date:      document.getElementById('vf_date').value,
+          hall:      document.getElementById('vf_hall').value,
+          timeFrom:  document.getElementById('vf_time_from').value,
+          timeTo:    document.getElementById('vf_time_to').value,
+          name:      document.getElementById('vf_name').value,
+          phone:     document.getElementById('vf_phone').value,
+          email:     document.getElementById('vf_email').value,
+          comment:   document.getElementById('vf_comment').value,
+          status:    'new'
+        };
+        var list = JSON.parse(localStorage.getItem('afisha_bookings') || '[]');
+        list.unshift(booking);
+        localStorage.setItem('afisha_bookings', JSON.stringify(list));
+      } catch (e) {}
+      document.getElementById('venueForm').style.display = 'none';
+      document.getElementById('vfSuccess').classList.add('visible');
+    }
+    function showVenueError() {
+      var btn = document.getElementById('vfSubmit');
+      btn.disabled = false;
+      btn.textContent = 'Отправить заявку';
+      document.getElementById('vfError').classList.add('visible');
+    }
+
+    /* Read URL param ?venue= on page load */
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var venueParam = params.get('venue');
+      if (venueParam && SCHEDULE[venueParam]) {
+        currentTc = venueParam;
+        tcSelect.value = currentTc;
+        tcHidden.value = currentTc;
+      }
+    })();
+
+    /* Init */
+    updateHallSelect(currentTc);
+    renderAvailCalendar();
+
+  })();
+  </script>
+
+  <script>
+    (function () {
+      /* ---- helpers ---- */
+      function toYMD(d) {
+        return d.getFullYear() + '-' +
+          String(d.getMonth() + 1).padStart(2, '0') + '-' +
+          String(d.getDate()).padStart(2, '0');
+      }
+      function formatRu(d) {
+        var days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+        var months = ['января','февраля','марта','апреля','мая','июня',
+                      'июля','августа','сентября','октября','ноября','декабря'];
+        return days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()];
+      }
+
+      var now = new Date(); now.setHours(0, 0, 0, 0);
+      var t0  = new Date(now);
+      var t1  = new Date(now); t1.setDate(t1.getDate() + 1);
+      var t2  = new Date(now); t2.setDate(t2.getDate() + 2);
+
+      document.getElementById('tabToday').textContent    = 'Сегодня';
+      document.getElementById('tabTomorrow').textContent = 'Завтра';
+      document.getElementById('tabDayAfter').textContent = formatRu(t2);
+
+      var dateMap = { today: toYMD(t0), tomorrow: toYMD(t1), dayafter: toYMD(t2) };
+
+      /* ---- filter state ---- */
+      var activeTcs     = [];   /* empty array = все ТЦ */
+      var activeType    = 'all';
+      var activeDateYMD = null;
+
+      var grid      = document.getElementById('eventsGrid');
+      var cards     = Array.from(grid.querySelectorAll('.event-card'));
+      var noResults = document.getElementById('noResults');
+
+      function applyFilters() {
+        var visible = 0;
+        cards.forEach(function (card) {
+          var ok = (activeTcs.length === 0 || activeTcs.indexOf(card.dataset.tc) !== -1) &&
+                   (activeType    === 'all' || card.dataset.type === activeType) &&
+                   (!activeDateYMD         || card.dataset.date  === activeDateYMD);
+          card.classList.toggle('event-card--hidden', !ok);
+          if (ok) visible++;
+        });
+        noResults.classList.toggle('visible', visible === 0);
+      }
+
+      /* ---- Type filter buttons ---- */
+      document.getElementById('filters').addEventListener('click', function (e) {
+        var btn = e.target.closest('.filter-btn');
+        if (!btn || btn.dataset.group !== 'type') return;
+        document.querySelectorAll('.filter-btn[data-group="type"]')
+          .forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        activeType = btn.dataset.value;
+        applyFilters();
+      });
+
+      /* ---- URL param ?type= ---- */
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var typeParam = params.get('type');
+        if (typeParam) {
+          var typeBtn = document.querySelector('.filter-btn[data-group="type"][data-value="' + typeParam + '"]');
+          if (typeBtn) {
+            document.querySelectorAll('.filter-btn[data-group="type"]').forEach(function (b) { b.classList.remove('active'); });
+            typeBtn.classList.add('active');
+            activeType = typeParam;
+            applyFilters();
+          }
+        }
+      })();
+
+      /* ---- Date tabs (non-picker) ---- */
+      document.getElementById('dateTabs').addEventListener('click', function (e) {
+        var tab = e.target.closest('.date-tab');
+        if (!tab || tab.id === 'tabPicker') return;
+        document.querySelectorAll('.date-tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var val = tab.dataset.date;
+        activeDateYMD = (val === 'all') ? null : (dateMap[val] || null);
+        calSelectedYMD = null;
+        document.getElementById('tabPickerLabel').textContent = 'Выбрать дату';
+        applyFilters();
+      });
+
+      /* ---- Custom Calendar ---- */
+      var MONTHS_RU = ['Январь','Февраль','Март','Апрель','Май','Июнь',
+                       'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+      var EVENT_DATES = cards.map(function (c) { return c.dataset.date; }).filter(Boolean);
+
+      var calOverlay   = document.getElementById('calOverlay');
+      var calPopup     = document.getElementById('calPopup');
+      var calTitle     = document.getElementById('calTitle');
+      var calGrid      = document.getElementById('calGrid');
+      var tabPicker    = document.getElementById('tabPicker');
+      var pickerLabel  = document.getElementById('tabPickerLabel');
+      var calYear      = now.getFullYear();
+      var calMonth     = now.getMonth();
+      var calSelectedYMD = null;
+
+      function openCalendar() {
+        /* position below the picker button, centered on it */
+        var rect = tabPicker.getBoundingClientRect();
+        var popW = 318;
+        var left = rect.left + rect.width / 2 - popW / 2;
+        left = Math.max(8, Math.min(left, window.innerWidth - popW - 8));
+        calPopup.style.top  = (rect.bottom + 10) + 'px';
+        calPopup.style.left = left + 'px';
+        renderCalendar();
+        calPopup.classList.add('open');
+        calOverlay.classList.add('open');
+      }
+
+      function closeCalendar() {
+        calPopup.classList.remove('open');
+        calOverlay.classList.remove('open');
+      }
+
+      function renderCalendar() {
+        calTitle.textContent = MONTHS_RU[calMonth] + ', ' + calYear;
+        calGrid.innerHTML = '';
+
+        ['ПН','ВТ','СР','ЧТ','ПТ','СБ','ВС'].forEach(function (name) {
+          var el = document.createElement('div');
+          el.className = 'cal-day-name';
+          el.textContent = name;
+          calGrid.appendChild(el);
+        });
+
+        var firstDow = (new Date(calYear, calMonth, 1).getDay() + 6) % 7;
+        var prevLast = new Date(calYear, calMonth, 0).getDate();
+        for (var i = firstDow - 1; i >= 0; i--) {
+          var el = document.createElement('div');
+          el.className = 'cal-day cal-day--other';
+          el.textContent = prevLast - i;
+          calGrid.appendChild(el);
+        }
+
+        var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+        var todayYMD    = toYMD(now);
+
+        for (var d = 1; d <= daysInMonth; d++) {
+          var ymd = calYear + '-' +
+            String(calMonth + 1).padStart(2, '0') + '-' +
+            String(d).padStart(2, '0');
+          var el = document.createElement('div');
+          el.className = 'cal-day';
+          el.textContent = d;
+          el.dataset.ymd = ymd;
+          if (ymd === todayYMD) el.classList.add('cal-day--today');
+          if (EVENT_DATES.indexOf(ymd) !== -1) el.classList.add('cal-day--has-event');
+          if (ymd === calSelectedYMD) el.classList.add('cal-day--selected');
+          el.addEventListener('click', onDayClick);
+          calGrid.appendChild(el);
+        }
+
+        var total     = firstDow + daysInMonth;
+        var remainder = (7 - (total % 7)) % 7;
+        for (var r = 1; r <= remainder; r++) {
+          var el = document.createElement('div');
+          el.className = 'cal-day cal-day--other';
+          el.textContent = r;
+          calGrid.appendChild(el);
+        }
+      }
+
+      function onDayClick(e) {
+        e.stopPropagation();
+        var ymd = this.dataset.ymd;
+        calSelectedYMD = ymd;
+        var parts = ymd.split('-');
+        pickerLabel.textContent = parts[2] + '.' + parts[1] + '.' + parts[0];
+        document.querySelectorAll('.date-tab').forEach(function (t) { t.classList.remove('active'); });
+        tabPicker.classList.add('active');
+        activeDateYMD = ymd;
+        closeCalendar();
+        applyFilters();
+      }
+
+      tabPicker.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (calPopup.classList.contains('open')) { closeCalendar(); } else { openCalendar(); }
+      });
+
+      document.getElementById('calPrev').addEventListener('click', function (e) {
+        e.stopPropagation();
+        calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+        renderCalendar();
+      });
+
+      document.getElementById('calNext').addEventListener('click', function (e) {
+        e.stopPropagation();
+        calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+        renderCalendar();
+      });
+
+      calOverlay.addEventListener('click', closeCalendar);
+      calPopup.addEventListener('click', function (e) { e.stopPropagation(); });
+
+      /* ---- TC Dropdown ---- */
+      (function () {
+        var trigger = document.getElementById('tcDropdownTrigger');
+        var menu    = document.getElementById('tcDropdownMenu');
+        if (!trigger || !menu) return;
+        var lbl = trigger.querySelector('.tc-dropdown__label');
+        var cbs = Array.from(menu.querySelectorAll('input[type="checkbox"]'));
+
+        function sync() {
+          var on = cbs.filter(function (c) { return c.checked; });
+          lbl.textContent = on.length ? 'Торговый центр (' + on.length + ')' : 'Торговый центр';
+          activeTcs = on.map(function (c) { return c.value; });
+          applyFilters();
+        }
+
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var open = menu.classList.toggle('open');
+          trigger.classList.toggle('open', open);
+        });
+        menu.addEventListener('click', function (e) { e.stopPropagation(); });
+        document.addEventListener('click', function () {
+          menu.classList.remove('open');
+          trigger.classList.remove('open');
+        });
+        cbs.forEach(function (cb) { cb.addEventListener('change', sync); });
+
+        var selAll = document.getElementById('tcSelectAll');
+        var rst    = document.getElementById('tcReset');
+        if (selAll) selAll.addEventListener('click', function () { cbs.forEach(function (c) { c.checked = true; }); sync(); });
+        if (rst)    rst.addEventListener('click',    function () { cbs.forEach(function (c) { c.checked = false; }); sync(); });
+
+        /* pre-select from ?tc= URL param */
+        var tcParam = new URLSearchParams(window.location.search).get('tc');
+        if (tcParam) { cbs.forEach(function (c) { if (c.value === tcParam) c.checked = true; }); sync(); }
+      })();
+
+      /* ---- Badge colours (Task 5) ---- */
+      var BADGE_COLORS = {
+        'Квиз': '#6c5ce7', 'Турнир': '#d63031', 'Мастер-класс': '#00b894',
+        'Детское': '#fd79a8', 'Детский праздник': '#fd79a8', 'Концерт': '#6c5ce7',
+        'Спектакль': '#2d3436', 'Кино': '#0984e3', 'Фестиваль': '#fdcb6e',
+        'Выставка': '#e17055', 'Лекция / Форум': '#636e72', 'Для всей семьи': '#00cec9'
+      };
+      document.querySelectorAll('.event-card__badge').forEach(function (b) {
+        var col = BADGE_COLORS[b.textContent.trim()];
+        if (col) { b.style.background = col; b.style.color = '#fff'; }
+      });
+
+    })();
+  </script>
+
+  <script>
+    /* === Reviews filter + expand/collapse === */
+    (function () {
+      var btns  = document.querySelectorAll('.reviews-filter__btn');
+      var items = document.querySelectorAll('.review-item');
+      btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          btns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          var f = btn.dataset.filter;
+          items.forEach(function (item) {
+            item.classList.toggle('hidden', f !== 'all' && item.dataset.tc !== f);
+          });
+        });
+      });
+
+      var wrap      = document.getElementById('reviewsWrap');
+      var expandBtn = document.getElementById('reviewsExpandBtn');
+      if (wrap && expandBtn) {
+        expandBtn.addEventListener('click', function () {
+          wrap.classList.remove('collapsed');
+          expandBtn.style.display = 'none';
+        });
+      }
+    })();
+
+    /* === Smooth scroll for anchor links === */
+    (function () {
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.charAt(0) !== '#' || href.length < 2) return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+  </script>
+
+</body>
+</html>

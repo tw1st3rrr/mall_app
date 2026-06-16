@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Квиз «Угадай мелодию» — Кунцево Плаза</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html { scroll-behavior: smooth; }
+    #ticket-booking { scroll-margin-top: 80px; }
+
+    /* === Participation Steps === */
+    .participation-steps {
+      background: #F7F7F7; border-radius: 16px; padding: 28px 28px 24px; margin: 32px 0;
+    }
+    .participation-steps__head { margin-bottom: 24px; }
+    .participation-steps__eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: #E8A020; margin-bottom: 6px;
+    }
+    .participation-steps__title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .participation-steps__sub { font-size: 13px; color: #787878; line-height: 1.5; }
+
+    .pstep { display: flex; gap: 16px; padding: 18px 0; border-top: 1px solid #E5E5E5; }
+    .pstep__num {
+      width: 36px; height: 36px; border-radius: 50%; background: #1C1C1C; color: #fff;
+      font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pstep__body { flex: 1; }
+    .pstep__title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+    .pstep__desc { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 14px; }
+    .pstep__bonus {
+      display: inline-flex; align-items: center; gap: 6px; background: #FFF3D0;
+      border: 1px solid #E8A020; border-radius: 8px; padding: 6px 12px;
+      font-size: 12px; font-weight: 600; color: #B8750A; margin-bottom: 14px;
+    }
+    .pstep__btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-store-sm {
+      display: inline-flex; align-items: center; gap: 8px; background: #1C1C1C; color: #fff;
+      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-store-sm:hover { background: #333; }
+    .btn-store-sm .s-icon { font-size: 16px; }
+    .btn-app-event {
+      display: inline-flex; align-items: center; gap: 6px; background: #E8A020; color: #fff;
+      padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-app-event:hover { background: #C8881A; }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Enka Project Hall</a>
+      <nav class="header__nav">
+        <a href="kids-landings/kuntsevo/index.html">Детский клуб</a>
+        <a href="index.html" class="active">Мероприятия</a>
+        <a href="index.html#venue-booking">Аренда площадок</a>
+        <a href="how-it-works.html">Как это работает</a>
+      </nav>
+      <div class="header__util">
+        <div class="header__util-item">
+          <a href="#">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Карта ТЦ
+          </a>
+        </div>
+        <div class="header__util-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+          10:00–22:00
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="#">Главная</a>
+        <span class="breadcrumbs__sep">/</span>
+        <a href="index.html">Мероприятия</a>
+        <span class="breadcrumbs__sep">/</span>
+        <span>Квиз «Угадай мелодию»</span>
+      </nav>
+
+      <div class="event-detail">
+
+        <!-- LEFT -->
+        <div class="event-detail__main">
+          <h1 class="event-detail__title">Квиз «Угадай мелодию»</h1>
+          <a href="index.html?type=quiz" class="event-type-tag" style="display:inline-block;margin:6px 0 12px;padding:4px 12px;border-radius:20px;background:#6c5ce7;color:#fff;font-size:12px;font-weight:600;text-decoration:none;">🎵 Квиз</a>
+
+          <div class="event-meta-row">
+            <span>📅 7 июня 2026 г., 19:00</span>
+            <span>⏱ 120 минут</span>
+            <span>📍 Enka Project Hall, зал «Сказочный»</span>
+            <span>🎟 800 баллов / чел</span>
+          </div>
+
+          <p class="event-detail__desc">
+            Командный музыкальный квиз для всей семьи. Угадывайте мелодии из разных эпох и жанров,
+            соревнуйтесь с другими командами и получайте призы. Максимальный состав команды — 6 человек.
+            Подходит для детей от 10 лет вместе с взрослыми. Приходите командой или присоединяйтесь
+            к другим участникам на месте.
+          </p>
+
+          <div class="event-program">
+            <h2 class="event-detail__section-title">Программа</h2>
+            <div class="event-program__row">
+              <span class="event-program__time">19:00</span>
+              <span>Сбор команд, регистрация</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">19:15</span>
+              <span>Разминочный раунд</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">19:30</span>
+              <span>Основные раунды (5 раундов)</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">21:00</span>
+              <span>Финал и награждение</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">21:15</span>
+              <span>Фуршет и общение</span>
+            </div>
+          </div>
+
+          <div class="event-gallery">
+            <h2 class="event-detail__section-title">Фотогалерея</h2>
+            <div class="event-gallery__grid">
+              <div class="event-gallery__item"><img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Детский праздник в зале ТЦ" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс для детей" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Концерт в зале" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png" alt="Праздничный зал с воздушными шарами" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="images/shared/gallery-06.png" alt="Мероприятие в торговом центре" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Творческий мастер-класс" loading="lazy"></div>
+            </div>
+          </div>
+
+          <div class="event-organizer">
+            <div class="event-organizer__avatar">К</div>
+            <div>
+              <div class="event-organizer__name">Enka Project Hall</div>
+              <div class="event-organizer__desc">Собственное мероприятие торгового центра</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Participation Steps -->
+        <aside>
+          <div class="participation-steps">
+            <div class="participation-steps__head">
+              <div class="participation-steps__eyebrow">Условие участия</div>
+              <div class="participation-steps__title">Как попасть на мероприятие</div>
+              <div class="participation-steps__sub">Билеты покупаются баллами программы лояльности. За регистрацию в приложении вы сразу получаете бонус — его хватит на билет.</div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">1</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Скачайте приложение и зарегистрируйтесь</div>
+                <p class="pstep__desc">Это бесплатно. Сразу после регистрации начисляется приветственный бонус.</p>
+                <div class="pstep__bonus">🎁 Бонус за регистрацию — хватит на билет</div>
+                <div class="pstep__btns">
+                  <a href="https://apps.apple.com/ru/app/%D0%BA%D1%83%D0%BD%D1%86%D0%B5%D0%B2%D0%BE-%D0%BF%D0%BB%D0%B0%D0%B7%D0%B0/id1515450940"
+                     target="_blank" rel="noopener" class="btn-store-sm">
+                    <span class="s-icon"></span> App Store
+                  </a>
+                  <a href="https://play.google.com/store/apps/details?id=com.mymall.kunzevo&hl=ru"
+                     target="_blank" rel="noopener" class="btn-store-sm">
+                    <span class="s-icon">▶</span> Google Play
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">2</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Купите что-нибудь в ТЦ и отсканируйте чек</div>
+                <p class="pstep__desc">На кассах размещены QR-коды программы лояльности — баллы начисляются автоматически.</p>
+              </div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">3</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Потратьте баллы на мероприятие</div>
+                <p class="pstep__desc">Перейдите к этому событию и оплатите баллами лояльности — без карты и наличных.</p>
+                <a href="app-redirect.html" class="btn-app-event">Перейти к событию в приложении →</a>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Ticket Booking -->
+      <section class="ticket-booking" id="ticket-booking">
+
+        <!-- Two-column: form + map/contacts -->
+        <div class="ticket-booking__layout" data-tc="kuntsevo">
+
+          <!-- Left: Form -->
+          <div class="ticket-booking__form-wrap">
+            <h2 class="ticket-booking__form-title">Или оставьте заявку</h2>
+            <p class="ticket-booking__form-sub">Мы свяжемся с вами для подтверждения бронирования</p>
+
+            <form id="ticketForm" novalidate>
+              <input type="hidden" id="tf_event" name="event" value="Квиз «Угадай мелодию»">
+              <input type="hidden" id="tf_date"  name="date"  value="7 июня 2026, 19:00">
+              <input type="hidden" id="tf_venue" name="venue" value="Enka Project Hall">
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label" for="tf_name">Имя <em>*</em></label>
+                  <input class="form-input" id="tf_name" name="name" type="text" placeholder="Иван Иванов" required>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="tf_phone">Телефон <em>*</em></label>
+                  <input class="form-input" id="tf_phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-field">
+                  <label class="form-label" for="tf_email">Email <em>*</em></label>
+                  <input class="form-input" id="tf_email" name="email" type="email" placeholder="mail@example.com" required>
+                </div>
+                <div class="form-field">
+                  <label class="form-label" for="tf_qty">Количество человек <em>*</em></label>
+                  <input class="form-input" id="tf_qty" name="qty" type="number" min="1" max="10" placeholder="1" required>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label class="form-label" for="tf_comment">Комментарий</label>
+                <textarea class="form-textarea" id="tf_comment" name="comment" placeholder="Пожелания, вопросы…"></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit" id="tfSubmit">Отправить заявку</button>
+              <div class="form-success" id="tfSuccess">✓ Заявка принята! Мы свяжемся с вами в ближайшее время.</div>
+              <div class="form-error-msg" id="tfError">Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
+            </form>
+          </div>
+
+          <!-- Right: Map + Contacts -->
+          <div class="ticket-booking__side">
+            <div class="ticket-booking__map-wrap">
+              <iframe id="tbMapIframe"
+                src=""
+                frameborder="0"
+                allowfullscreen
+                title="Карта ТЦ">
+              </iframe>
+            </div>
+            <div class="ticket-booking__contacts" id="tbContacts">
+              <div class="ticket-booking__contact-row">
+                <span class="ticket-booking__contact-icon">📍</span>
+                <div>
+                  <div class="ticket-booking__contact-label">Адрес</div>
+                  <div class="ticket-booking__contact-value" id="tbAddress"></div>
+                </div>
+              </div>
+              <div class="ticket-booking__contact-row">
+                <span class="ticket-booking__contact-icon">📞</span>
+                <div>
+                  <div class="ticket-booking__contact-label">Телефон</div>
+                  <div class="ticket-booking__contact-phone" id="tbPhone"></div>
+                </div>
+              </div>
+              <div class="ticket-booking__contact-row">
+                <span class="ticket-booking__contact-icon">🕐</span>
+                <div>
+                  <div class="ticket-booking__contact-label">Режим работы</div>
+                  <div class="ticket-booking__contact-value" id="tbHours"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.ticket-booking__layout -->
+
+      </section>
+
+      <!-- Similar Events -->
+      <section class="similar-events">
+        <h2 class="similar-events__title">Похожие события</h2>
+        <div class="events-grid">
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс по лепке из глины" loading="lazy">
+                <span class="event-card__badge">Мастер-класс</span>
+              </div>
+              <div class="event-card__body">
+                <span class="event-card__tc">Каширская Плаза</span>
+                <h3 class="event-card__title">Мастер-класс по лепке из глины</h3>
+                <div class="event-card__meta">
+                  <span>📅 8 июня, 12:00</span>
+                  <span>🎟 Бесплатно</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Ярмарка котят" loading="lazy">
+                <span class="event-card__badge">Детское</span>
+              </div>
+              <div class="event-card__body">
+                <span class="event-card__tc">Кунцево Плаза</span>
+                <h3 class="event-card__title">Ярмарка котят — погладь и возьми домой</h3>
+                <div class="event-card__meta">
+                  <span>📅 14 июня, 11:00</span>
+                  <span>🎟 Бесплатно</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Семейный концерт" loading="lazy">
+                <span class="event-card__badge">Концерт</span>
+              </div>
+              <div class="event-card__body">
+                <span class="event-card__tc">Капитолий</span>
+                <h3 class="event-card__title">Семейный концерт «Лето в ритме джаза»</h3>
+                <div class="event-card__meta">
+                  <span>📅 28 июня, 18:00</span>
+                  <span>🎟 1200 баллов</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__logo">ЭНКА ТЦ</div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Москва, ул. Ярцевская, 19
+        </div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          +7 (495) 726-60-30
+        </div>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Разделы</div>
+        <a href="#">Магазины</a>
+        <a href="#">Кафе и Рестораны</a>
+        <a href="#">Услуги и Сервисы</a>
+        <a href="#">Развлечения</a>
+        <a href="index.html">Мероприятия</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Компания</div>
+        <a href="#">Новости и Акции</a>
+        <a href="#">О нас</a>
+        <a href="#">Программа лояльности</a>
+        <a href="#">Вакансии</a>
+        <a href="#">Арендаторам</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Торговые центры</div>
+        <a href="https://www.kuntsevoplaza.ru" target="_blank" rel="noopener">Enka Project Hall</a>
+        <a href="https://www.kashirskaya-plaza.ru" target="_blank" rel="noopener">Каширская Плаза</a>
+        <a href="https://www.kapitoliy.ru" target="_blank" rel="noopener">Капитолий</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Соцсети</div>
+        <div class="footer__social">
+          <a href="#" aria-label="ВКонтакте">ВК</a>
+          <a href="#" aria-label="YouTube">YT</a>
+          <a href="#" aria-label="Telegram">TG</a>
+        </div>
+        <button class="footer__write-btn">Написать нам</button>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>2024 ЭНКА ТЦ. Все права защищены.</span>
+      <a href="#">Пользовательское соглашение</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ---- Venue contacts config + map init ---- */
+    (function () {
+      var VENUE_CONTACTS = {
+        kuntsevo: {
+          address: 'Москва, ул. Ярцевская, 19, Кунцево Плаза, 3 этаж',
+          phone:   '+7 (495) 726-60-30',
+          hours:   'пн–вс 10:00–22:00',
+          mapSrc:  'https://yandex.ru/map-widget/v1/?ll=37.356%2C55.729&z=16&pt=37.356%2C55.729&l=map'
+        },
+        kashirskaya: {
+          address: 'Москва, Каширское шоссе, 59, Каширская Плаза, 2 этаж',
+          phone:   '+7 (495) 978-55-08',
+          hours:   'пн–вс 10:00–22:00',
+          mapSrc:  'https://yandex.ru/map-widget/v1/?ll=37.661%2C55.637&z=16&pt=37.661%2C55.637&l=map'
+        },
+        kapitoliy: {
+          address: 'Москва, пр. Вернадского, 6, Капитолий, 1 этаж',
+          phone:   '+7 (495) 232-32-32',
+          hours:   'пн–вс 10:00–22:00',
+          mapSrc:  'https://yandex.ru/map-widget/v1/?ll=37.520%2C55.706&z=16&pt=37.520%2C55.706&l=map'
+        }
+      };
+
+      var layout = document.querySelector('.ticket-booking__layout');
+      if (!layout) return;
+
+      var tc   = layout.dataset.tc || 'kuntsevo';
+      var data = VENUE_CONTACTS[tc] || VENUE_CONTACTS.kuntsevo;
+
+      var iframe = document.getElementById('tbMapIframe');
+      if (iframe) iframe.src = data.mapSrc;
+
+      var addr  = document.getElementById('tbAddress');
+      var phone = document.getElementById('tbPhone');
+      var hours = document.getElementById('tbHours');
+      if (addr)  addr.textContent  = data.address;
+      if (phone) phone.textContent = data.phone;
+      if (hours) hours.textContent = data.hours;
+    })();
+  </script>
+
+  <script>
+    /* ---- Ticket booking form ---- */
+    (function () {
+      var form    = document.getElementById('ticketForm');
+      var btn     = document.getElementById('tfSubmit');
+      var success = document.getElementById('tfSuccess');
+      var errMsg  = document.getElementById('tfError');
+      if (!form) return;
+
+      function validatePhone(v) { return /^[\d\+\(\)\s\-]{7,18}$/.test(v.trim()); }
+      function validateEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var ok = true;
+        ['tf_name','tf_phone','tf_email','tf_qty'].forEach(function (id) {
+          var el = document.getElementById(id);
+          el.classList.remove('error');
+          if (!el.value.trim()) { el.classList.add('error'); ok = false; }
+        });
+        var phone = document.getElementById('tf_phone');
+        if (phone.value.trim() && !validatePhone(phone.value)) {
+          phone.classList.add('error'); ok = false;
+        }
+        var email = document.getElementById('tf_email');
+        if (email.value.trim() && !validateEmail(email.value)) {
+          email.classList.add('error'); ok = false;
+        }
+        if (!ok) return;
+
+        btn.disabled = true;
+        btn.textContent = 'Отправляем…';
+        errMsg.classList.remove('visible');
+
+        /* === Replace this fetch with your real endpoint ===
+        fetch('/api/ticket-booking', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event:  document.getElementById('tf_event').value,
+            date:   document.getElementById('tf_date').value,
+            venue:  document.getElementById('tf_venue').value,
+            name:   document.getElementById('tf_name').value,
+            phone:  document.getElementById('tf_phone').value,
+            email:  document.getElementById('tf_email').value,
+            qty:    document.getElementById('tf_qty').value,
+            comment: document.getElementById('tf_comment').value
+          })
+        })
+        .then(function (r) { if (!r.ok) throw new Error(); return r.json(); })
+        .then(showSuccess)
+        .catch(showError);
+        */
+
+        /* Prototype: simulate async success */
+        setTimeout(function () { showSuccess(); }, 800);
+      });
+
+      function showSuccess() {
+        form.style.display = 'none';
+        success.classList.add('visible');
+      }
+      function showError() {
+        btn.disabled = false;
+        btn.textContent = 'Отправить заявку';
+        errMsg.classList.add('visible');
+      }
+    })();
+  </script>
+
+  <script>
+    /* === Smooth scroll for anchor links === */
+    (function () {
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.charAt(0) !== '#' || href.length < 2) return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+  </script>
+
+
+</body>
+</html>

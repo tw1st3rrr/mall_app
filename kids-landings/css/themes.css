@@ -1,0 +1,33 @@
+/* ===== COLOR THEMES FOR KIDS LANDINGS ===== */
+
+/* Кунцево Плаза — Amber (default) */
+:root,
+.theme-kuntsevo {
+  --kids-accent:        #E8A020;
+  --kids-accent-dark:   #C8881A;
+  --kids-accent-light:  rgba(232,160,32,0.10);
+  --kids-primary-dark:  #1C1C1C;
+  --kids-header-bg:     rgba(28,28,28,0.88);
+  --kids-hero-overlay:  rgba(28,28,28,0.58);
+  --kids-tc-label:      "Enka Project Hall";
+}
+
+/* Каширская Плаза — Blue */
+.theme-kashirskaya {
+  --kids-accent:        #2563EB;
+  --kids-accent-dark:   #1D4FBB;
+  --kids-accent-light:  rgba(37,99,235,0.10);
+  --kids-primary-dark:  #1A3F7A;
+  --kids-header-bg:     rgba(26,63,122,0.88);
+  --kids-hero-overlay:  rgba(26,63,122,0.62);
+}
+
+/* Капитолий — Green */
+.theme-kapitoliy {
+  --kids-accent:        #16A34A;
+  --kids-accent-dark:   #126B38;
+  --kids-accent-light:  rgba(22,163,74,0.10);
+  --kids-primary-dark:  #1B4D3E;
+  --kids-header-bg:     rgba(27,77,62,0.88);
+  --kids-hero-overlay:  rgba(27,77,62,0.62);
+}

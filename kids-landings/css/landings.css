@@ -53,7 +53,6 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
   height: 46px;
   object-fit: contain;
   flex-shrink: 0;
-  border-radius: 50%;
 }
 .kids-header__logo-txt {
   font-family: 'Fredoka', sans-serif;

@@ -24,18 +24,14 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 .kids-header {
   background: transparent;
   color: var(--kids-ink);
-  position: sticky;
+  position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   border-bottom: none;
-  transition: background .25s, box-shadow .25s;
 }
-.kids-header--scrolled {
-  background: rgba(255,255,255,0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 24px -12px rgba(28,32,72,0.14);
-}
+.kids-header--scrolled { background: transparent; }
 .kids-header__inner {
   max-width: 1240px;
   margin: 0 auto;
@@ -55,8 +51,9 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 .kids-header__logo-img {
   width: 46px;
   height: 46px;
-  object-fit: contain;
+  object-fit: cover;
   flex-shrink: 0;
+  border-radius: 50%;
 }
 .kids-header__logo-txt {
   font-family: 'Fredoka', sans-serif;
@@ -134,6 +131,7 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
   overflow: hidden;
   background: var(--kids-bg);
   color: var(--kids-ink);
+  padding-top: 68px;
 }
 .kids-hero::before {
   content: '';

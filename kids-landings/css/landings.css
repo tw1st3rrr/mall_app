@@ -22,16 +22,20 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 
 /* === HEADER === */
 .kids-header {
-  background: rgba(255,255,255,0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: transparent;
   color: var(--kids-ink);
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid rgba(0,0,0,0.07);
+  border-bottom: none;
+  transition: background .25s, box-shadow .25s;
 }
-.kids-header--scrolled { box-shadow: 0 8px 24px -12px rgba(28,32,72,0.14); }
+.kids-header--scrolled {
+  background: rgba(255,255,255,0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 8px 24px -12px rgba(28,32,72,0.14);
+}
 .kids-header__inner {
   max-width: 1240px;
   margin: 0 auto;

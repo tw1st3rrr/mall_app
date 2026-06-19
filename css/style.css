@@ -1,23 +1,31 @@
 /* === FONTS === */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 /* === RESET === */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', sans-serif; background: #fff; color: #1C1C1C; font-size: 14px; line-height: 1.5; }
+body { font-family: 'Nunito', -apple-system, system-ui, sans-serif; background: #FBFAF7; color: #20243A; font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
 a { text-decoration: none; color: inherit; }
 img { max-width: 100%; display: block; }
 button { font-family: inherit; cursor: pointer; }
 
 /* === VARIABLES === */
 :root {
-  --clr-header: #1C1C1C;
-  --clr-text: #1C1C1C;
-  --clr-muted: #787878;
-  --clr-border: #E5E5E5;
-  --clr-bg-soft: #F5F5F5;
-  --radius-card: 12px;
-  --radius-pill: 50px;
+  --clr-header: #20243A;
+  --clr-text: #20243A;
+  --clr-muted: #8C90A0;
+  --clr-border: #ECE8DF;
+  --clr-bg-soft: #FBFAF7;
+  --radius-card: 18px;
+  --radius-pill: 999px;
   --container: 1240px;
+  /* === brand refresh tokens === */
+  --brand: #2E47A6;
+  --brand-dark: #233A8C;
+  --orange: #F39200; --orange-d: #D97D00;
+  --blue: #2D7FF0; --green: #2BA24A; --pink: #EC4899; --cyan: #34B3F1;
+  --dash: #E0DACA;
+  --shadow: 0 22px 44px -22px rgba(28,32,72,.30);
+  --shadow-sm: 0 12px 26px -16px rgba(28,32,72,.24);
 }
 
 /* === LAYOUT === */
@@ -805,3 +813,83 @@ main { flex: 1; padding: 32px 0 80px; }
   .venue-booking__title { font-size: 24px; }
   .ticket-booking__app { padding: 36px 20px; }
 }
+
+/* ================================================================
+   «КРАСКИ И КЛЯКСЫ» — VISUAL REFRESH LAYER (cleaner unified look)
+   Только визуал: переопределяет внешний вид, не меняя разметку и JS.
+   ================================================================ */
+
+/* --- Typography --- */
+.page-title, .event-detail__title, .similar-events__title,
+.venue-booking__title, .booking-form-title, .ticket-booking__app-title,
+.ticket-booking__form-title, .redirect-page__title, .page-hero__title {
+  font-family: 'Fredoka', sans-serif; font-weight: 600; letter-spacing: -.4px;
+}
+.event-card__title { font-family: 'Fredoka', sans-serif; font-weight: 600; }
+
+/* --- Header --- */
+.header { background: rgba(251,250,247,.82); border-bottom: 1px solid rgba(0,0,0,.06); }
+.header__inner { height: 70px; }
+.header__logo {
+  font-family: 'Fredoka', sans-serif; font-size: 17px; font-weight: 600;
+  letter-spacing: -.2px; text-transform: none; border: none; padding: 6px 0;
+  color: var(--clr-text);
+}
+.header__logo:hover { border: none; color: var(--brand); }
+.header__nav a { font-family: 'Fredoka', sans-serif; font-weight: 500; border-radius: 999px; }
+.header__nav a:hover { color: var(--brand); background: rgba(46,71,166,.07); }
+.header__nav a.active { color: #fff; background: var(--brand); font-weight: 600; }
+
+/* --- Event cards: dashed playful --- */
+.event-card {
+  background: #fff; border: 2px dashed var(--dash); border-radius: 20px;
+  padding: 10px; overflow: hidden;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+.event-card:hover { transform: translateY(-5px); border-color: var(--brand); box-shadow: var(--shadow); }
+.event-card__img-wrap { border-radius: 13px; }
+.event-card__body { padding: 14px 8px 10px; }
+.event-card__title { font-size: 16px; }
+.event-card__badge {
+  background: var(--brand); color: #fff; border: 2px solid #fff;
+  font-family: 'Fredoka', sans-serif; font-weight: 600; padding: 5px 12px;
+  box-shadow: 0 6px 14px -4px rgba(28,32,72,.30);
+}
+
+/* --- Tabs / filters / calendar accents --- */
+.date-tab { font-family: 'Fredoka', sans-serif; }
+.date-tab.active { border-bottom-color: var(--brand); }
+.filter-btn { font-family: 'Fredoka', sans-serif; }
+.cal-day-name, .cal-day--today { color: var(--brand); }
+.cal-day--has-event::after { background: var(--brand); }
+.cal-day--selected, .cal-day--selected.cal-day--today { background: var(--brand) !important; }
+.avail-day--selected { outline-color: var(--brand); }
+.avail-cal, .booking-form-wrap { border-radius: 18px; box-shadow: var(--shadow-sm); border: 1px solid var(--clr-border); }
+
+/* --- Forms --- */
+.form-input, .form-select, .form-textarea, .venue-tc-select { border-radius: 12px; }
+.btn-submit { border-radius: 14px; font-family: 'Fredoka', sans-serif; font-weight: 600; background: var(--brand); }
+.btn-submit:hover { opacity: 1; background: var(--brand-dark); }
+
+/* --- Venue section: cleaner background --- */
+.venue-booking { background: transparent; }
+
+/* --- Booking widget / app blocks tie to brand --- */
+.booking-widget { background: var(--brand); }
+.btn-book { font-family: 'Fredoka', sans-serif; }
+.ticket-booking__app { background: var(--brand); }
+
+/* --- Footer: festive stripe --- */
+.footer { position: relative; }
+.footer::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
+  background: repeating-linear-gradient(90deg,
+    var(--orange) 0 40px, var(--blue) 40px 80px,
+    var(--green) 80px 120px, var(--pink) 120px 160px);
+}
+.footer__logo { font-family: 'Fredoka', sans-serif; text-transform: none; letter-spacing: -.3px; }
+
+/* --- Redirect page --- */
+.redirect-page { background: #FBFAF7; }
+.redirect-page__logo { font-family: 'Fredoka', sans-serif; text-transform: none; border-color: var(--brand); color: var(--brand); border-radius: 999px; }
+.btn-store { border-radius: 14px; }

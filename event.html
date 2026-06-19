@@ -10,44 +10,44 @@
 
     /* === Participation Steps === */
     .participation-steps {
-      background: #F7F7F7; border-radius: 16px; padding: 28px 28px 24px; margin: 32px 0;
+      background: #fff; border: 2px dashed var(--dash); border-radius: 20px; padding: 28px 28px 24px; margin: 32px 0;
     }
     .participation-steps__head { margin-bottom: 24px; }
     .participation-steps__eyebrow {
       font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      color: #E8A020; margin-bottom: 6px;
+      color: var(--orange-d); margin-bottom: 6px;
     }
-    .participation-steps__title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .participation-steps__title { font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
     .participation-steps__sub { font-size: 13px; color: #787878; line-height: 1.5; }
 
     .pstep { display: flex; gap: 16px; padding: 18px 0; border-top: 1px solid #E5E5E5; }
     .pstep__num {
-      width: 36px; height: 36px; border-radius: 50%; background: #1C1C1C; color: #fff;
-      font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: #fff;
+      font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
     .pstep__body { flex: 1; }
-    .pstep__title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+    .pstep__title { font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 5px; }
     .pstep__desc { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 14px; }
     .pstep__bonus {
       display: inline-flex; align-items: center; gap: 6px; background: #FFF3D0;
-      border: 1px solid #E8A020; border-radius: 8px; padding: 6px 12px;
+      border: 1px solid var(--orange-d); border-radius: 10px; padding: 6px 12px;
       font-size: 12px; font-weight: 600; color: #B8750A; margin-bottom: 14px;
     }
     .pstep__btns { display: flex; gap: 8px; flex-wrap: wrap; }
     .btn-store-sm {
-      display: inline-flex; align-items: center; gap: 8px; background: #1C1C1C; color: #fff;
-      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px; background: var(--brand-dark); color: #fff;
+      padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none;
       transition: background .15s;
     }
-    .btn-store-sm:hover { background: #333; }
+    .btn-store-sm:hover { background: var(--brand); }
     .btn-store-sm .s-icon { font-size: 16px; }
     .btn-app-event {
-      display: inline-flex; align-items: center; gap: 6px; background: #E8A020; color: #fff;
-      padding: 11px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px; background: var(--brand); color: #fff;
+      padding: 11px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none;
       transition: background .15s;
     }
-    .btn-app-event:hover { background: #C8881A; }
+    .btn-app-event:hover { background: var(--brand-dark); }
   </style>
 </head>
 <body class="page-wrapper">
@@ -93,10 +93,10 @@
           <h1 class="event-detail__title">Квиз «Угадай мелодию»</h1>
 
           <div class="event-meta-row">
-            <span>📅 7 июня 2026 г., 19:00</span>
-            <span>⏱ 120 минут</span>
-            <span>📍 Enka Project Hall, зал «Сказочный»</span>
-            <span>🎟 800 баллов / чел</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 7 июня 2026 г., 19:00</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><circle cx="12" cy="13" r="7.5"/><path d="M12 13V9M9.5 2.8h5"/></svg> 120 минут</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Enka Project Hall, зал «Сказочный»</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> 800 баллов / чел</span>
           </div>
 
           <p class="event-detail__desc">
@@ -158,7 +158,7 @@
               <div class="pstep__body">
                 <div class="pstep__title">Скачайте приложение и зарегистрируйтесь</div>
                 <p class="pstep__desc">Это бесплатно. Сразу после регистрации начисляется приветственный бонус.</p>
-                <div class="pstep__bonus">🎁 Бонус за регистрацию — хватит на билет</div>
+                <div class="pstep__bonus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3.5" y="9" width="17" height="5" rx="1"/><path d="M5 14v6.5h14V14M12 9v11.5M12 9S10.5 4.5 8 5.5 9 9 12 9zM12 9s1.5-4.5 4-3.5S15 9 12 9z"/></svg> Бонус за регистрацию — хватит на билет</div>
                 <div class="pstep__btns">
                   <a href="https://apps.apple.com/ru/app/%D0%BA%D1%83%D0%BD%D1%86%D0%B5%D0%B2%D0%BE-%D0%BF%D0%BB%D0%B0%D0%B7%D0%B0/id1515450940"
                      target="_blank" rel="noopener" class="btn-store-sm">
@@ -207,8 +207,8 @@
               <div class="event-card__body">
                 <h3 class="event-card__title">Мастер-класс по лепке из глины</h3>
                 <div class="event-card__meta">
-                  <span>📅 8 июня, 12:00</span>
-                  <span>🎟 Бесплатно</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 8 июня, 12:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> Бесплатно</span>
                 </div>
               </div>
             </a>
@@ -223,8 +223,8 @@
               <div class="event-card__body">
                 <h3 class="event-card__title">Ярмарка котят — погладь и возьми домой</h3>
                 <div class="event-card__meta">
-                  <span>📅 14 июня, 11:00</span>
-                  <span>🎟 Бесплатно</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 14 июня, 11:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> Бесплатно</span>
                 </div>
               </div>
             </a>
@@ -239,8 +239,8 @@
               <div class="event-card__body">
                 <h3 class="event-card__title">Семейный концерт «Лето в ритме джаза»</h3>
                 <div class="event-card__meta">
-                  <span>📅 28 июня, 18:00</span>
-                  <span>🎟 1200 баллов</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 28 июня, 18:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> 1200 баллов</span>
                 </div>
               </div>
             </a>

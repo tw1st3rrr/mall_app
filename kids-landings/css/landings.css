@@ -127,18 +127,20 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 /* === HERO === */
 .kids-hero {
   position: relative;
-  overflow: hidden;
-  background: var(--kids-bg);
+  overflow: visible;
+  background: transparent;
   color: var(--kids-ink);
 }
-.kids-hero::before {
+/* === Единый точечный паттерн на весь фон страницы (фиксированный, без обрезаний) === */
+body[class*="theme-"]::before {
   content: '';
-  position: absolute;
+  position: fixed;
   inset: 0;
   background-image: radial-gradient(var(--kids-dash) 1.4px, transparent 1.4px);
   background-size: 26px 26px;
-  opacity: 0.4;
-  z-index: 0;
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
 }
 .kids-hero__decor { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .kids-hero__decor .splash {
@@ -294,7 +296,7 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 
 /* === SECTIONS === */
 .kids-section { padding: 84px 0; position: relative; overflow: visible; background: transparent; }
-.kids-section--alt { background: var(--kids-bg); }
+.kids-section--alt { background: transparent; }
 .kids-section--alt::before { content: none; }
 .kids-section .container { position: relative; z-index: 1; }
 

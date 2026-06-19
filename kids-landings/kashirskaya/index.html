@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../css/themes.css">
   <link rel="stylesheet" href="../css/landings.css">
@@ -17,8 +18,8 @@
   <header class="kids-header">
     <div class="kids-header__inner">
       <a href="index.html" class="kids-header__logo">
-        Детский&nbsp;<span>клуб</span><br>
-        <small style="font-size:10px;opacity:.6;font-weight:500;letter-spacing:.5px;text-transform:uppercase">Каширская Плаза</small>
+        <img src="../assets/kapitolka-logo.jpg" alt="" class="kids-header__logo-img">
+        <span class="kids-header__logo-txt">Детский <b>клуб</b><small>Каширская Плаза</small></span>
       </a>
       <nav class="kids-header__nav">
         <a href="#venue">Площадка</a>
@@ -36,16 +37,31 @@
   </header>
 
   <!-- ===== HERO ===== -->
-  <section class="kids-hero" id="home"
-    style="background-image:url('https://picsum.photos/seed/kids-hero-ka/1600/900')">
+  <section class="kids-hero" id="home">
+    <div class="kids-hero__decor" aria-hidden="true">
+      <span class="splash splash--1"></span>
+      <span class="splash splash--2"></span>
+      <span class="splash splash--3"></span>
+      <span class="splash splash--4"></span>
+      <span class="star star--1">★</span>
+      <span class="star star--2">✦</span>
+      <span class="dot dot--1"></span>
+    </div>
     <div class="kids-hero__content">
       <div class="kids-hero__inner">
         <span class="kids-hero__eyebrow">Каширская Плаза · Детский клуб</span>
-        <h1 class="kids-hero__title">Развитие, творчество и веселье для детей</h1>
+        <h1 class="kids-hero__title">Развитие, <span class="hl-2">творчество</span> и <span class="hl-3">веселье</span> для детей</h1>
         <p class="kids-hero__sub">
           Мастер-классы, праздники и развивающие программы для детей от 3 до 14 лет.
           Запись через мобильное приложение.
         </p>
+        <div class="kids-hero__cta">
+          <a href="#events" class="btn-hero-primary">Смотреть афишу</a>
+          <a href="#contacts" class="btn-hero-secondary">Скачать приложение</a>
+        </div>
+      </div>
+      <div class="kids-hero__art">
+        <img src="../assets/kapitolka-logo.jpg" alt="Капитолька — детский клуб">
       </div>
     </div>
   </section>
@@ -418,3 +434,4 @@
   <script src="../js/landings.js"></script>
 </body>
 </html>
+

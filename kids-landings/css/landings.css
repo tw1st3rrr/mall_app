@@ -294,7 +294,7 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 
 /* === SECTIONS === */
 .kids-section { padding: 84px 0; position: relative; overflow: hidden; }
-.kids-section--alt { background: var(--kids-bg-alt); }
+.kids-section--alt { background: var(--kids-bg); }
 .kids-section--alt::before {
   content: '';
   position: absolute;

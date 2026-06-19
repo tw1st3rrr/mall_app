@@ -7,43 +7,23 @@
   <link rel="stylesheet" href="css/style.css">
   <style>
     html { scroll-behavior: smooth; }
-    #venue-booking { scroll-margin-top: 80px; }
 
-    /* TC Dropdown */
-    .tc-dropdown { position: relative; display: inline-flex; }
-    .tc-dropdown__trigger {
-      display: flex; align-items: center; gap: 6px; padding: 6px 14px;
-      border: 1px solid #E5E5E5; border-radius: 50px; background: #fff;
-      font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap;
+    /* TC filter pills */
+    .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tc-pill {
+      padding: 6px 16px; border: 1.5px solid #E5E5E5; border-radius: 50px;
+      background: #fff; font-size: 13px; font-weight: 500; cursor: pointer;
       transition: border-color .18s, background .18s, color .18s;
+      white-space: nowrap;
     }
-    .tc-dropdown__trigger:hover,
-    .tc-dropdown__trigger.open { border-color: #1C1C1C; background: #1C1C1C; color: #fff; }
-    .tc-dropdown__arrow { font-size: 10px; display: inline-block; transition: transform .18s; }
-    .tc-dropdown__trigger.open .tc-dropdown__arrow { transform: rotate(180deg); }
-    .tc-dropdown__menu {
-      display: none; position: absolute; top: calc(100% + 6px); left: 0;
-      background: #fff; border: 1px solid #E5E5E5; border-radius: 10px;
-      padding: 8px; min-width: 210px; z-index: 200;
-      box-shadow: 0 6px 24px rgba(0,0,0,.1);
-    }
-    .tc-dropdown__menu.open { display: block; }
-    .tc-dropdown__actions {
-      display: flex; gap: 10px; padding: 2px 6px 8px;
-      border-bottom: 1px solid #E5E5E5; margin-bottom: 6px;
-    }
-    .tc-dropdown__action {
-      font-size: 12px; color: #787878; background: none;
-      border: none; cursor: pointer; padding: 0;
-    }
-    .tc-dropdown__action:hover { color: #1C1C1C; text-decoration: underline; }
-    .tc-dropdown__item {
-      display: flex; align-items: center; gap: 8px; padding: 7px 8px;
-      border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 500;
-      user-select: none;
-    }
-    .tc-dropdown__item:hover { background: #F5F5F5; }
-    .tc-dropdown__item input[type="checkbox"] { width: 15px; height: 15px; accent-color: #1C1C1C; cursor: pointer; }
+    .tc-pill:hover { border-color: #1C1C1C; }
+    .tc-pill.active { background: #1C1C1C; color: #fff; border-color: #1C1C1C; }
+    .tc-pill__arrow { font-size: 10px; display: inline-block; transition: transform .18s; }
+    .tc-pill--parent.open .tc-pill__arrow { transform: rotate(180deg); }
+    .filters-kap { display: none; margin-top: 8px; gap: 8px; flex-wrap: wrap; }
+    .filters-kap.open { display: flex; }
+    .tc-pill--sub { font-size: 12px; padding: 4px 12px; color: #555; }
+    .tc-pill--sub.active { background: #444; color: #fff; border-color: #444; }
 
     /* Default image overlay */
     .event-card__img-wrap--default::after {
@@ -118,8 +98,7 @@
       <nav class="header__nav">
         <a href="kids-landings/kuntsevo/index.html">Детский клуб</a>
         <a href="index.html" class="active">Мероприятия</a>
-        <a href="#venue-booking">Аренда площадок</a>
-        <a href="how-it-works.html">Как это работает</a>
+        <a href="how-it-works.html">Как попасть на мероприятие</a>
       </nav>
       <div class="header__util">
         <div class="header__util-item">
@@ -159,27 +138,22 @@
       </div>
 
       <div class="filters" id="filters">
-        <div class="tc-dropdown" id="tcDropdown">
-          <button class="tc-dropdown__trigger" id="tcDropdownTrigger" type="button">
-            <span class="tc-dropdown__label">Торговый центр</span>
-            <span class="tc-dropdown__arrow">▾</span>
-          </button>
-          <div class="tc-dropdown__menu" id="tcDropdownMenu">
-            <div class="tc-dropdown__actions">
-              <button class="tc-dropdown__action" id="tcSelectAll" type="button">Выбрать все</button>
-              <button class="tc-dropdown__action" id="tcReset" type="button">Сбросить</button>
-            </div>
-            <label class="tc-dropdown__item"><input type="checkbox" value="kuntsevo"> Кунцево Плаза</label>
-            <label class="tc-dropdown__item"><input type="checkbox" value="kashirskaya"> Каширская Плаза</label>
-            <label class="tc-dropdown__item"><input type="checkbox" value="kapitoliy"> Капитолий</label>
-          </div>
-        </div>
-        <div class="filters__sep"></div>
-        <button class="filter-btn active" data-group="type" data-value="all">Все типы</button>
-        <button class="filter-btn" data-group="type" data-value="kids">Детское</button>
-        <button class="filter-btn" data-group="type" data-value="quiz">Квиз</button>
-        <button class="filter-btn" data-group="type" data-value="master-class">Мастер-класс</button>
-        <button class="filter-btn" data-group="type" data-value="concert">Концерт</button>
+        <button class="tc-pill active" data-tc="" id="tcAll">Все ТЦ</button>
+        <button class="tc-pill" data-tc="kuntsevo">Кунцево Плаза</button>
+        <button class="tc-pill" data-tc="kashirskaya">Каширская Плаза</button>
+        <button class="tc-pill tc-pill--parent" data-tc="kapitoliy" id="tcKapBtn">Капитолий <span class="tc-pill__arrow">▾</span></button>
+      </div>
+      <div class="filters-kap" id="filtersKap">
+        <button class="tc-pill tc-pill--sub" data-kap="kap-all">Все</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-vernadskogo">Вернадского</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-yasenevo">Ясенево</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-kolomenskoe">Коломенское</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-tepli-stan">Тёплый Стан</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-bibirevo">Бибирево</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-otradnoe">Отрадное</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-medvedkovo">Медведково</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-perovo">Перово</button>
+        <button class="tc-pill tc-pill--sub" data-kap="kap-mitino">Митино</button>
       </div>
 
       <div class="events-grid" id="eventsGrid">
@@ -191,11 +165,9 @@
               <span class="event-card__badge">Квиз</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Кунцево Плаза</span>
               <h3 class="event-card__title">Квиз «Угадай мелодию»</h3>
               <div class="event-card__meta">
                 <span>📅 7 июня, 19:00</span>
-                <span>⏱ 120 мин</span>
                 <span>🎟 800 баллов</span>
               </div>
               <div class="event-card__seats">Осталось мест: 22 из 60</div>
@@ -210,11 +182,9 @@
               <span class="event-card__badge">Мастер-класс</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Каширская Плаза</span>
               <h3 class="event-card__title">Мастер-класс по лепке из глины</h3>
               <div class="event-card__meta">
                 <span>📅 8 июня, 12:00</span>
-                <span>⏱ 90 мин</span>
                 <span>🎟 Бесплатно</span>
               </div>
               <div class="event-card__seats">Осталось мест: 15 из 30</div>
@@ -229,11 +199,9 @@
               <span class="event-card__badge">Детское</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Кунцево Плаза</span>
               <h3 class="event-card__title">Ярмарка котят — погладь и возьми домой</h3>
               <div class="event-card__meta">
                 <span>📅 14 июня, 11:00</span>
-                <span>⏱ 3 часа</span>
                 <span>🎟 Бесплатно</span>
               </div>
               <div class="event-card__seats">Осталось мест: 40 из 100</div>
@@ -248,11 +216,9 @@
               <span class="event-card__badge">Турнир</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Капитолий</span>
               <h3 class="event-card__title">Открытый шахматный турнир</h3>
               <div class="event-card__meta">
                 <span>📅 15 июня, 10:00</span>
-                <span>⏱ 4 часа</span>
                 <span>🎟 500 баллов</span>
               </div>
               <div class="event-card__seats event-card__seats--low">Осталось мест: 5 из 32</div>
@@ -267,11 +233,9 @@
               <span class="event-card__badge">Детское</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Каширская Плаза</span>
               <h3 class="event-card__title">Детский праздник «Лето начинается!»</h3>
               <div class="event-card__meta">
                 <span>📅 21 июня, 13:00</span>
-                <span>⏱ 2 часа</span>
                 <span>🎟 Бесплатно</span>
               </div>
               <div class="event-card__seats event-card__seats--low">Осталось мест: 3 из 50</div>
@@ -286,11 +250,9 @@
               <span class="event-card__badge">Концерт</span>
             </div>
             <div class="event-card__body">
-              <span class="event-card__tc">Капитолий</span>
               <h3 class="event-card__title">Семейный концерт «Лето в ритме джаза»</h3>
               <div class="event-card__meta">
                 <span>📅 28 июня, 18:00</span>
-                <span>⏱ 90 мин</span>
                 <span>🎟 1200 баллов</span>
               </div>
               <div class="event-card__seats event-card__seats--sold">Мест нет</div>
@@ -439,145 +401,6 @@
     </div>
   </section>
 
-  <!-- ===== VENUE BOOKING SECTION ===== -->
-  <section class="venue-booking" id="venue-booking">
-    <div class="container">
-
-      <div class="venue-booking__head">
-        <h2 class="venue-booking__title">Аренда ивент-площадок</h2>
-        <p class="venue-booking__sub">Организуйте мероприятие в одном из наших ТЦ — выберите дату и оставьте заявку</p>
-      </div>
-
-      <div class="venue-booking__layout">
-
-        <!-- Calendar -->
-        <div>
-          <div class="avail-cal">
-            <div class="avail-cal__header">
-              <button class="avail-cal__nav" id="availPrev">‹</button>
-              <span class="avail-cal__title" id="availTitle"></span>
-              <button class="avail-cal__nav" id="availNext">›</button>
-            </div>
-            <div class="avail-cal__legend">
-              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--free"></div>Свободен</div>
-              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--partial"></div>Частично занят</div>
-              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--busy"></div>Полностью занят</div>
-              <div class="avail-cal__legend-item"><div class="avail-cal__dot avail-cal__dot--past"></div>Прошедшая дата</div>
-            </div>
-            <div class="avail-grid" id="availGrid"></div>
-          </div>
-        </div>
-
-        <!-- Booking form -->
-        <div class="booking-form-wrap" id="venueFormWrap">
-          <h3 class="booking-form-title">Оставить заявку на бронирование</h3>
-          <form id="venueForm" novalidate>
-            <input type="hidden" id="vf_tc" name="tc" value="kuntsevo">
-
-            <div class="form-field">
-              <label class="form-label" for="venueTcSelect">Торговый центр <em>*</em></label>
-              <select class="form-select" id="venueTcSelect" name="tc_display" required>
-                <option value="">— Выберите торговый центр —</option>
-                <option value="kuntsevo">Кунцево Плаза</option>
-                <option value="kashirskaya">Каширская Плаза</option>
-                <option value="kapitoliy">Капитолий</option>
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="vf_event_name">Название мероприятия <em>*</em></label>
-              <input class="form-input" id="vf_event_name" name="event_name" type="text" placeholder="День рождения, корпоратив, конференция…" required>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="vf_event_desc">Описание мероприятия <em>*</em></label>
-              <textarea class="form-textarea" id="vf_event_desc" name="event_desc" placeholder="Расскажите подробнее о формате, количестве гостей…" required></textarea>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label class="form-label" for="vf_date">Желаемая дата <em>*</em></label>
-                <input class="form-input" id="vf_date" name="date" type="date" required>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="vf_hall">Зал / площадка <em>*</em></label>
-                <select class="form-select" id="vf_hall" name="hall" required></select>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label class="form-label" for="vf_time_from">Начало <em>*</em></label>
-                <input class="form-input" id="vf_time_from" name="time_from" type="time" required>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="vf_time_to">Окончание <em>*</em></label>
-                <input class="form-input" id="vf_time_to" name="time_to" type="time" required>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-field">
-                <label class="form-label" for="vf_name">Контактное лицо <em>*</em></label>
-                <input class="form-input" id="vf_name" name="name" type="text" placeholder="Имя и фамилия" required>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="vf_phone">Телефон <em>*</em></label>
-                <input class="form-input" id="vf_phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required>
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="vf_email">Email <em>*</em></label>
-              <input class="form-input" id="vf_email" name="email" type="email" placeholder="mail@example.com" required>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label">Баннер мероприятия (jpg/png, до 5 МБ)</label>
-              <label class="form-file-label" for="vf_banner">
-                📎 Прикрепить изображение
-              </label>
-              <input class="form-file-input" id="vf_banner" name="banner" type="file" accept="image/jpeg,image/png">
-              <span class="form-file-name" id="vf_banner_name"></span>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label">Презентация (pdf/pptx, до 20 МБ)</label>
-              <label class="form-file-label" for="vf_pres">
-                📎 Прикрепить файл
-              </label>
-              <input class="form-file-input" id="vf_pres" name="presentation" type="file" accept=".pdf,.pptx,application/pdf">
-              <span class="form-file-name" id="vf_pres_name"></span>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="vf_comment">Комментарий</label>
-              <textarea class="form-textarea" id="vf_comment" name="comment" placeholder="Дополнительные пожелания…"></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit" id="vfSubmit">Отправить заявку</button>
-            <div class="form-success" id="vfSuccess">✓ Заявка принята! Мы свяжемся с вами в ближайшее время.</div>
-            <div class="form-error-msg" id="vfError">Не удалось отправить заявку. Попробуйте ещё раз или позвоните нам.</div>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Availability slot popup -->
-  <div class="avail-overlay" id="availOverlay"></div>
-  <div class="avail-popup" id="availPopup">
-    <div class="avail-popup__header">
-      <div class="avail-popup__date" id="availPopupDate"></div>
-      <button class="avail-popup__close" id="availPopupClose">×</button>
-    </div>
-    <div id="availPopupBody"></div>
-    <div class="avail-popup__footer">
-      <button class="btn-popup-cancel" id="availPopupCancel">Закрыть</button>
-      <button class="btn-popup-book" id="availPopupBook">Забронировать этот день</button>
-    </div>
-  </div>
 
   <footer class="footer">
     <div class="footer__inner">
@@ -1111,8 +934,7 @@
       var dateMap = { today: toYMD(t0), tomorrow: toYMD(t1), dayafter: toYMD(t2) };
 
       /* ---- filter state ---- */
-      var activeTcs     = [];   /* empty array = все ТЦ */
-      var activeType    = 'all';
+      var activeTc      = '';   /* '' = все ТЦ */
       var activeDateYMD = null;
 
       var grid      = document.getElementById('eventsGrid');
@@ -1122,39 +944,52 @@
       function applyFilters() {
         var visible = 0;
         cards.forEach(function (card) {
-          var ok = (activeTcs.length === 0 || activeTcs.indexOf(card.dataset.tc) !== -1) &&
-                   (activeType    === 'all' || card.dataset.type === activeType) &&
-                   (!activeDateYMD         || card.dataset.date  === activeDateYMD);
+          var ok = (activeTc === '' || card.dataset.tc === activeTc) &&
+                   (!activeDateYMD || card.dataset.date === activeDateYMD);
           card.classList.toggle('event-card--hidden', !ok);
           if (ok) visible++;
         });
         noResults.classList.toggle('visible', visible === 0);
       }
 
-      /* ---- Type filter buttons ---- */
-      document.getElementById('filters').addEventListener('click', function (e) {
-        var btn = e.target.closest('.filter-btn');
-        if (!btn || btn.dataset.group !== 'type') return;
-        document.querySelectorAll('.filter-btn[data-group="type"]')
-          .forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        activeType = btn.dataset.value;
-        applyFilters();
-      });
-
-      /* ---- URL param ?type= ---- */
+      /* ---- TC pill filter ---- */
       (function () {
-        var params = new URLSearchParams(window.location.search);
-        var typeParam = params.get('type');
-        if (typeParam) {
-          var typeBtn = document.querySelector('.filter-btn[data-group="type"][data-value="' + typeParam + '"]');
-          if (typeBtn) {
-            document.querySelectorAll('.filter-btn[data-group="type"]').forEach(function (b) { b.classList.remove('active'); });
-            typeBtn.classList.add('active');
-            activeType = typeParam;
-            applyFilters();
+        var kapBtn    = document.getElementById('tcKapBtn');
+        var filtersKap = document.getElementById('filtersKap');
+
+        document.getElementById('filters').addEventListener('click', function (e) {
+          var btn = e.target.closest('.tc-pill');
+          if (!btn) return;
+          document.querySelectorAll('#filters .tc-pill').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          activeTc = btn.dataset.tc;
+
+          if (activeTc === 'kapitoliy') {
+            kapBtn.classList.add('open');
+            filtersKap.classList.add('open');
+            /* activate first sub-pill */
+            var firstSub = filtersKap.querySelector('.tc-pill--sub');
+            if (firstSub) {
+              document.querySelectorAll('.tc-pill--sub').forEach(function (b) { b.classList.remove('active'); });
+              firstSub.classList.add('active');
+            }
+          } else {
+            kapBtn.classList.remove('open');
+            filtersKap.classList.remove('open');
+            document.querySelectorAll('.tc-pill--sub').forEach(function (b) { b.classList.remove('active'); });
           }
-        }
+          applyFilters();
+        });
+
+        filtersKap.addEventListener('click', function (e) {
+          var btn = e.target.closest('.tc-pill--sub');
+          if (!btn) return;
+          document.querySelectorAll('.tc-pill--sub').forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          /* all Kapitoliy sub-TCs show same kapitoliy events */
+          activeTc = 'kapitoliy';
+          applyFilters();
+        });
       })();
 
       /* ---- Date tabs (non-picker) ---- */
@@ -1284,42 +1119,6 @@
       calOverlay.addEventListener('click', closeCalendar);
       calPopup.addEventListener('click', function (e) { e.stopPropagation(); });
 
-      /* ---- TC Dropdown ---- */
-      (function () {
-        var trigger = document.getElementById('tcDropdownTrigger');
-        var menu    = document.getElementById('tcDropdownMenu');
-        if (!trigger || !menu) return;
-        var lbl = trigger.querySelector('.tc-dropdown__label');
-        var cbs = Array.from(menu.querySelectorAll('input[type="checkbox"]'));
-
-        function sync() {
-          var on = cbs.filter(function (c) { return c.checked; });
-          lbl.textContent = on.length ? 'Торговый центр (' + on.length + ')' : 'Торговый центр';
-          activeTcs = on.map(function (c) { return c.value; });
-          applyFilters();
-        }
-
-        trigger.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var open = menu.classList.toggle('open');
-          trigger.classList.toggle('open', open);
-        });
-        menu.addEventListener('click', function (e) { e.stopPropagation(); });
-        document.addEventListener('click', function () {
-          menu.classList.remove('open');
-          trigger.classList.remove('open');
-        });
-        cbs.forEach(function (cb) { cb.addEventListener('change', sync); });
-
-        var selAll = document.getElementById('tcSelectAll');
-        var rst    = document.getElementById('tcReset');
-        if (selAll) selAll.addEventListener('click', function () { cbs.forEach(function (c) { c.checked = true; }); sync(); });
-        if (rst)    rst.addEventListener('click',    function () { cbs.forEach(function (c) { c.checked = false; }); sync(); });
-
-        /* pre-select from ?tc= URL param */
-        var tcParam = new URLSearchParams(window.location.search).get('tc');
-        if (tcParam) { cbs.forEach(function (c) { if (c.value === tcParam) c.checked = true; }); sync(); }
-      })();
 
       /* ---- Badge colours (Task 5) ---- */
       var BADGE_COLORS = {

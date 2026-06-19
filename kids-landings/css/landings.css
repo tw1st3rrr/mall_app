@@ -564,16 +564,50 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 
 .contacts-app__title { font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 16px; color: var(--kids-ink); }
 .contacts-app__btns { display: flex; flex-direction: column; gap: 12px; }
-.btn-app-store {
+body[class*="theme-"] .btn-app-store {
   display: flex; align-items: center; gap: 14px;
-  background: var(--kids-deep); color: #fff;
+  background: var(--kids-deep); color: #fff !important;
   padding: 14px 24px; border-radius: 16px;
   font-size: 14px; font-weight: 600; min-width: 200px;
   transition: transform .18s;
 }
-.btn-app-store:hover { transform: translateY(-2px); }
+body[class*="theme-"] .btn-app-store:hover { transform: translateY(-2px); }
 .btn-app-store__icon { font-size: 24px; line-height: 1; flex-shrink: 0; }
-.btn-app-store__top { font-size: 10px; opacity: 0.7; font-weight: 400; margin-bottom: 2px; }
+.btn-app-store__top { font-size: 10px; opacity: 0.8; font-weight: 400; margin-bottom: 2px; color: rgba(255,255,255,0.85); }
+
+/* ===== SOCIAL POPUP ===== */
+.social-popup {
+  position: fixed; bottom: 28px; right: 28px;
+  background: #fff; border-radius: 20px; padding: 22px 20px 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.16);
+  z-index: 9999; width: 210px;
+  transform: translateY(130%) scale(0.9);
+  opacity: 0;
+  transition: transform 0.38s cubic-bezier(.34,1.56,.64,1), opacity 0.3s;
+  pointer-events: none;
+}
+.social-popup.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+.social-popup__close {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 18px; line-height: 1; padding: 4px 6px;
+  background: none; border: none; cursor: pointer; color: #aaa;
+}
+.social-popup__close:hover { color: #333; }
+.social-popup__label {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--kids-ink); margin-bottom: 14px;
+}
+.social-popup__btns { display: flex; flex-direction: column; gap: 10px; }
+.social-popup__btn {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-radius: 12px;
+  font-size: 14px; font-weight: 700; color: #fff !important;
+  transition: opacity .18s, transform .18s;
+}
+.social-popup__btn:hover { opacity: 0.88; transform: translateX(2px); }
+.social-popup__btn--tg { background: #229ED9; }
+.social-popup__btn--vk { background: #0077FF; }
 
 /* === FOOTER === */
 .kids-footer {

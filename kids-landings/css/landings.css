@@ -22,16 +22,16 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 
 /* === HEADER === */
 .kids-header {
-  background: transparent;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: var(--kids-ink);
-  position: absolute;
+  position: sticky;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 100;
-  border-bottom: none;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
-.kids-header--scrolled { background: transparent; }
+.kids-header--scrolled { background: rgba(255,255,255,0.72); }
 .kids-header__inner {
   max-width: 1240px;
   margin: 0 auto;
@@ -51,7 +51,7 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 .kids-header__logo-img {
   width: 46px;
   height: 46px;
-  object-fit: cover;
+  object-fit: contain;
   flex-shrink: 0;
   border-radius: 50%;
 }
@@ -131,7 +131,6 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
   overflow: hidden;
   background: var(--kids-bg);
   color: var(--kids-ink);
-  padding-top: 68px;
 }
 .kids-hero::before {
   content: '';

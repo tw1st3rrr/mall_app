@@ -4,9 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Мероприятия — ЭНКА ТЦ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
   <style>
     html { scroll-behavior: smooth; }
+
+    /* ===== AFISHA — KIDS LANDING STYLE ===== */
+    body.page-wrapper {
+      background: #FDFAF4;
+      font-family: 'Nunito', -apple-system, system-ui, sans-serif;
+    }
+    .header {
+      background: rgba(253,250,244,0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .header__logo { font-family: 'Fredoka', sans-serif; font-size: 18px; letter-spacing: .3px; }
+    .header__nav a { font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 14px; }
+
+    /* Section header */
+    .afisha-hd { margin: 28px 0 20px; }
+    .afisha-hd__eyebrow {
+      display: inline-block;
+      font-family: 'Fredoka', sans-serif; font-size: 13px; font-weight: 600;
+      color: #D97D00; background: rgba(243,146,0,0.1);
+      border: 1.5px solid rgba(243,146,0,0.28);
+      border-radius: 999px; padding: 3px 14px; margin-bottom: 10px;
+    }
+    .afisha-hd__title {
+      font-family: 'Fredoka', sans-serif; font-size: 30px; font-weight: 700;
+      color: #1C1C1C; letter-spacing: -.2px; margin: 0;
+    }
+
+    /* Event cards — kids dashed style */
+    .event-card {
+      border: 2px dashed #DDD !important;
+      border-radius: 20px !important;
+      padding: 10px !important;
+      background: #fff !important;
+    }
+    .event-card:hover {
+      border-color: #E8A020 !important;
+      box-shadow: 0 22px 44px -22px rgba(28,32,72,0.28) !important;
+      transform: translateY(-5px) !important;
+    }
+    .event-card__img-wrap { border-radius: 14px !important; }
+    .event-card__title {
+      font-family: 'Fredoka', sans-serif !important;
+      font-size: 17px !important; font-weight: 600 !important;
+    }
+    .event-card__badge {
+      font-family: 'Fredoka', sans-serif !important;
+      font-weight: 600 !important; font-size: 12px !important;
+      border: 2px solid #fff !important;
+      box-shadow: 0 6px 14px -4px rgba(28,32,72,0.28) !important;
+      padding: 5px 13px !important;
+    }
+    .event-card__meta, .event-card__seats {
+      font-family: 'Nunito', sans-serif !important;
+      font-weight: 700 !important;
+    }
+
+    /* Reviews */
+    .reviews-section { background: transparent; }
+    .reviews-section__title { font-family: 'Fredoka', sans-serif; font-size: 28px; }
+    .review-item { border-radius: 20px; }
+    .review-item__name { font-family: 'Nunito', sans-serif; }
+
+    /* Page blob layer (fixed, sits behind content) */
+    .afisha-blobs { position: fixed; inset: 0; pointer-events: none; z-index: -1; overflow: hidden; }
+    .ab { position: absolute; display: block; opacity: 0.14; }
+    .ab--1 { width: 300px; height: 280px; top: 5%; left: -90px; background: #F39200; border-radius: 58% 42% 47% 53% / 55% 48% 52% 45%; transform: rotate(15deg); }
+    .ab--2 { width: 260px; height: 245px; top: 3%; right: -70px; background: #2D7FF0; border-radius: 46% 54% 60% 40% / 52% 44% 56% 48%; transform: rotate(-8deg); }
+    .ab--3 { width: 270px; height: 255px; top: 40%; left: -85px; background: #2BA24A; border-radius: 52% 48% 44% 56% / 48% 56% 44% 52%; transform: rotate(6deg); }
+    .ab--4 { width: 250px; height: 235px; top: 37%; right: -75px; background: #F39200; border-radius: 50% 50% 56% 44% / 46% 54% 46% 54%; transform: rotate(-12deg); }
+    .ab--5 { width: 280px; height: 265px; top: 72%; left: -90px; background: #2D7FF0; border-radius: 54% 46% 50% 50% / 52% 48% 52% 48%; transform: rotate(18deg); }
+    .ab--6 { width: 255px; height: 240px; top: 69%; right: -80px; background: #2BA24A; border-radius: 48% 52% 54% 46% / 52% 48% 52% 48%; transform: rotate(-10deg); }
 
     /* TC filter pills */
     .filters { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -92,6 +167,15 @@
 </head>
 <body class="page-wrapper">
 
+  <div class="afisha-blobs" aria-hidden="true">
+    <span class="ab ab--1"></span>
+    <span class="ab ab--2"></span>
+    <span class="ab ab--3"></span>
+    <span class="ab ab--4"></span>
+    <span class="ab ab--5"></span>
+    <span class="ab ab--6"></span>
+  </div>
+
   <header class="header">
     <div class="header__inner">
       <a href="index.html" class="header__logo">Enka Project Hall</a>
@@ -137,6 +221,11 @@
         </button>
       </div>
 
+      <div class="afisha-hd">
+        <div class="afisha-hd__eyebrow">Афиша</div>
+        <h2 class="afisha-hd__title">Ближайшие мероприятия</h2>
+      </div>
+
       <div class="filters" id="filters">
         <button class="tc-pill active" data-tc="" id="tcAll">Все ТЦ</button>
         <button class="tc-pill" data-tc="kuntsevo">Кунцево Плаза</button>
@@ -159,7 +248,7 @@
       <div class="events-grid" id="eventsGrid">
 
         <article class="event-card" data-tc="kuntsevo" data-type="quiz" data-date="2026-06-07">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Квиз Угадай мелодию" loading="lazy">
               <span class="event-card__badge">Кунцево Плаза</span>
@@ -176,7 +265,7 @@
         </article>
 
         <article class="event-card" data-tc="kashirskaya" data-type="master-class" data-date="2026-06-08">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс по лепке" loading="lazy">
               <span class="event-card__badge">Каширская Плаза</span>
@@ -193,7 +282,7 @@
         </article>
 
         <article class="event-card" data-tc="kuntsevo" data-type="kids" data-date="2026-06-14">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Ярмарка котят" loading="lazy">
               <span class="event-card__badge">Кунцево Плаза</span>
@@ -210,7 +299,7 @@
         </article>
 
         <article class="event-card" data-tc="kapitoliy" data-type="quiz" data-date="2026-06-15">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Шахматный турнир" loading="lazy">
               <span class="event-card__badge">Капитолий</span>
@@ -227,7 +316,7 @@
         </article>
 
         <article class="event-card" data-tc="kashirskaya" data-type="kids" data-date="2026-06-21">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png" alt="Детский праздник" loading="lazy">
               <span class="event-card__badge">Каширская Плаза</span>
@@ -244,7 +333,7 @@
         </article>
 
         <article class="event-card" data-tc="kapitoliy" data-type="concert" data-date="2026-06-28">
-          <a href="event.html#ticket-booking" class="event-card__link">
+          <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Семейный концерт" loading="lazy">
               <span class="event-card__badge">Капитолий</span>

@@ -293,18 +293,24 @@ body[class*="theme-"] a { text-decoration: none; color: inherit; }
 }
 
 /* === SECTIONS === */
-.kids-section { padding: 84px 0; position: relative; overflow: hidden; }
+.kids-section { padding: 84px 0; position: relative; overflow: visible; background: transparent; }
 .kids-section--alt { background: var(--kids-bg); }
-.kids-section--alt::before {
-  content: '';
-  position: absolute;
-  top: -60px; right: -50px;
-  width: 200px; height: 190px;
-  background: var(--kids-accent-light);
-  border-radius: 58% 42% 47% 53% / 55% 48% 52% 45%;
-  z-index: 0;
-}
+.kids-section--alt::before { content: none; }
 .kids-section .container { position: relative; z-index: 1; }
+
+/* ===== PAGE-WIDE BLOB BACKGROUND ===== */
+body[class*="theme-"] { position: relative; overflow-x: hidden; }
+body[class*="theme-"] main { position: relative; z-index: 1; }
+.page-blobs { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; }
+.pb { position: absolute; display: block; opacity: 0.22; }
+.pb--1 { width: 310px; height: 290px; top: 680px; left: -100px; background: var(--kids-splash-3); border-radius: 52% 48% 44% 56% / 48% 56% 44% 52%; transform: rotate(6deg); }
+.pb--2 { width: 275px; height: 260px; top: 640px; right: -85px; background: var(--kids-splash-4); border-radius: 50% 50% 56% 44% / 46% 54% 46% 54%; transform: rotate(-12deg); }
+.pb--3 { width: 295px; height: 275px; top: 1450px; left: -95px; background: var(--kids-splash-2); border-radius: 46% 54% 60% 40% / 52% 44% 56% 48%; transform: rotate(-8deg); }
+.pb--4 { width: 315px; height: 295px; top: 1400px; right: -95px; background: var(--kids-splash-1); border-radius: 58% 42% 47% 53% / 55% 48% 52% 45%; transform: rotate(10deg); }
+.pb--5 { width: 265px; height: 250px; top: 2250px; left: -85px; background: var(--kids-splash-4); border-radius: 54% 46% 50% 50% / 52% 48% 52% 48%; transform: rotate(18deg); }
+.pb--6 { width: 295px; height: 275px; top: 2200px; right: -100px; background: var(--kids-splash-3); border-radius: 48% 52% 54% 46% / 52% 48% 52% 48%; transform: rotate(-10deg); }
+.pb--7 { width: 275px; height: 258px; top: 3050px; left: -88px; background: var(--kids-splash-1); border-radius: 55% 45% 48% 52% / 48% 56% 44% 52%; transform: rotate(8deg); }
+.pb--8 { width: 255px; height: 238px; top: 3000px; right: -78px; background: var(--kids-splash-2); border-radius: 50% 50% 44% 56% / 54% 46% 54% 46%; transform: rotate(-15deg); }
 
 .section-header { margin-bottom: 48px; }
 .section-eyebrow {

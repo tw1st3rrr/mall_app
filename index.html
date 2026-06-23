@@ -163,6 +163,88 @@
     }
     .review-item__name { font-size: 13px; font-weight: 600; }
     .review-item__date { font-size: 12px; color: #787878; }
+
+    /* ===== LIGHTBOX ===== */
+    .lb-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.88);
+      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .22s;
+    }
+    .lb-overlay.open { opacity: 1; pointer-events: auto; }
+    .lb-modal {
+      position: fixed; inset: 0; z-index: 1001;
+      display: none; align-items: center; justify-content: center;
+      padding: 60px 70px; box-sizing: border-box;
+    }
+    .lb-modal.open { display: flex; }
+    .lb-img-wrap {
+      position: relative; max-width: 100%; max-height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-img {
+      max-width: 100%; max-height: calc(100vh - 120px);
+      object-fit: contain; border-radius: 12px;
+      display: block; user-select: none; -webkit-user-drag: none;
+    }
+    .lb-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.75));
+      border-radius: 0 0 12px 12px; padding: 36px 20px 18px; color: #fff;
+    }
+    .lb-caption__date {
+      font-family: 'Nunito', sans-serif; font-size: 12px;
+      opacity: .78; margin-bottom: 4px; font-weight: 700;
+    }
+    .lb-caption__title {
+      font-family: 'Fredoka', sans-serif; font-size: 22px; font-weight: 600; line-height: 1.2;
+    }
+    .lb-close {
+      position: fixed; top: 16px; right: 20px; z-index: 1003;
+      width: 42px; height: 42px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.14); color: #fff; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background .15s;
+    }
+    .lb-close:hover { background: rgba(255,255,255,.3); }
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 1003;
+      width: 50px; height: 50px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.14); color: #fff; font-size: 26px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s; user-select: none;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,.3); }
+    .lb-nav:disabled { opacity: .25; pointer-events: none; }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+    .lb-counter {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1003;
+      color: rgba(255,255,255,.65); font-family: 'Nunito', sans-serif;
+      font-size: 13px; font-weight: 700; white-space: nowrap;
+    }
+    /* Gallery hints in cards */
+    .event-card__img-wrap { position: relative; overflow: hidden; cursor: zoom-in; }
+    .event-card__gallery-dots {
+      position: absolute; bottom: 10px; left: 0; right: 0;
+      display: flex; gap: 5px; justify-content: center; pointer-events: none;
+    }
+    .gallery-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.5); flex-shrink: 0; transition: background .15s;
+    }
+    .gallery-dot.active { background: #fff; }
+    .event-card__photo-badge {
+      position: absolute; top: 10px; left: 10px; z-index: 1;
+      background: rgba(0,0,0,.52); color: #fff;
+      font-family: 'Fredoka', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 3px 10px; border-radius: 999px;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    @media (max-width: 600px) {
+      .lb-modal { padding: 52px 54px; }
+      .lb-prev { left: 8px; }
+      .lb-next { right: 8px; }
+      .lb-nav { width: 40px; height: 40px; font-size: 20px; }
+      .lb-caption__title { font-size: 17px; }
+    }
   </style>
 </head>
 <body class="page-wrapper">
@@ -247,7 +329,7 @@
 
       <div class="events-grid" id="eventsGrid">
 
-        <article class="event-card" data-tc="kuntsevo" data-type="quiz" data-date="2026-06-07">
+        <article class="event-card" data-id="quiz-melody" data-tc="kuntsevo" data-type="quiz" data-date="2026-06-07">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Квиз Угадай мелодию" loading="lazy">
@@ -264,7 +346,7 @@
           </a>
         </article>
 
-        <article class="event-card" data-tc="kashirskaya" data-type="master-class" data-date="2026-06-08">
+        <article class="event-card" data-id="master-clay" data-tc="kashirskaya" data-type="master-class" data-date="2026-06-08">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс по лепке" loading="lazy">
@@ -281,7 +363,7 @@
           </a>
         </article>
 
-        <article class="event-card" data-tc="kuntsevo" data-type="kids" data-date="2026-06-14">
+        <article class="event-card" data-id="kitten-fair" data-tc="kuntsevo" data-type="kids" data-date="2026-06-14">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Ярмарка котят" loading="lazy">
@@ -298,7 +380,7 @@
           </a>
         </article>
 
-        <article class="event-card" data-tc="kapitoliy" data-type="quiz" data-date="2026-06-15">
+        <article class="event-card" data-id="chess-tournament" data-tc="kapitoliy" data-type="quiz" data-date="2026-06-15">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Шахматный турнир" loading="lazy">
@@ -315,7 +397,7 @@
           </a>
         </article>
 
-        <article class="event-card" data-tc="kashirskaya" data-type="kids" data-date="2026-06-21">
+        <article class="event-card" data-id="kids-summer" data-tc="kashirskaya" data-type="kids" data-date="2026-06-21">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png" alt="Детский праздник" loading="lazy">
@@ -332,7 +414,7 @@
           </a>
         </article>
 
-        <article class="event-card" data-tc="kapitoliy" data-type="concert" data-date="2026-06-28">
+        <article class="event-card" data-id="jazz-concert" data-tc="kapitoliy" data-type="concert" data-date="2026-06-28">
           <a href="event.html" class="event-card__link">
             <div class="event-card__img-wrap">
               <img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Семейный концерт" loading="lazy">
@@ -551,6 +633,19 @@
       <a href="#">Пользовательское соглашение</a>
     </div>
   </footer>
+
+  <!-- Lightbox -->
+  <div class="lb-overlay" id="lbOverlay" aria-hidden="true"></div>
+  <div class="lb-modal" id="lbModal" role="dialog" aria-modal="true" aria-label="Просмотр фотографий">
+    <button class="lb-close" id="lbClose" aria-label="Закрыть">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Предыдущее">‹</button>
+    <div class="lb-img-wrap" id="lbImgWrap">
+      <img class="lb-img" id="lbImg" src="" alt="">
+      <div class="lb-caption" id="lbCaption"></div>
+    </div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Следующее">›</button>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
 
   <!-- Calendar overlay + popup (outside document flow) -->
   <div class="cal-overlay" id="calOverlay"></div>
@@ -1262,6 +1357,202 @@
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     })();
+  </script>
+
+  <script>
+  /* ===== PHOTO GALLERY + LIGHTBOX ===== */
+  (function () {
+    'use strict';
+
+    /* ---- Данные фотографий ---- */
+    var MALL_PHOTOS = {
+      kuntsevo: [
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png',
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png',
+        'img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png'
+      ],
+      kashirskaya: [
+        'img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png',
+        'img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png',
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png'
+      ],
+      kapitoliy: [
+        'img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png',
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png',
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png'
+      ]
+    };
+
+    var EVENT_PHOTOS = {
+      'quiz-melody': [
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png',
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png'
+      ],
+      'master-clay': [
+        'img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png',
+        'img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png',
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png'
+      ],
+      'kitten-fair': [
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png',
+        'img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png'
+      ],
+      'chess-tournament': [
+        'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png',
+        'img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png',
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png'
+      ],
+      'kids-summer': [
+        'img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png',
+        'img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png'
+      ],
+      'jazz-concert': [
+        'img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png'
+      ]
+    };
+
+    /* ---- Определение состояния (прошло / не прошло) ---- */
+    function isEventPast(dateStr) {
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      return new Date(dateStr + 'T00:00:00') < today;
+    }
+
+    function formatRuDate(dateStr) {
+      var months = ['января','февраля','марта','апреля','мая','июня',
+                    'июля','августа','сентября','октября','ноября','декабря'];
+      var d = new Date(dateStr + 'T00:00:00');
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    /* ---- Лайтбокс ---- */
+    var lbPhotos = [], lbIndex = 0, lbTitle = '', lbDate = '';
+    var lbOverlay = document.getElementById('lbOverlay');
+    var lbModal   = document.getElementById('lbModal');
+    var lbImgWrap = document.getElementById('lbImgWrap');
+    var lbImg     = document.getElementById('lbImg');
+    var lbCaption = document.getElementById('lbCaption');
+    var lbClose   = document.getElementById('lbClose');
+    var lbPrev    = document.getElementById('lbPrev');
+    var lbNext    = document.getElementById('lbNext');
+    var lbCounter = document.getElementById('lbCounter');
+
+    function showSlide(idx) {
+      lbIndex = (idx + lbPhotos.length) % lbPhotos.length;
+      lbImg.src = lbPhotos[lbIndex];
+      lbImg.alt = lbTitle;
+      lbCaption.innerHTML =
+        '<div class="lb-caption__date">' + lbDate + '</div>' +
+        '<div class="lb-caption__title">' + lbTitle + '</div>';
+      lbPrev.disabled = lbNext.disabled = lbPhotos.length < 2;
+      lbCounter.textContent = lbPhotos.length > 1 ? (lbIndex + 1) + ' / ' + lbPhotos.length : '';
+    }
+
+    function openLightbox(photos, idx, title, date) {
+      lbPhotos = photos; lbTitle = title; lbDate = date;
+      showSlide(idx);
+      lbOverlay.classList.add('open');
+      lbModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lbOverlay.classList.remove('open');
+      lbModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbOverlay.addEventListener('click', closeLightbox);
+    lbModal.addEventListener('click', function (e) {
+      if (e.target === lbModal) closeLightbox();
+    });
+    lbImgWrap.addEventListener('click', function (e) { e.stopPropagation(); });
+    lbPrev.addEventListener('click', function () { showSlide(lbIndex - 1); });
+    lbNext.addEventListener('click', function () { showSlide(lbIndex + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lbModal.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  showSlide(lbIndex - 1);
+      if (e.key === 'ArrowRight') showSlide(lbIndex + 1);
+    });
+
+    /* Touch swipe */
+    var swipeStartX = null;
+    lbModal.addEventListener('touchstart', function (e) {
+      swipeStartX = e.touches[0].clientX;
+    }, { passive: true });
+    lbModal.addEventListener('touchend', function (e) {
+      if (swipeStartX === null) return;
+      var dx = e.changedTouches[0].clientX - swipeStartX;
+      if (Math.abs(dx) > 50) dx < 0 ? showSlide(lbIndex + 1) : showSlide(lbIndex - 1);
+      swipeStartX = null;
+    });
+
+    /* ---- Инициализация галерей в карточках ---- */
+    document.querySelectorAll('.event-card').forEach(function (card) {
+      var id      = card.dataset.id;
+      var tc      = card.dataset.tc;
+      var dateStr = card.dataset.date;
+      var title   = (card.querySelector('.event-card__title') || {}).textContent || '';
+      var imgWrap = card.querySelector('.event-card__img-wrap');
+      var imgEl   = imgWrap && imgWrap.querySelector('img');
+      if (!imgWrap || !imgEl) return;
+
+      var past   = isEventPast(dateStr);
+      /* Состояние А — прошло → фотоотчёт события; Состояние Б — не прошло → фото ТЦ */
+      var photos = past ? (EVENT_PHOTOS[id] || []) : (MALL_PHOTOS[tc] || []);
+      if (!photos.length) photos = [imgEl.getAttribute('src')];
+
+      imgEl.src = photos[0];
+
+      /* Бейдж «Фотоотчёт» для прошедших мероприятий */
+      if (past) {
+        var pb = document.createElement('div');
+        pb.className = 'event-card__photo-badge';
+        pb.textContent = 'Фотоотчёт';
+        imgWrap.appendChild(pb);
+      }
+
+      /* Точки-индикаторы + ховер-цикл при нескольких фото */
+      if (photos.length > 1) {
+        var dotsWrap = document.createElement('div');
+        dotsWrap.className = 'event-card__gallery-dots';
+        var dots = photos.map(function (_, i) {
+          var dot = document.createElement('span');
+          dot.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+          dotsWrap.appendChild(dot);
+          return dot;
+        });
+        imgWrap.appendChild(dotsWrap);
+
+        /* Ховер: меняем фото в зависимости от позиции курсора по X */
+        var hIdx = 0;
+        imgWrap.addEventListener('mousemove', function (e) {
+          var rect = imgWrap.getBoundingClientRect();
+          var ni   = Math.min(Math.floor((e.clientX - rect.left) / rect.width * photos.length), photos.length - 1);
+          if (ni !== hIdx) {
+            hIdx = ni;
+            imgEl.src = photos[hIdx];
+            dots.forEach(function (d, i) { d.classList.toggle('active', i === hIdx); });
+          }
+        });
+        imgWrap.addEventListener('mouseleave', function () {
+          hIdx = 0; imgEl.src = photos[0];
+          dots.forEach(function (d, i) { d.classList.toggle('active', i === 0); });
+        });
+      }
+
+      /* Клик → лайтбокс (отменяем переход по ссылке карточки) */
+      imgWrap.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var cur = photos.indexOf(imgEl.getAttribute('src'));
+        openLightbox(photos, cur >= 0 ? cur : 0, title, formatRuDate(dateStr));
+      });
+    });
+
+  })();
   </script>
 
 </body>

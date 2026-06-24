@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Семейный концерт «Лето в ритме джаза» — ЭНКА ТЦ</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    html { scroll-behavior: smooth; }
+
+    /* === Participation Steps === */
+    .participation-steps {
+      background: #fff; border: 2px dashed var(--dash); border-radius: 20px; padding: 28px 28px 24px; margin: 32px 0;
+    }
+    .participation-steps__head { margin-bottom: 24px; }
+    .participation-steps__eyebrow {
+      font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--orange-d); margin-bottom: 6px;
+    }
+    .participation-steps__title { font-family: 'Fredoka', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+    .participation-steps__sub { font-size: 13px; color: #787878; line-height: 1.5; }
+
+    .pstep { display: flex; gap: 16px; padding: 18px 0; border-top: 1px solid #E5E5E5; }
+    .pstep__num {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--brand); color: #fff;
+      font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .pstep__body { flex: 1; }
+    .pstep__title { font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 5px; }
+    .pstep__desc { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 14px; }
+    .pstep__bonus {
+      display: inline-flex; align-items: center; gap: 6px; background: #FFF3D0;
+      border: 1px solid var(--orange-d); border-radius: 10px; padding: 6px 12px;
+      font-size: 12px; font-weight: 600; color: #B8750A; margin-bottom: 14px;
+    }
+    .pstep__btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-store-sm {
+      display: inline-flex; align-items: center; gap: 8px; background: var(--brand-dark); color: #fff;
+      padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-store-sm:hover { background: var(--brand); }
+    .btn-store-sm .s-icon { font-size: 16px; }
+    .btn-app-event {
+      display: inline-flex; align-items: center; gap: 6px; background: var(--brand); color: #fff;
+      padding: 11px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none;
+      transition: background .15s;
+    }
+    .btn-app-event:hover { background: var(--brand-dark); }
+
+    /* Gallery hover */
+    .event-gallery__item { cursor: zoom-in; overflow: hidden; }
+    .event-gallery__item img { transition: transform .22s ease; display: block; width: 100%; height: 100%; object-fit: cover; }
+    .event-gallery__item:hover img { transform: scale(1.05); }
+
+    /* Lightbox */
+    .lb-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.88);
+      z-index: 1000; opacity: 0; pointer-events: none; transition: opacity .22s;
+    }
+    .lb-overlay.open { opacity: 1; pointer-events: auto; }
+    .lb-modal {
+      position: fixed; inset: 0; z-index: 1001;
+      display: none; align-items: center; justify-content: center;
+      padding: 60px 70px; box-sizing: border-box;
+    }
+    .lb-modal.open { display: flex; }
+    .lb-img-wrap {
+      position: relative; max-width: 100%; max-height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-img {
+      max-width: 100%; max-height: calc(100vh - 120px);
+      object-fit: contain; border-radius: 12px;
+      display: block; user-select: none; -webkit-user-drag: none;
+    }
+    .lb-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,.76));
+      border-radius: 0 0 12px 12px; padding: 36px 20px 18px; color: #fff;
+    }
+    .lb-caption__date { font-size: 12px; opacity: .8; margin-bottom: 4px; font-weight: 700; }
+    .lb-caption__title { font-family: 'Fredoka', sans-serif; font-size: 22px; font-weight: 600; line-height: 1.2; }
+    .lb-close {
+      position: fixed; top: 16px; right: 20px; z-index: 1003;
+      width: 42px; height: 42px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.14); color: #fff; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: background .15s;
+    }
+    .lb-close:hover { background: rgba(255,255,255,.3); }
+    .lb-nav {
+      position: fixed; top: 50%; transform: translateY(-50%); z-index: 1003;
+      width: 50px; height: 50px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.14); color: #fff; font-size: 26px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s; user-select: none;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,.3); }
+    .lb-nav:disabled { opacity: .25; pointer-events: none; }
+    .lb-prev { left: 16px; }
+    .lb-next { right: 16px; }
+    .lb-counter {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 1003;
+      color: rgba(255,255,255,.65); font-size: 13px; font-weight: 700; white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      .lb-modal { padding: 52px 54px; }
+      .lb-prev { left: 8px; }
+      .lb-next { right: 8px; }
+      .lb-nav { width: 40px; height: 40px; font-size: 20px; }
+      .lb-caption__title { font-size: 17px; }
+    }
+  </style>
+</head>
+<body class="page-wrapper">
+
+  <header class="header">
+    <div class="header__inner">
+      <a href="index.html" class="header__logo">Enka Project Hall</a>
+      <nav class="header__nav">
+        <a href="kids-landings/kuntsevo/index.html">Детский клуб</a>
+        <a href="index.html" class="active">Мероприятия</a>
+        <a href="how-it-works.html">Как попасть на мероприятие</a>
+      </nav>
+      <div class="header__util">
+        <div class="header__util-item">
+          <a href="#">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Карта ТЦ
+          </a>
+        </div>
+        <div class="header__util-item">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M12 6v6l4 2"/></svg>
+          10:00–22:00
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="#">Главная</a>
+        <span class="breadcrumbs__sep">/</span>
+        <a href="index.html">Мероприятия</a>
+        <span class="breadcrumbs__sep">/</span>
+        <span>Семейный концерт «Лето в ритме джаза»</span>
+      </nav>
+
+      <div class="event-detail">
+
+        <!-- LEFT -->
+        <div class="event-detail__main">
+          <h1 class="event-detail__title">Семейный концерт «Лето в ритме джаза»</h1>
+
+          <div class="event-meta-row">
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 28 июня 2026 г., 18:00</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><circle cx="12" cy="13" r="7.5"/><path d="M12 13V9M9.5 2.8h5"/></svg> 90 минут</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M12 21s7-6.5 7-11a7 7 0 10-14 0c0 4.5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg> Капитолий, Большой зал</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> 1200 баллов / чел</span>
+          </div>
+
+          <p class="event-detail__desc">
+            Живой джаз для всей семьи — от стандартов Луи Армстронга до современных импровизаций.
+            Профессиональный квинтет исполняет любимые мелодии в непринуждённой атмосфере.
+            Мероприятие подходит для детей от 5 лет — специальная детская программа включает
+            интерактивные паузы и знакомство с инструментами. Приходите в летней одежде,
+            дресс-код — casual summer.
+          </p>
+
+          <div class="event-program">
+            <h2 class="event-detail__section-title">Программа</h2>
+            <div class="event-program__row">
+              <span class="event-program__time">18:00</span>
+              <span>Сбор гостей, приветственный напиток</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">18:20</span>
+              <span>Первое отделение — классический джаз</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">18:55</span>
+              <span>Пауза, знакомство детей с инструментами</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">19:15</span>
+              <span>Второе отделение — импровизации и современный джаз</span>
+            </div>
+            <div class="event-program__row">
+              <span class="event-program__time">19:30</span>
+              <span>Финал, совместное фото с музыкантами</span>
+            </div>
+          </div>
+
+          <div class="event-gallery" data-event-date="2026-06-28">
+            <h2 class="event-detail__section-title" id="galleryTitle">Фотогалерея</h2>
+            <div class="event-gallery__grid">
+              <div class="event-gallery__item"><img src="img/hf_20260605_104737_00a8f8b5-2408-48d4-9c27-2b1f9f0a3313.png" alt="Концерт в зале" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Детский праздник в зале ТЦ" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс для детей" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_104809_157f395a-c945-48d2-80f0-a34dfb17ba7d.png" alt="Праздничный зал" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Мероприятие в ТЦ" loading="lazy"></div>
+              <div class="event-gallery__item"><img src="images/shared/gallery-06.png" alt="Зал мероприятий" loading="lazy"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT: Participation Steps -->
+        <aside>
+          <div class="participation-steps">
+            <div class="participation-steps__head">
+              <div class="participation-steps__eyebrow">Условие участия</div>
+              <div class="participation-steps__title">Как попасть на мероприятие</div>
+              <div class="participation-steps__sub">Билеты покупаются баллами программы лояльности. За регистрацию в приложении вы сразу получаете бонус — его хватит на билет.</div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">1</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Скачайте приложение и зарегистрируйтесь</div>
+                <p class="pstep__desc">Это бесплатно. Сразу после регистрации начисляется приветственный бонус.</p>
+                <div class="pstep__bonus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3.5" y="9" width="17" height="5" rx="1"/><path d="M5 14v6.5h14V14M12 9v11.5M12 9S10.5 4.5 8 5.5 9 9 12 9zM12 9s1.5-4.5 4-3.5S15 9 12 9z"/></svg> Бонус за регистрацию — хватит на билет</div>
+                <div class="pstep__btns">
+                  <a href="https://apps.apple.com/ru/app/%D0%BA%D1%83%D0%BD%D1%86%D0%B5%D0%B2%D0%BE-%D0%BF%D0%BB%D0%B0%D0%B7%D0%B0/id1515450940"
+                     target="_blank" rel="noopener" class="btn-store-sm">
+                    <span class="s-icon"></span> App Store
+                  </a>
+                  <a href="https://play.google.com/store/apps/details?id=com.mymall.kunzevo&hl=ru"
+                     target="_blank" rel="noopener" class="btn-store-sm">
+                    Google Play
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">2</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Совершите покупку и отсканируйте чек</div>
+                <p class="pstep__desc">На кассах размещены QR-коды программы лояльности — баллы начисляются автоматически.</p>
+              </div>
+            </div>
+
+            <div class="pstep">
+              <div class="pstep__num">3</div>
+              <div class="pstep__body">
+                <div class="pstep__title">Потратьте баллы на мероприятие</div>
+                <p class="pstep__desc">Перейдите к этому событию и оплатите баллами лояльности — без карты и наличных.</p>
+                <a href="app-redirect.html" class="btn-app-event">Перейти к событию в приложении →</a>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+
+      <!-- Similar Events -->
+      <section class="similar-events">
+        <h2 class="similar-events__title">Похожие события</h2>
+        <div class="events-grid">
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png" alt="Квиз Угадай мелодию" loading="lazy">
+                <span class="event-card__badge">Кунцево Плаза</span>
+              </div>
+              <div class="event-card__body">
+                <h3 class="event-card__title">Квиз «Угадай мелодию»</h3>
+                <div class="event-card__meta">
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 7 июня, 19:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> 800 баллов</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_104644_2b12e580-48d6-42b9-b586-60da3f488c39.png" alt="Ярмарка котят" loading="lazy">
+                <span class="event-card__badge">Кунцево Плаза</span>
+              </div>
+              <div class="event-card__body">
+                <h3 class="event-card__title">Ярмарка котят — погладь и возьми домой</h3>
+                <div class="event-card__meta">
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 14 июня, 11:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> Бесплатно</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="event-card">
+            <a href="event.html" class="event-card__link">
+              <div class="event-card__img-wrap">
+                <img src="img/hf_20260605_104713_5b276bfe-0da5-4ce1-a019-d7908626c489.png" alt="Мастер-класс по лепке" loading="lazy">
+                <span class="event-card__badge">Каширская Плаза</span>
+              </div>
+              <div class="event-card__body">
+                <h3 class="event-card__title">Мастер-класс по лепке из глины</h3>
+                <div class="event-card__meta">
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg> 8 июня, 12:00</span>
+                  <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex-shrink:0"><path d="M4 7.5h16a1 1 0 011 1v1.8a1.9 1.9 0 000 3.4v1.8a1 1 0 01-1 1H4a1 1 0 01-1-1v-1.8a1.9 1.9 0 000-3.4V8.5a1 1 0 011-1z"/><path d="M14.5 8v8" stroke-dasharray="1.5 2"/></svg> Бесплатно</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__logo">ЭНКА ТЦ</div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Москва, ул. Ярцевская, 19
+        </div>
+        <div class="footer__contact-row">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          +7 (495) 726-60-30
+        </div>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Разделы</div>
+        <a href="#">Магазины</a>
+        <a href="#">Кафе и Рестораны</a>
+        <a href="#">Услуги и Сервисы</a>
+        <a href="#">Развлечения</a>
+        <a href="index.html">Мероприятия</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Компания</div>
+        <a href="#">Новости и Акции</a>
+        <a href="#">О нас</a>
+        <a href="#">Программа лояльности</a>
+        <a href="#">Вакансии</a>
+        <a href="#">Арендаторам</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Торговые центры</div>
+        <a href="https://www.kuntsevoplaza.ru" target="_blank" rel="noopener">Enka Project Hall</a>
+        <a href="https://www.kashirskaya-plaza.ru" target="_blank" rel="noopener">Каширская Плаза</a>
+        <a href="https://www.kapitoliy.ru" target="_blank" rel="noopener">Капитолий</a>
+      </div>
+      <div class="footer__col">
+        <div class="footer__col-title">Соцсети</div>
+        <div class="footer__social">
+          <a href="#" aria-label="ВКонтакте">ВК</a>
+          <a href="#" aria-label="YouTube">YT</a>
+          <a href="#" aria-label="Telegram">TG</a>
+        </div>
+        <button class="footer__write-btn">Написать нам</button>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>2024 ЭНКА ТЦ. Все права защищены.</span>
+      <a href="#">Пользовательское соглашение</a>
+    </div>
+  </footer>
+
+  <!-- Lightbox -->
+  <div class="lb-overlay" id="lbOverlay" aria-hidden="true"></div>
+  <div class="lb-modal" id="lbModal" role="dialog" aria-modal="true" aria-label="Просмотр фотографий">
+    <button class="lb-close" id="lbClose" aria-label="Закрыть">✕</button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Предыдущее">‹</button>
+    <div class="lb-img-wrap" id="lbImgWrap">
+      <img class="lb-img" id="lbImg" src="" alt="">
+      <div class="lb-caption" id="lbCaption"></div>
+    </div>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Следующее">›</button>
+    <div class="lb-counter" id="lbCounter"></div>
+  </div>
+
+  <script>
+    /* === Smooth scroll === */
+    (function () {
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href]');
+        if (!a) return;
+        var href = a.getAttribute('href');
+        if (!href || href.charAt(0) !== '#' || href.length < 2) return;
+        var target = document.querySelector(href);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    })();
+  </script>
+
+  <script>
+  /* ===== GALLERY LIGHTBOX + SECTION TITLE ===== */
+  (function () {
+    'use strict';
+
+    var galleryEl  = document.querySelector('.event-gallery[data-event-date]');
+    if (!galleryEl) return;
+
+    var dateStr    = galleryEl.dataset.eventDate;
+    var titleEl    = document.querySelector('.event-detail__title');
+    var eventTitle = titleEl ? titleEl.textContent.trim() : '';
+
+    /* ---- Лейбл секции ---- */
+    function isEventPast(ds) {
+      var today = new Date(); today.setHours(0, 0, 0, 0);
+      return new Date(ds + 'T00:00:00') < today;
+    }
+
+    var past = isEventPast(dateStr);
+    var titleH2 = document.getElementById('galleryTitle');
+    if (titleH2) {
+      titleH2.textContent = past
+        ? 'Фотоотчёт события'
+        : 'Фото с наших прошлых мероприятий';
+    }
+
+    /* ---- Форматирование даты ---- */
+    function formatRuDate(ds) {
+      var months = ['января','февраля','марта','апреля','мая','июня',
+                    'июля','августа','сентября','октября','ноября','декабря'];
+      var d = new Date(ds + 'T00:00:00');
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear() + ' г.';
+    }
+    var captionDate = formatRuDate(dateStr);
+
+    /* ---- Лайтбокс ---- */
+    var lbPhotos = [], lbIndex = 0;
+    var lbOverlay = document.getElementById('lbOverlay');
+    var lbModal   = document.getElementById('lbModal');
+    var lbImgWrap = document.getElementById('lbImgWrap');
+    var lbImg     = document.getElementById('lbImg');
+    var lbCaption = document.getElementById('lbCaption');
+    var lbClose   = document.getElementById('lbClose');
+    var lbPrev    = document.getElementById('lbPrev');
+    var lbNext    = document.getElementById('lbNext');
+    var lbCounter = document.getElementById('lbCounter');
+
+    function showSlide(idx) {
+      lbIndex = (idx + lbPhotos.length) % lbPhotos.length;
+      lbImg.src = lbPhotos[lbIndex];
+      lbImg.alt = eventTitle;
+      lbCaption.innerHTML =
+        '<div class="lb-caption__date">' + captionDate + '</div>' +
+        '<div class="lb-caption__title">' + eventTitle + '</div>';
+      lbPrev.disabled = lbNext.disabled = lbPhotos.length < 2;
+      lbCounter.textContent = lbPhotos.length > 1 ? (lbIndex + 1) + ' / ' + lbPhotos.length : '';
+    }
+
+    function openLightbox(idx) {
+      showSlide(idx);
+      lbOverlay.classList.add('open');
+      lbModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lbOverlay.classList.remove('open');
+      lbModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbOverlay.addEventListener('click', closeLightbox);
+    lbModal.addEventListener('click', function (e) { if (e.target === lbModal) closeLightbox(); });
+    lbImgWrap.addEventListener('click', function (e) { e.stopPropagation(); });
+    lbPrev.addEventListener('click', function () { showSlide(lbIndex - 1); });
+    lbNext.addEventListener('click', function () { showSlide(lbIndex + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lbModal.classList.contains('open')) return;
+      if (e.key === 'Escape')     closeLightbox();
+      if (e.key === 'ArrowLeft')  showSlide(lbIndex - 1);
+      if (e.key === 'ArrowRight') showSlide(lbIndex + 1);
+    });
+
+    var swipeStartX = null;
+    lbModal.addEventListener('touchstart', function (e) { swipeStartX = e.touches[0].clientX; }, { passive: true });
+    lbModal.addEventListener('touchend', function (e) {
+      if (swipeStartX === null) return;
+      var dx = e.changedTouches[0].clientX - swipeStartX;
+      if (Math.abs(dx) > 50) dx < 0 ? showSlide(lbIndex + 1) : showSlide(lbIndex - 1);
+      swipeStartX = null;
+    });
+
+    /* ---- Привязка кликов к фото ---- */
+    var imgs = document.querySelectorAll('.event-gallery__item img');
+    lbPhotos = Array.prototype.map.call(imgs, function (img) { return img.src; });
+
+    imgs.forEach(function (img, i) {
+      img.parentElement.addEventListener('click', function () { openLightbox(i); });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

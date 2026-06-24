@@ -221,7 +221,7 @@
       font-size: 13px; font-weight: 700; white-space: nowrap;
     }
     /* Gallery hints in cards */
-    .event-card__img-wrap { position: relative; overflow: hidden; cursor: zoom-in; }
+    .event-card__img-wrap { position: relative; overflow: hidden; }
     .event-card__gallery-dots {
       position: absolute; bottom: 10px; left: 0; right: 0;
       display: flex; gap: 5px; justify-content: center; pointer-events: none;
@@ -633,19 +633,6 @@
       <a href="#">Пользовательское соглашение</a>
     </div>
   </footer>
-
-  <!-- Lightbox -->
-  <div class="lb-overlay" id="lbOverlay" aria-hidden="true"></div>
-  <div class="lb-modal" id="lbModal" role="dialog" aria-modal="true" aria-label="Просмотр фотографий">
-    <button class="lb-close" id="lbClose" aria-label="Закрыть">✕</button>
-    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Предыдущее">‹</button>
-    <div class="lb-img-wrap" id="lbImgWrap">
-      <img class="lb-img" id="lbImg" src="" alt="">
-      <div class="lb-caption" id="lbCaption"></div>
-    </div>
-    <button class="lb-nav lb-next" id="lbNext" aria-label="Следующее">›</button>
-    <div class="lb-counter" id="lbCounter"></div>
-  </div>
 
   <!-- Calendar overlay + popup (outside document flow) -->
   <div class="cal-overlay" id="calOverlay"></div>
@@ -1360,11 +1347,10 @@
   </script>
 
   <script>
-  /* ===== PHOTO GALLERY + LIGHTBOX ===== */
+  /* ===== PHOTO GALLERY (hover preview + фотоотчёт badge) ===== */
   (function () {
     'use strict';
 
-    /* ---- Данные фотографий ---- */
     var MALL_PHOTOS = {
       kuntsevo: [
         'img/hf_20260605_105018_34777873-0bb5-4d74-969a-7efc2752403d.png',
@@ -1411,96 +1397,20 @@
       ]
     };
 
-    /* ---- Определение состояния (прошло / не прошло) ---- */
     function isEventPast(dateStr) {
       var today = new Date(); today.setHours(0, 0, 0, 0);
       return new Date(dateStr + 'T00:00:00') < today;
     }
 
-    function formatRuDate(dateStr) {
-      var months = ['января','февраля','марта','апреля','мая','июня',
-                    'июля','августа','сентября','октября','ноября','декабря'];
-      var d = new Date(dateStr + 'T00:00:00');
-      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-    }
-
-    /* ---- Лайтбокс ---- */
-    var lbPhotos = [], lbIndex = 0, lbTitle = '', lbDate = '';
-    var lbOverlay = document.getElementById('lbOverlay');
-    var lbModal   = document.getElementById('lbModal');
-    var lbImgWrap = document.getElementById('lbImgWrap');
-    var lbImg     = document.getElementById('lbImg');
-    var lbCaption = document.getElementById('lbCaption');
-    var lbClose   = document.getElementById('lbClose');
-    var lbPrev    = document.getElementById('lbPrev');
-    var lbNext    = document.getElementById('lbNext');
-    var lbCounter = document.getElementById('lbCounter');
-
-    function showSlide(idx) {
-      lbIndex = (idx + lbPhotos.length) % lbPhotos.length;
-      lbImg.src = lbPhotos[lbIndex];
-      lbImg.alt = lbTitle;
-      lbCaption.innerHTML =
-        '<div class="lb-caption__date">' + lbDate + '</div>' +
-        '<div class="lb-caption__title">' + lbTitle + '</div>';
-      lbPrev.disabled = lbNext.disabled = lbPhotos.length < 2;
-      lbCounter.textContent = lbPhotos.length > 1 ? (lbIndex + 1) + ' / ' + lbPhotos.length : '';
-    }
-
-    function openLightbox(photos, idx, title, date) {
-      lbPhotos = photos; lbTitle = title; lbDate = date;
-      showSlide(idx);
-      lbOverlay.classList.add('open');
-      lbModal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeLightbox() {
-      lbOverlay.classList.remove('open');
-      lbModal.classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    lbClose.addEventListener('click', closeLightbox);
-    lbOverlay.addEventListener('click', closeLightbox);
-    lbModal.addEventListener('click', function (e) {
-      if (e.target === lbModal) closeLightbox();
-    });
-    lbImgWrap.addEventListener('click', function (e) { e.stopPropagation(); });
-    lbPrev.addEventListener('click', function () { showSlide(lbIndex - 1); });
-    lbNext.addEventListener('click', function () { showSlide(lbIndex + 1); });
-
-    document.addEventListener('keydown', function (e) {
-      if (!lbModal.classList.contains('open')) return;
-      if (e.key === 'Escape')     closeLightbox();
-      if (e.key === 'ArrowLeft')  showSlide(lbIndex - 1);
-      if (e.key === 'ArrowRight') showSlide(lbIndex + 1);
-    });
-
-    /* Touch swipe */
-    var swipeStartX = null;
-    lbModal.addEventListener('touchstart', function (e) {
-      swipeStartX = e.touches[0].clientX;
-    }, { passive: true });
-    lbModal.addEventListener('touchend', function (e) {
-      if (swipeStartX === null) return;
-      var dx = e.changedTouches[0].clientX - swipeStartX;
-      if (Math.abs(dx) > 50) dx < 0 ? showSlide(lbIndex + 1) : showSlide(lbIndex - 1);
-      swipeStartX = null;
-    });
-
-    /* ---- Инициализация галерей в карточках ---- */
     document.querySelectorAll('.event-card').forEach(function (card) {
       var id      = card.dataset.id;
       var tc      = card.dataset.tc;
       var dateStr = card.dataset.date;
-      var title   = (card.querySelector('.event-card__title') || {}).textContent || '';
       var imgWrap = card.querySelector('.event-card__img-wrap');
       var imgEl   = imgWrap && imgWrap.querySelector('img');
       if (!imgWrap || !imgEl) return;
 
       var past   = isEventPast(dateStr);
-      /* Состояние А — прошло → фотоотчёт события; Состояние Б — не прошло → фото ТЦ */
       var photos = past ? (EVENT_PHOTOS[id] || []) : (MALL_PHOTOS[tc] || []);
       if (!photos.length) photos = [imgEl.getAttribute('src')];
 
@@ -1526,7 +1436,6 @@
         });
         imgWrap.appendChild(dotsWrap);
 
-        /* Ховер: меняем фото в зависимости от позиции курсора по X */
         var hIdx = 0;
         imgWrap.addEventListener('mousemove', function (e) {
           var rect = imgWrap.getBoundingClientRect();
@@ -1542,14 +1451,7 @@
           dots.forEach(function (d, i) { d.classList.toggle('active', i === 0); });
         });
       }
-
-      /* Клик → лайтбокс (отменяем переход по ссылке карточки) */
-      imgWrap.addEventListener('click', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        var cur = photos.indexOf(imgEl.getAttribute('src'));
-        openLightbox(photos, cur >= 0 ? cur : 0, title, formatRuDate(dateStr));
-      });
+      /* Клик — переход по ссылке карточки работает штатно */
     });
 
   })();

@@ -34,20 +34,35 @@
       border: 1px solid var(--orange-d); border-radius: 10px; padding: 6px 12px;
       font-size: 12px; font-weight: 600; color: #B8750A; margin-bottom: 14px;
     }
-    .pstep__btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pstep__btns { display: flex; gap: 8px; }
     .btn-store-sm {
-      display: inline-flex; align-items: center; gap: 8px; background: var(--brand-dark); color: #fff;
-      padding: 9px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; text-decoration: none;
-      transition: background .15s;
+      flex: 1;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      background: var(--brand-dark); color: #fff;
+      padding: 11px 12px; border-radius: 10px;
+      font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer;
+      box-shadow: 0 2px 10px -3px rgba(29,78,216,.35);
+      transition: background .18s, box-shadow .18s, transform .18s;
     }
-    .btn-store-sm:hover { background: var(--brand); }
+    .btn-store-sm:hover {
+      background: var(--brand);
+      box-shadow: 0 4px 16px -4px rgba(29,78,216,.5);
+      transform: translateY(-1px);
+    }
     .btn-store-sm .s-icon { font-size: 16px; }
     .btn-app-event {
-      display: inline-flex; align-items: center; gap: 6px; background: var(--brand); color: #fff;
-      padding: 11px 20px; border-radius: 12px; font-size: 14px; font-weight: 700; text-decoration: none;
-      transition: background .15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; background: var(--brand); color: #fff;
+      padding: 13px 20px; border-radius: 12px;
+      font-size: 14px; font-weight: 700; text-decoration: none; cursor: pointer;
+      box-shadow: 0 4px 16px -4px rgba(29,78,216,.45);
+      transition: background .18s, box-shadow .18s, transform .18s;
     }
-    .btn-app-event:hover { background: var(--brand-dark); }
+    .btn-app-event:hover {
+      background: var(--brand-dark);
+      box-shadow: 0 6px 20px -4px rgba(29,78,216,.55);
+      transform: translateY(-1px);
+    }
 
     /* Gallery hover */
     .event-gallery__item { cursor: zoom-in; overflow: hidden; }

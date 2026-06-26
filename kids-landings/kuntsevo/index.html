@@ -452,6 +452,54 @@
   </div>
 
   <script src="../js/landings.js"></script>
+  <script>
+  /* Popup — срабатывает при 60% скролла, конфиг из localStorage (admin.html) */
+  (function(){
+    var cfg; try{cfg=JSON.parse(localStorage.getItem('afisha_popup_config')||'null');}catch(e){}
+    if(!cfg||!cfg.enabled)return;
+    if(sessionStorage.getItem('pp_shown'))return;
+    var fired=false;
+    function buildCard(){
+      if(cfg.content==='telegram'){
+        return '<div style="background:linear-gradient(135deg,#0088cc,#29b6f6);padding:28px;text-align:center;"><div style="font-size:52px;line-height:1">✈️</div></div>'+
+          '<div style="padding:22px 24px;text-align:center;">'+
+          '<div style="font-family:Fredoka,sans-serif;font-size:20px;font-weight:600;color:#1C1C1C;margin-bottom:8px;">Будьте в курсе всех событий!</div>'+
+          '<div style="font-size:13px;color:#787878;line-height:1.6;margin-bottom:18px;">Подпишитесь на наш Telegram-канал и получайте анонсы мероприятий первыми</div>'+
+          '<a href="'+(cfg.tgUrl||'https://t.me/enkatc')+'" target="_blank" style="display:block;padding:14px;background:linear-gradient(135deg,#0088cc,#29b6f6);color:#fff;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;font-family:Fredoka,sans-serif;">Подписаться в Telegram ✈️</a>'+
+          '</div>';
+      }
+      return '<div style="padding:24px 24px 0;text-align:center;"><div style="font-size:52px;line-height:1">🎨</div></div>'+
+        '<div style="padding:14px 24px 24px;text-align:center;">'+
+        '<div style="font-family:Fredoka,sans-serif;font-size:20px;font-weight:600;color:#1C1C1C;margin-bottom:8px;">Приходите в детский клуб!</div>'+
+        '<div style="font-size:13px;color:#787878;line-height:1.6;margin-bottom:18px;">Мастер-классы, квизы и праздники для детей каждые выходные</div>'+
+        '<a href="'+(cfg.kidsUrl||'#')+'" style="display:block;padding:14px;background:#2E47A6;color:#fff;border-radius:12px;font-size:14px;font-weight:700;text-decoration:none;font-family:Fredoka,sans-serif;">Узнать расписание 🎯</a>'+
+        '</div>';
+    }
+    function show(){
+      if(fired)return; fired=true;
+      sessionStorage.setItem('pp_shown','1');
+      var sizes={small:'340px',medium:'440px',large:'560px'};
+      var maxW=sizes[cfg.size]||'440px';
+      var ovStyle='position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(20,24,58,0.65);';
+      if(cfg.blur)ovStyle+='backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);';
+      var s=document.createElement('style');
+      s.textContent='@keyframes ppUp{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}';
+      document.head.appendChild(s);
+      var ov=document.createElement('div');
+      ov.id='sitePopup';
+      ov.setAttribute('style',ovStyle);
+      ov.innerHTML='<div style="position:relative;background:#fff;border-radius:20px;width:100%;max-width:'+maxW+';box-shadow:0 24px 80px rgba(0,0,0,.4);overflow:hidden;animation:ppUp .3s cubic-bezier(.22,.9,.36,1) both;">'+
+        '<button onclick="document.getElementById(\'sitePopup\').remove()" style="position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.1);border:none;font-size:16px;cursor:pointer;color:#555;z-index:1;display:flex;align-items:center;justify-content:center;">×</button>'+
+        buildCard()+'</div>';
+      document.body.appendChild(ov);
+      ov.addEventListener('click',function(e){if(e.target===ov)ov.remove();});
+    }
+    window.addEventListener('scroll',function(){
+      var pct=window.scrollY/Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+      if(pct>=0.6)show();
+    },{passive:true});
+  })();
+  </script>
 </body>
 </html>
 

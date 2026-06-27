@@ -229,111 +229,59 @@
     .btn-csv:hover { border-color: #2E47A6; }
 
     /* ===== POPUP TAB ===== */
-    .popup-layout { display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start; }
-    .popup-config-card { background: #fff; border-radius: 16px; border: 1px solid #E5E5E5; padding: 28px; }
-    .popup-config-card h3 { font-family: 'Fredoka', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 20px; }
-    .popup-preview-col { position: sticky; top: 84px; }
-    .popup-preview-box {
-      background: #E8EAF2; border-radius: 16px; overflow: hidden;
-      border: 1px solid #D0D4E8;
-      min-height: 420px; display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .popup-preview-label {
-      position: absolute; top: 12px; left: 12px;
-      background: #2E47A6; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
-    }
-    .popup-preview-inner { padding: 20px; width: 100%; }
-
-    /* Toggle switch */
-    .toggle-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #F0F0F0; }
-    .toggle-row__label { font-size: 14px; font-weight: 600; }
-    .toggle-row__note { font-size: 12px; color: #787878; margin-top: 2px; }
-    .toggle {
-      position: relative; width: 44px; height: 24px; flex-shrink: 0;
-    }
-    .toggle input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-      position: absolute; inset: 0; background: #D0D4E8; border-radius: 24px;
-      cursor: pointer; transition: background .18s;
-    }
-    .toggle-slider::before {
-      content: ''; position: absolute; left: 3px; top: 3px;
-      width: 18px; height: 18px; background: #fff; border-radius: 50%;
-      transition: transform .18s; box-shadow: 0 1px 4px rgba(0,0,0,.2);
-    }
-    .toggle input:checked + .toggle-slider { background: #2E47A6; }
-    .toggle input:checked + .toggle-slider::before { transform: translateX(20px); }
-
-    /* Pill selector */
-    .pill-selector { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pill-opt {
-      padding: 6px 16px; border: 1.5px solid #E5E5E5; border-radius: 50px;
-      font-size: 13px; cursor: pointer; transition: .15s; background: #fff;
-      user-select: none;
-    }
-    .pill-opt:hover { border-color: #2E47A6; color: #2E47A6; }
-    .pill-opt.selected { background: #2E47A6; color: #fff; border-color: #2E47A6; }
-
-    /* Content type cards */
-    .content-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .content-card {
-      border: 2px solid #E5E5E5; border-radius: 12px; padding: 14px 12px;
-      cursor: pointer; transition: .15s; background: #fff; text-align: center;
-    }
-    .content-card:hover { border-color: #2E47A6; }
-    .content-card.selected { border-color: #2E47A6; background: #EEF2FF; }
-    .content-card__icon { font-size: 26px; margin-bottom: 6px; }
-    .content-card__title { font-size: 12px; font-weight: 700; margin-bottom: 3px; }
-    .content-card__desc { font-size: 11px; color: #787878; line-height: 1.4; }
-
-    /* Trigger info box */
-    .trigger-info { background: #F0F4FF; border: 1px solid #C7D4F8; border-radius: 10px; padding: 12px 14px; font-size: 12px; color: #2E47A6; line-height: 1.5; }
-    .trigger-info strong { font-weight: 700; }
-
-    /* Preview popup styles (inside preview box) */
-    .ppv-overlay { background: rgba(20,24,58,0.72); border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: center; min-height: 380px; position: relative; }
-    .ppv-overlay.blur-on { backdrop-filter: blur(6px); }
-    .ppv-card {
-      background: #fff; border-radius: 18px;
-      box-shadow: 0 24px 60px rgba(0,0,0,.35);
-      overflow: hidden; width: 100%; position: relative;
-    }
-    .ppv-card-sm { max-width: 200px; }
-    .ppv-card-md { max-width: 260px; }
-    .ppv-card-lg { max-width: 320px; }
-    .ppv-close {
-      position: absolute; top: 10px; right: 10px; width: 26px; height: 26px;
-      background: rgba(0,0,0,.08); border-radius: 50%; display: flex;
-      align-items: center; justify-content: center; font-size: 14px; color: #555;
-      cursor: pointer; border: none;
-    }
-    .ppv-tg-top { background: linear-gradient(135deg, #0088cc 0%, #29b6f6 100%); padding: 20px; text-align: center; }
-    .ppv-tg-icon { font-size: 36px; }
-    .ppv-tg-body { padding: 16px; text-align: center; }
-    .ppv-tg-title { font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; color: #1C1C1C; margin-bottom: 6px; line-height: 1.2; }
-    .ppv-tg-desc { font-size: 11px; color: #787878; line-height: 1.4; margin-bottom: 14px; }
-    .ppv-tg-btn {
-      display: block; padding: 10px; background: linear-gradient(135deg,#0088cc,#29b6f6);
-      color: #fff; border-radius: 10px; font-size: 12px; font-weight: 700;
-      text-align: center; text-decoration: none; border: none; width: 100%; cursor: pointer;
-    }
-    .ppv-kids-top { padding: 16px 16px 0; text-align: center; }
-    .ppv-kids-mascot { width: 60px; height: 60px; object-fit: contain; }
-    .ppv-kids-body { padding: 10px 16px 16px; text-align: center; }
-    .ppv-kids-title { font-family: 'Fredoka', sans-serif; font-size: 15px; font-weight: 600; color: #1C1C1C; margin-bottom: 6px; line-height: 1.2; }
-    .ppv-kids-desc { font-size: 11px; color: #787878; line-height: 1.4; margin-bottom: 14px; }
-    .ppv-kids-btn {
-      display: block; padding: 10px; background: #2E47A6; color: #fff;
-      border-radius: 10px; font-size: 12px; font-weight: 700;
-      text-align: center; width: 100%; cursor: pointer; border: none;
-    }
-
-    .popup-save-row { margin-top: 24px; padding-top: 20px; border-top: 1px solid #F0F0F0; display: flex; gap: 10px; align-items: center; }
-    .popup-saved-msg { font-size: 12px; color: #00864a; display: none; }
-
-    @media (max-width: 1100px) { .popup-layout { grid-template-columns: 1fr; } .popup-preview-col { position: static; } }
+    .pp-topbar { background:#fff; border:1px solid #E5E5E5; border-radius:12px; padding:14px 20px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; }
+    .pp-topbar__title { font-family:'Fredoka',sans-serif; font-size:16px; font-weight:600; }
+    .pp-topbar__info { font-size:12px; color:#787878; margin-top:2px; }
+    .pp-table-wrap { background:#fff; border-radius:12px; border:1px solid #E5E5E5; overflow:hidden; margin-bottom:16px; }
+    .pp-table-head { display:grid; grid-template-columns:54px 1fr 130px 130px 64px; background:#FAFAFA; border-bottom:1px solid #E5E5E5; }
+    .pp-table-head div { padding:10px 14px; font-size:11px; font-weight:600; color:#787878; text-transform:uppercase; letter-spacing:.4px; }
+    .pp-row { border-bottom:1px solid #F0F0F0; }
+    .pp-row:last-child { border-bottom:none; }
+    .pp-row-main { display:grid; grid-template-columns:54px 1fr 130px 130px 64px; align-items:center; cursor:pointer; transition:background .12s; }
+    .pp-row-main:hover { background:#FAFAF7; }
+    .pp-row-icon { padding:14px; font-size:22px; text-align:center; }
+    .pp-row-info { padding:12px 14px; }
+    .pp-row-title { font-size:13px; font-weight:700; color:#20243A; }
+    .pp-row-desc { font-size:11px; color:#787878; margin-top:2px; }
+    .pp-row-select { padding:10px 14px; }
+    .pp-row-select select { width:100%; padding:7px 8px; border:1px solid #E5E5E5; border-radius:8px; font-size:12px; background:#fff; cursor:pointer; outline:none; font-family:inherit; }
+    .pp-row-select select:focus { border-color:#2E47A6; }
+    .pp-row-toggle { padding:12px 14px; display:flex; justify-content:center; align-items:center; }
+    .pp-row-detail { background:#F5F6FF; border-top:1px solid #E8EAF5; padding:14px 18px 14px 68px; display:none; }
+    .pp-row-detail.open { display:block; }
+    .pp-row-detail label { font-size:11px; font-weight:700; color:#787878; text-transform:uppercase; letter-spacing:.3px; display:block; margin-bottom:5px; }
+    .pp-row-detail input { width:100%; max-width:460px; padding:8px 12px; border:1px solid #E5E5E5; border-radius:8px; font-size:13px; outline:none; font-family:inherit; }
+    .pp-row-detail input:focus { border-color:#2E47A6; }
+    /* toggle */
+    .toggle { position:relative; width:44px; height:24px; flex-shrink:0; }
+    .toggle input { opacity:0; width:0; height:0; }
+    .toggle-slider { position:absolute; inset:0; background:#D0D4E8; border-radius:24px; cursor:pointer; transition:background .18s; }
+    .toggle-slider::before { content:''; position:absolute; left:3px; top:3px; width:18px; height:18px; background:#fff; border-radius:50%; transition:transform .18s; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+    .toggle input:checked + .toggle-slider { background:#2E47A6; }
+    .toggle input:checked + .toggle-slider::before { transform:translateX(20px); }
+    /* info / saved */
+    .pp-trigger-info { background:#F0F4FF; border:1px solid #C7D4F8; border-radius:10px; padding:12px 14px; font-size:12px; color:#2E47A6; line-height:1.5; }
+    .pp-trigger-info strong { font-weight:700; }
+    .pp-saved-msg { font-size:12px; color:#00864a; display:none; }
+    /* preview */
+    .pp-preview-box { background:#E8EAF2; border-radius:14px; border:1px solid #D0D4E8; overflow:hidden; min-height:300px; display:flex; align-items:center; justify-content:center; padding:14px; position:relative; }
+    .pp-preview-label { position:absolute; top:10px; left:10px; background:#2E47A6; color:#fff; font-size:10px; font-weight:700; letter-spacing:.5px; padding:3px 10px; border-radius:20px; text-transform:uppercase; }
+    .ppv-overlay { background:rgba(20,24,58,.72); border-radius:10px; padding:14px; display:flex; align-items:center; justify-content:center; width:100%; }
+    .ppv-overlay.blur-on { backdrop-filter:blur(6px); }
+    .ppv-card { background:#fff; border-radius:16px; box-shadow:0 16px 40px rgba(0,0,0,.3); overflow:hidden; width:100%; position:relative; }
+    .ppv-card-sm { max-width:190px; } .ppv-card-md { max-width:240px; } .ppv-card-lg { max-width:290px; }
+    .ppv-close { position:absolute; top:8px; right:8px; width:24px; height:24px; background:rgba(0,0,0,.08); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; color:#555; cursor:pointer; border:none; }
+    .ppv-tg-top { background:linear-gradient(135deg,#0088cc,#29b6f6); padding:18px; text-align:center; }
+    .ppv-tg-icon { font-size:30px; }
+    .ppv-tg-body { padding:12px; text-align:center; }
+    .ppv-tg-title { font-family:'Fredoka',sans-serif; font-size:13px; font-weight:600; color:#1C1C1C; margin-bottom:5px; }
+    .ppv-tg-desc { font-size:10px; color:#787878; line-height:1.4; margin-bottom:11px; }
+    .ppv-tg-btn { display:block; padding:8px; background:linear-gradient(135deg,#0088cc,#29b6f6); color:#fff; border-radius:9px; font-size:11px; font-weight:700; width:100%; border:none; }
+    .ppv-kids-top { padding:14px 14px 0; text-align:center; }
+    .ppv-kids-body { padding:8px 14px 14px; text-align:center; }
+    .ppv-kids-title { font-family:'Fredoka',sans-serif; font-size:13px; font-weight:600; color:#1C1C1C; margin-bottom:5px; }
+    .ppv-kids-desc { font-size:10px; color:#787878; line-height:1.4; margin-bottom:11px; }
+    .ppv-kids-btn { display:block; padding:8px; background:#2E47A6; color:#fff; border-radius:9px; font-size:11px; font-weight:700; width:100%; border:none; }
     @media (max-width: 768px) {
       .sidebar { width: 100%; height: auto; position: static; }
       .admin-main { margin-left: 0; }
@@ -482,88 +430,49 @@
 
         <!-- ===== POPUP TAB ===== -->
         <div class="tab-panel" id="tabPopup">
-          <div class="popup-layout">
 
-            <!-- Settings -->
+          <!-- Sub-navbar -->
+          <div class="pp-topbar">
             <div>
-              <div class="popup-config-card">
-                <h3>Настройки попапа</h3>
+              <div class="pp-topbar__title">Настройка попапов</div>
+              <div class="pp-topbar__info">Показываются на детских лендингах при прокрутке 60% · активен только один попап</div>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <span class="pp-saved-msg" id="popupSavedMsg">✓ Сохранено</span>
+              <button class="btn-primary" id="savePopupBtn">Сохранить</button>
+            </div>
+          </div>
 
-                <div class="toggle-row">
-                  <div>
-                    <div class="toggle-row__label">Попап включён</div>
-                    <div class="toggle-row__note">Показывается на всех детских лендингах</div>
-                  </div>
-                  <label class="toggle">
-                    <input type="checkbox" id="pp_enabled">
-                    <span class="toggle-slider"></span>
-                  </label>
-                </div>
+          <div style="display:grid;grid-template-columns:1fr 280px;gap:20px;align-items:start;">
 
-                <div class="form-field">
-                  <label class="form-label">Содержимое попапа</label>
-                  <div class="content-cards">
-                    <div class="content-card selected" data-content="telegram" onclick="selectContent('telegram')">
-                      <div class="content-card__icon">✈️</div>
-                      <div class="content-card__title">Telegram</div>
-                      <div class="content-card__desc">Подписаться на канал ТЦ</div>
-                    </div>
-                    <div class="content-card" data-content="kidsclub" onclick="selectContent('kidsclub')">
-                      <div class="content-card__icon">🎨</div>
-                      <div class="content-card__title">Детский клуб</div>
-                      <div class="content-card__desc">Приходите к нам в клуб!</div>
-                    </div>
-                  </div>
+            <!-- List -->
+            <div>
+              <div class="pp-table-wrap">
+                <div class="pp-table-head">
+                  <div></div>
+                  <div>Тип попапа</div>
+                  <div>Размер окна</div>
+                  <div>Задний фон</div>
+                  <div>Вкл</div>
                 </div>
-
-                <div class="form-field">
-                  <label class="form-label">Размер окна</label>
-                  <div class="pill-selector" id="sizeSelector">
-                    <div class="pill-opt" data-size="small" onclick="selectSize('small')">Маленький</div>
-                    <div class="pill-opt selected" data-size="medium" onclick="selectSize('medium')">Средний</div>
-                    <div class="pill-opt" data-size="large" onclick="selectSize('large')">Большой</div>
-                  </div>
-                </div>
-
-                <div class="form-field">
-                  <label class="form-label">Задний фон</label>
-                  <div class="pill-selector" id="blurSelector">
-                    <div class="pill-opt selected" data-blur="1" onclick="selectBlur(true)">Блюр</div>
-                    <div class="pill-opt" data-blur="0" onclick="selectBlur(false)">Без блюра</div>
-                  </div>
-                </div>
-
-                <div class="form-field" id="tgUrlField">
-                  <label class="form-label">Ссылка на Telegram-канал</label>
-                  <input class="form-input" id="pp_tg_url" type="url" placeholder="https://t.me/enkatc">
-                </div>
-
-                <div class="form-field" id="kidsUrlField" style="display:none;">
-                  <label class="form-label">Ссылка на расписание детского клуба</label>
-                  <input class="form-input" id="pp_kids_url" type="url" placeholder="kids-landings/kuntsevo/index.html">
-                </div>
-
-                <div class="trigger-info">
-                  <strong>Триггер:</strong> попап появляется когда пользователь прокрутил <strong>60%</strong> страницы детского лендинга. Показывается один раз за сессию.
-                </div>
-
-                <div class="popup-save-row">
-                  <button class="btn-primary" id="savePopupBtn">Сохранить настройки</button>
-                  <span class="popup-saved-msg" id="popupSavedMsg">✓ Сохранено</span>
-                </div>
+                <div id="ppListBody"></div>
+              </div>
+              <div class="pp-trigger-info">
+                <strong>Триггер:</strong> попап появляется когда пользователь прокрутил <strong>60%</strong> страницы детского лендинга. Показывается один раз за сессию. Нажмите на строку чтобы раскрыть настройку ссылки.
               </div>
             </div>
 
             <!-- Preview -->
-            <div class="popup-preview-col">
-              <div style="font-size:11px;font-weight:700;color:#787878;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Предпросмотр</div>
-              <div class="popup-preview-box">
-                <div class="popup-preview-label">LIVE PREVIEW</div>
-                <div class="popup-preview-inner" id="popupPreviewInner"></div>
+            <div style="position:sticky;top:84px;">
+              <div style="font-size:11px;font-weight:700;color:#787878;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Предпросмотр</div>
+              <div class="pp-preview-box">
+                <div class="pp-preview-label">LIVE PREVIEW</div>
+                <div id="ppPreviewInner" style="width:100%;"></div>
               </div>
             </div>
 
           </div>
+
         </div><!-- /tabPopup -->
 
       </div><!-- /admin-content -->
@@ -1131,93 +1040,137 @@ document.getElementById('exportCsvBtn').addEventListener('click', function() {
 /* =================================================
    POPUP TAB
    =============================================== */
-var _ppContent = 'telegram';
-var _ppSize    = 'medium';
-var _ppBlur    = true;
+var POPUP_DEFS = [
+  { id:'telegram', icon:'✈️', title:'Telegram-подписка',  desc:'Приглашение подписаться на Telegram-канал',     urlLabel:'Ссылка на Telegram-канал',        urlPlaceholder:'https://t.me/enkatc' },
+  { id:'kidsclub', icon:'🎨', title:'Детский клуб',        desc:'Приглашение посетить детский клуб на лендинге', urlLabel:'Ссылка на страницу клуба',         urlPlaceholder:'../../kids-landings/kuntsevo/index.html' }
+];
 
-function selectContent(val) {
-  _ppContent = val;
-  document.querySelectorAll('.content-card').forEach(function(c) {
-    c.classList.toggle('selected', c.dataset.content === val);
-  });
-  document.getElementById('tgUrlField').style.display   = val === 'telegram'  ? '' : 'none';
-  document.getElementById('kidsUrlField').style.display = val === 'kidsclub'  ? '' : 'none';
-  updatePreview();
+function getPopupConfigs() {
+  var defs = POPUP_DEFS.map(function(d) { return { id:d.id, enabled:false, size:'medium', blur:true, url:'' }; });
+  try {
+    var raw = localStorage.getItem('afisha_popup_v2');
+    if (!raw) return defs;
+    var saved = JSON.parse(raw);
+    return defs.map(function(def) {
+      var found = saved.find(function(s) { return s.id === def.id; });
+      return found ? Object.assign({}, def, found) : def;
+    });
+  } catch(e) { return defs; }
+}
+function savePopupConfigs(arr) { localStorage.setItem('afisha_popup_v2', JSON.stringify(arr)); }
+
+function syncLegacyConfig(arr) {
+  var active = arr.find(function(c) { return c.enabled; });
+  if (!active) { localStorage.removeItem('afisha_popup_config'); return; }
+  var cfg = { enabled:true, content:active.id, size:active.size, blur:active.blur };
+  if (active.id === 'telegram') cfg.tgUrl = active.url;
+  else cfg.kidsUrl = active.url;
+  localStorage.setItem('afisha_popup_config', JSON.stringify(cfg));
 }
 
-function selectSize(val) {
-  _ppSize = val;
-  document.querySelectorAll('#sizeSelector .pill-opt').forEach(function(p) {
-    p.classList.toggle('selected', p.dataset.size === val);
-  });
-  updatePreview();
+var _ppConfigs = [];
+var _previewId = 'telegram';
+
+function renderPopupTab() {
+  _ppConfigs = getPopupConfigs();
+  renderPpList();
+  refreshPreview();
 }
 
-function selectBlur(val) {
-  _ppBlur = val;
-  document.querySelectorAll('#blurSelector .pill-opt').forEach(function(p) {
-    p.classList.toggle('selected', p.dataset.blur === (val ? '1' : '0'));
-  });
-  updatePreview();
-}
-
-function updatePreview() {
-  var sizeCls = { small: 'ppv-card-sm', medium: 'ppv-card-md', large: 'ppv-card-lg' }[_ppSize] || 'ppv-card-md';
-  var inner   = '';
-
-  if (_ppContent === 'telegram') {
-    inner = '<div class="ppv-tg-top"><div class="ppv-tg-icon">✈️</div></div>' +
-      '<div class="ppv-tg-body">' +
-        '<div class="ppv-tg-title">Будьте в курсе всех событий!</div>' +
-        '<div class="ppv-tg-desc">Подпишитесь на наш Telegram-канал и получайте анонсы первыми</div>' +
-        '<button class="ppv-tg-btn">Подписаться в Telegram</button>' +
+function renderPpList() {
+  var html = '';
+  POPUP_DEFS.forEach(function(def) {
+    var cfg = _ppConfigs.find(function(c) { return c.id === def.id; }) || { size:'medium', blur:true, enabled:false, url:'' };
+    var sizeOpts = [['small','Маленький'],['medium','Средний'],['large','Большой']].map(function(s) {
+      return '<option value="'+s[0]+'"'+(cfg.size===s[0]?' selected':'')+'>'+s[1]+'</option>';
+    }).join('');
+    var blurOpts = '<option value="1"'+(cfg.blur?' selected':'')+'>Блюр</option><option value="0"'+(!cfg.blur?' selected':'')+'>Без блюра</option>';
+    html +=
+      '<div class="pp-row" id="ppRow_'+def.id+'">' +
+        '<div class="pp-row-main" onclick="ppToggleDetail(\''+def.id+'\')">' +
+          '<div class="pp-row-icon">'+def.icon+'</div>' +
+          '<div class="pp-row-info"><div class="pp-row-title">'+def.title+'</div><div class="pp-row-desc">'+def.desc+'</div></div>' +
+          '<div class="pp-row-select" onclick="event.stopPropagation()"><select onchange="ppSetSize(\''+def.id+'\',this.value)">'+sizeOpts+'</select></div>' +
+          '<div class="pp-row-select" onclick="event.stopPropagation()"><select onchange="ppSetBlur(\''+def.id+'\',this.value)">'+blurOpts+'</select></div>' +
+          '<div class="pp-row-toggle" onclick="event.stopPropagation()">' +
+            '<label class="toggle"><input type="checkbox" id="ppToggle_'+def.id+'"'+(cfg.enabled?' checked':'')+' onchange="ppSetEnabled(\''+def.id+'\',this.checked)"><span class="toggle-slider"></span></label>' +
+          '</div>' +
+        '</div>' +
+        '<div class="pp-row-detail" id="ppDetail_'+def.id+'">' +
+          '<label>'+esc(def.urlLabel)+'</label>' +
+          '<input type="url" id="ppUrl_'+def.id+'" value="'+esc(cfg.url||'')+'" placeholder="'+esc(def.urlPlaceholder)+'" oninput="ppSetUrl(\''+def.id+'\',this.value)">' +
+        '</div>' +
       '</div>';
+  });
+  document.getElementById('ppListBody').innerHTML = html;
+}
+
+function ppToggleDetail(id) {
+  POPUP_DEFS.forEach(function(d) {
+    var el = document.getElementById('ppDetail_'+d.id);
+    if (el) el.classList.toggle('open', d.id === id && !document.getElementById('ppDetail_'+id).classList.contains('open'));
+  });
+  _previewId = id;
+  refreshPreview();
+}
+function ppSetSize(id, val) {
+  var cfg = _ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.size = val;
+  if(_previewId===id) refreshPreview();
+}
+function ppSetBlur(id, val) {
+  var cfg = _ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.blur = (val==='1');
+  if(_previewId===id) refreshPreview();
+}
+function ppSetEnabled(id, val) {
+  if (val) {
+    _ppConfigs.forEach(function(c){ c.enabled=(c.id===id); });
+    POPUP_DEFS.forEach(function(d){ var t=document.getElementById('ppToggle_'+d.id); if(t) t.checked=(d.id===id); });
   } else {
-    inner = '<div class="ppv-kids-top"><div style="font-size:36px;">🎨</div></div>' +
-      '<div class="ppv-kids-body">' +
-        '<div class="ppv-kids-title">Приходите в детский клуб!</div>' +
-        '<div class="ppv-kids-desc">Мастер-классы, квизы и праздники для детей каждые выходные</div>' +
-        '<button class="ppv-kids-btn">Узнать расписание</button>' +
-      '</div>';
+    var cfg=_ppConfigs.find(function(c){ return c.id===id; });
+    if(cfg) cfg.enabled=false;
   }
+  _previewId=id; refreshPreview();
+}
+function ppSetUrl(id, val) {
+  var cfg=_ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.url=val;
+}
 
-  document.getElementById('popupPreviewInner').innerHTML =
-    '<div class="ppv-overlay' + (_ppBlur ? ' blur-on' : '') + '">' +
-      '<div class="ppv-card ' + sizeCls + '">' +
-        '<button class="ppv-close">×</button>' +
-        inner +
-      '</div>' +
+function refreshPreview() {
+  var cfg=_ppConfigs.find(function(c){ return c.id===_previewId; })||_ppConfigs[0];
+  if(!cfg) return;
+  var sizeCls={small:'ppv-card-sm',medium:'ppv-card-md',large:'ppv-card-lg'}[cfg.size]||'ppv-card-md';
+  var inner='';
+  if(cfg.id==='telegram'){
+    inner='<div class="ppv-tg-top"><div class="ppv-tg-icon">✈️</div></div>'+
+      '<div class="ppv-tg-body"><div class="ppv-tg-title">Будьте в курсе событий!</div>'+
+      '<div class="ppv-tg-desc">Подпишитесь на наш Telegram-канал</div>'+
+      '<button class="ppv-tg-btn">Подписаться ✈️</button></div>';
+  } else {
+    inner='<div class="ppv-kids-top"><div style="font-size:30px;">🎨</div></div>'+
+      '<div class="ppv-kids-body"><div class="ppv-kids-title">Детский клуб!</div>'+
+      '<div class="ppv-kids-desc">Мастер-классы и праздники каждые выходные</div>'+
+      '<button class="ppv-kids-btn">Узнать расписание</button></div>';
+  }
+  document.getElementById('ppPreviewInner').innerHTML=
+    '<div class="ppv-overlay'+(cfg.blur?' blur-on':'')+'">'+
+      '<div class="ppv-card '+sizeCls+'"><button class="ppv-close">×</button>'+inner+'</div>'+
     '</div>';
 }
 
-function renderPopupTab() {
-  var cfg = getPopupConfig();
-  _ppContent = cfg.content;
-  _ppSize    = cfg.size;
-  _ppBlur    = cfg.blur;
-
-  document.getElementById('pp_enabled').checked = cfg.enabled;
-  document.getElementById('pp_tg_url').value    = cfg.tgUrl   || '';
-  document.getElementById('pp_kids_url').value  = cfg.kidsUrl || '';
-
-  selectContent(cfg.content);
-  selectSize(cfg.size);
-  selectBlur(cfg.blur);
-}
-
 document.getElementById('savePopupBtn').addEventListener('click', function() {
-  var cfg = {
-    enabled:  document.getElementById('pp_enabled').checked,
-    content:  _ppContent,
-    size:     _ppSize,
-    blur:     _ppBlur,
-    tgUrl:    document.getElementById('pp_tg_url').value.trim(),
-    kidsUrl:  document.getElementById('pp_kids_url').value.trim()
-  };
-  savePopupConfig(cfg);
-  var msg = document.getElementById('popupSavedMsg');
-  msg.style.display = 'inline';
-  setTimeout(function() { msg.style.display = 'none'; }, 3000);
+  POPUP_DEFS.forEach(function(d){
+    var el=document.getElementById('ppUrl_'+d.id);
+    var cfg=_ppConfigs.find(function(c){ return c.id===d.id; });
+    if(el&&cfg) cfg.url=el.value.trim();
+  });
+  savePopupConfigs(_ppConfigs);
+  syncLegacyConfig(_ppConfigs);
+  var msg=document.getElementById('popupSavedMsg');
+  msg.style.display='inline';
+  setTimeout(function(){ msg.style.display='none'; },3000);
 });
 
 /* =================================================

@@ -186,6 +186,26 @@
     .photo-drop__text { font-size: 13px; color: #787878; }
     .photo-drop__preview { max-width: 200px; max-height: 120px; object-fit: cover; border-radius: 6px; margin: 8px auto 0; display: none; }
 
+    /* ===== EVENT TYPE PILLS (admin sub-filter) ===== */
+    .ev-pills-row { display:flex; gap:6px; flex-wrap:wrap; padding:10px 0 2px; }
+    .ev-pill {
+      padding:5px 14px; border:1.5px solid #E5E5E5; border-radius:999px;
+      background:#fff; font-size:12px; font-weight:700; cursor:pointer; transition:.15s;
+      color:#555; white-space:nowrap;
+    }
+    .ev-pill:hover { border-color:#2E47A6; color:#2E47A6; }
+    .ev-pill.active { background:#2E47A6; color:#fff; border-color:#2E47A6; }
+    .kap-pills-row { display:none; gap:6px; flex-wrap:wrap; padding:6px 0 4px; border-top:1px dashed #E5E5E5; margin-top:4px; }
+    .kap-pills-row.open { display:flex; }
+    .kap-pill {
+      padding:4px 12px; border:1.5px solid #E5E5E5; border-radius:999px;
+      background:#fff; font-size:11px; font-weight:700; cursor:pointer; transition:.15s;
+      color:#555;
+    }
+    .kap-pill:hover { border-color:#2BA24A; color:#2BA24A; }
+    .kap-pill.active { background:#2BA24A; color:#fff; border-color:#2BA24A; }
+    .ev-pills-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#aaa; align-self:center; }
+
     /* ===== PHOTOS TAB ===== */
     .ph-subnav { display:flex; gap:4px; margin-bottom:20px; background:#fff; border:1px solid #E5E5E5; border-radius:12px; padding:5px; }
     .ph-subnav__btn { flex:1; padding:8px; border:none; background:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; color:#787878; transition:.15s; }
@@ -201,6 +221,29 @@
     .kids-card__info { font-size:11px; color:#787878; line-height:1.5; margin-bottom:12px; }
     .kids-card__link { display:block; text-align:center; padding:8px; background:#F0F4FF; color:#2E47A6; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none; }
     .kids-card__link:hover { background:#E0E8FF; }
+    .kids-card { cursor:pointer; transition:.15s; }
+    .kids-card:hover { box-shadow:0 8px 24px -8px rgba(0,0,0,.14); transform:translateY(-2px); }
+    /* Landing detail panel */
+    .kids-detail { display:none; background:#fff; border-radius:14px; border:1px solid #E5E5E5; padding:20px; margin-bottom:20px; }
+    .kids-detail.open { display:block; }
+    .kids-detail__header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .kids-detail__title { font-size:14px; font-weight:800; }
+    .kids-detail__close { border:none; background:none; font-size:18px; color:#787878; cursor:pointer; padding:4px; line-height:1; }
+    .kids-detail__grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .kids-detail__section-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#787878; margin-bottom:8px; }
+    .kids-media-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(80px,1fr)); gap:8px; }
+    .kids-media-item { position:relative; border-radius:8px; overflow:hidden; aspect-ratio:1; }
+    .kids-media-item img { width:100%; height:100%; object-fit:cover; display:block; }
+    .kids-media-del { position:absolute; top:3px; right:3px; width:18px; height:18px; background:rgba(0,0,0,.55); color:#fff; border:none; border-radius:50%; font-size:10px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .kids-add-btn { border:2px dashed #E5E5E5; border-radius:8px; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; cursor:pointer; background:none; font-size:10px; color:#787878; gap:3px; position:relative; overflow:hidden; transition:border-color .15s; }
+    .kids-add-btn input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+    .kids-add-btn:hover { border-color:#2E47A6; color:#2E47A6; }
+    /* Reviews in landing detail */
+    .review-add-form { display:grid; gap:8px; margin-bottom:12px; }
+    .review-card { background:#FAFAF7; border:1px solid #F0F0F0; border-radius:8px; padding:10px 12px; position:relative; margin-bottom:6px; }
+    .review-card__author { font-size:12px; font-weight:700; margin-bottom:4px; }
+    .review-card__text { font-size:12px; color:#555; line-height:1.5; }
+    .review-card__del { position:absolute; top:6px; right:8px; border:none; background:none; color:#aaa; cursor:pointer; font-size:14px; }
     /* Event report photos list */
     .report-table-wrap { background:#fff; border-radius:12px; border:1px solid #E5E5E5; overflow:hidden; }
     .report-row { display:grid; grid-template-columns:1fr 120px 90px 130px; align-items:center; border-bottom:1px solid #F0F0F0; }
@@ -382,17 +425,29 @@
               <option value="kashirskaya">Каширская Плаза</option>
               <option value="kapitoliy">Капитолий</option>
             </select>
-            <select class="toolbar__select" id="evtFilterType">
-              <option value="">Все типы</option>
-              <option value="quiz">Квиз / Турнир</option>
-              <option value="master-class">Мастер-класс</option>
-              <option value="kids">Детское</option>
-              <option value="concert">Концерт</option>
-              <option value="exhibition">Выставка</option>
-              <option value="sports">Спортивное</option>
-            </select>
             <div class="toolbar__sep"></div>
             <button class="btn-primary" id="addEventBtn">+ Добавить</button>
+          </div>
+          <!-- Type pills -->
+          <div class="ev-pills-row" id="evTypePills">
+            <span class="ev-pills-label">Тип:</span>
+            <button class="ev-pill active" data-type="">Все</button>
+            <button class="ev-pill" data-type="quiz">Квиз / Турнир</button>
+            <button class="ev-pill" data-type="master-class">Мастер-класс</button>
+            <button class="ev-pill" data-type="kids">Детское</button>
+            <button class="ev-pill" data-type="concert">Концерт</button>
+            <button class="ev-pill" data-type="exhibition">Выставка</button>
+            <button class="ev-pill" data-type="sports">Спортивное</button>
+          </div>
+          <!-- Капитолий sub-pills (area/зал) -->
+          <div class="kap-pills-row" id="kapAreaPills">
+            <span class="ev-pills-label" style="color:#2BA24A;">Площадка:</span>
+            <button class="kap-pill active" data-area="">Все залы</button>
+            <button class="kap-pill" data-area="atrium">Атриум</button>
+            <button class="kap-pill" data-area="cinema">Кинотеатр</button>
+            <button class="kap-pill" data-area="kids-zone">Детская зона</button>
+            <button class="kap-pill" data-area="foodcourt">Фудкорт</button>
+            <button class="kap-pill" data-area="main-stage">Главная сцена</button>
           </div>
           <div class="table-wrap">
             <table>
@@ -421,8 +476,33 @@
           <!-- Section: Kids Landings -->
           <div class="ph-section active" id="phKids">
             <div class="kids-cards" id="kidsCardsGrid"></div>
-            <div style="font-size:11px;color:#787878;margin-top:-8px;">
-              Обложки и галереи детских клубов хранятся на страницах лендингов. Нажмите «Открыть лендинг» для просмотра.
+            <!-- Landing detail panel (shows below cards) -->
+            <div class="kids-detail" id="kidsDetailPanel">
+              <div class="kids-detail__header">
+                <div class="kids-detail__title" id="kidsDetailTitle"></div>
+                <button class="kids-detail__close" onclick="closeKidsDetail()">×</button>
+              </div>
+              <div class="kids-detail__grid">
+                <!-- Gallery -->
+                <div>
+                  <div class="kids-detail__section-label">Галерея (главная страница)</div>
+                  <div class="kids-media-grid" id="kidsGalleryGrid"></div>
+                </div>
+                <!-- Reviews -->
+                <div>
+                  <div class="kids-detail__section-label">Отзывы посетителей</div>
+                  <div class="review-add-form">
+                    <input class="form-input" id="reviewAuthor" type="text" placeholder="Имя / Подпись" style="font-size:12px;padding:7px 10px;">
+                    <textarea class="form-textarea" id="reviewText" placeholder="Текст отзыва…" style="font-size:12px;min-height:60px;padding:7px 10px;resize:vertical;"></textarea>
+                    <button class="btn-primary" style="font-size:12px;padding:7px;" onclick="addKidsReview()">+ Добавить отзыв</button>
+                  </div>
+                  <div id="kidsReviewsList"></div>
+                </div>
+              </div>
+              <div style="margin-top:16px;display:flex;gap:10px;justify-content:flex-end;">
+                <a id="kidsDetailLink" href="#" target="_blank" class="btn-secondary" style="font-size:12px;padding:8px 14px;">Открыть лендинг →</a>
+                <button class="btn-primary" style="font-size:12px;" onclick="saveKidsMedia()">Сохранить</button>
+              </div>
             </div>
           </div>
 
@@ -563,9 +643,31 @@
           <input class="form-input" id="ef_seats_left" type="number" min="0" placeholder="22">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="ef_hall">Место проведения</label>
+          <input class="form-input" id="ef_hall" type="text" placeholder="Атриум, зал 3, фудкорт…">
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="ef_age">Возраст</label>
+          <select class="form-select" id="ef_age">
+            <option value="">Не указан</option>
+            <option value="0+">0+</option>
+            <option value="6+">6+</option>
+            <option value="12+">12+</option>
+            <option value="16+">16+</option>
+            <option value="18+">18+</option>
+          </select>
+        </div>
+      </div>
       <div class="form-field">
         <label class="form-label" for="ef_desc">Описание</label>
         <textarea class="form-textarea" id="ef_desc" placeholder="Описание мероприятия…"></textarea>
+      </div>
+      <div class="form-field">
+        <label class="form-label" for="ef_appLink">Ссылка на событие / приложение</label>
+        <input class="form-input" id="ef_appLink" type="url" placeholder="https://enka.ru/events/... или deeplink в приложение">
+        <div style="font-size:11px;color:#787878;margin-top:4px;">Кнопка «Купить билет» или «Зарегистрироваться» на карточке события будет вести по этой ссылке</div>
       </div>
       <div class="form-field">
         <label class="form-label">Обложка мероприятия</label>
@@ -728,16 +830,57 @@ function renderEventsStats() {
   }).join('');
 }
 
+var _evActiveType = '';
+var _evActiveArea = '';
+
+(function() {
+  /* Type pills */
+  document.getElementById('evTypePills').addEventListener('click', function(e) {
+    var btn = e.target.closest('.ev-pill');
+    if (!btn) return;
+    document.querySelectorAll('#evTypePills .ev-pill').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    _evActiveType = btn.dataset.type;
+    renderEventsTable();
+  });
+
+  /* Kapioliy area pills */
+  document.getElementById('kapAreaPills').addEventListener('click', function(e) {
+    var btn = e.target.closest('.kap-pill');
+    if (!btn) return;
+    document.querySelectorAll('#kapAreaPills .kap-pill').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    _evActiveArea = btn.dataset.area;
+    renderEventsTable();
+  });
+
+  /* Show/hide kap sub-pills when TC changes */
+  document.getElementById('evtFilterTc').addEventListener('change', function() {
+    var kapRow = document.getElementById('kapAreaPills');
+    if (this.value === 'kapitoliy') {
+      kapRow.classList.add('open');
+    } else {
+      kapRow.classList.remove('open');
+      _evActiveArea = '';
+      document.querySelectorAll('#kapAreaPills .kap-pill').forEach(function(b) { b.classList.remove('active'); });
+      var first = document.querySelector('#kapAreaPills .kap-pill');
+      if (first) first.classList.add('active');
+    }
+    renderEventsTable();
+  });
+})();
+
 function renderEventsTable() {
   var evts = getEvents();
   var q    = document.getElementById('evtSearch').value.toLowerCase();
   var tc   = document.getElementById('evtFilterTc').value;
-  var type = document.getElementById('evtFilterType').value;
 
   var filtered = evts.filter(function(ev) {
-    return (!q    || ev.title.toLowerCase().includes(q)) &&
-           (!tc   || ev.tc === tc) &&
-           (!type || ev.type === type);
+    var areaOk = !_evActiveArea || (ev.kapArea || '') === _evActiveArea;
+    return (!q || ev.title.toLowerCase().includes(q)) &&
+           (!tc || ev.tc === tc) &&
+           (!_evActiveType || ev.type === _evActiveType) &&
+           (tc !== 'kapitoliy' || areaOk);
   });
 
   var tbody = document.getElementById('eventsTableBody');
@@ -770,11 +913,10 @@ function renderEventsTable() {
 
 function renderEvents() { renderEventsStats(); renderEventsTable(); }
 
-['evtSearch','evtFilterTc','evtFilterType'].forEach(function(id) {
+['evtSearch'].forEach(function(id) {
   var el = document.getElementById(id);
   if (!el) return;
   el.addEventListener('input', renderEventsTable);
-  el.addEventListener('change', renderEventsTable);
 });
 
 var _reportPhotos = [];
@@ -873,6 +1015,9 @@ document.getElementById('saveEventBtn').addEventListener('click', function() {
     seats:        parseInt(document.getElementById('ef_seats').value) || 0,
     seatsLeft:    parseInt(document.getElementById('ef_seats_left').value) || 0,
     desc:         document.getElementById('ef_desc').value.trim(),
+    hall:         document.getElementById('ef_hall').value.trim(),
+    age:          document.getElementById('ef_age').value,
+    appLink:      document.getElementById('ef_appLink').value.trim(),
     status:       document.getElementById('ef_status').value,
     photo:        photo,
     photoType:    photo ? (photo.startsWith('data:') ? 'custom' : 'uploaded') : 'default',
@@ -906,6 +1051,9 @@ function editEvent(id) {
   document.getElementById('ef_seats').value      = ev.seats     || '';
   document.getElementById('ef_seats_left').value = ev.seatsLeft || '';
   document.getElementById('ef_desc').value       = ev.desc      || '';
+  document.getElementById('ef_hall').value       = ev.hall      || '';
+  document.getElementById('ef_age').value        = ev.age       || '';
+  document.getElementById('ef_appLink').value    = ev.appLink   || '';
   document.getElementById('ef_status').value     = ev.status    || 'active';
   document.getElementById('ef_photo').value      = ev.photo     || '';
   if (ev.photo) {
@@ -958,15 +1106,111 @@ function switchPhSection(id, btn) {
   btn.classList.add('active');
 }
 
+var _kidsActiveId = null;
+
+function getKidsMedia(id) {
+  try { return JSON.parse(localStorage.getItem('afisha_kids_' + id) || '{"gallery":[],"reviews":[]}'); } catch(e) { return { gallery:[], reviews:[] }; }
+}
+function saveKidsMedia() {
+  if (!_kidsActiveId) return;
+  var data = {
+    gallery: _kidsGallery.slice(),
+    reviews: _kidsReviews.slice()
+  };
+  localStorage.setItem('afisha_kids_' + _kidsActiveId, JSON.stringify(data));
+  var btn = document.querySelector('#kidsDetailPanel .btn-primary');
+  if (btn) { btn.textContent = '✓ Сохранено'; setTimeout(function() { btn.textContent = 'Сохранить'; }, 1800); }
+}
+
+var _kidsGallery = [];
+var _kidsReviews = [];
+
+function openKidsDetail(id) {
+  var landing = KIDS_LANDINGS.find(function(k) { return k.id === id; });
+  if (!landing) return;
+  _kidsActiveId = id;
+  var data = getKidsMedia(id);
+  _kidsGallery = data.gallery.slice();
+  _kidsReviews = data.reviews.slice();
+
+  document.getElementById('kidsDetailTitle').textContent = landing.label + ' — медиа и отзывы';
+  document.getElementById('kidsDetailLink').href = landing.link;
+  renderKidsGalleryGrid();
+  renderKidsReviews();
+  document.getElementById('kidsDetailPanel').classList.add('open');
+  document.getElementById('kidsDetailPanel').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function closeKidsDetail() {
+  document.getElementById('kidsDetailPanel').classList.remove('open');
+  _kidsActiveId = null;
+}
+
+function renderKidsGalleryGrid() {
+  var grid = document.getElementById('kidsGalleryGrid');
+  grid.innerHTML = _kidsGallery.map(function(src, i) {
+    return '<div class="kids-media-item">' +
+      '<img src="' + esc(src) + '" alt="">' +
+      '<button class="kids-media-del" onclick="removeKidsPhoto(' + i + ')">×</button>' +
+    '</div>';
+  }).join('') +
+  '<label class="kids-add-btn">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px"><path d="M12 5v14M5 12h14"/></svg>' +
+    '<span>Фото</span>' +
+    '<input type="file" accept="image/*" multiple onchange="addKidsPhotos(this)">' +
+  '</label>';
+}
+
+function addKidsPhotos(input) {
+  Array.from(input.files).forEach(function(f) {
+    if (f.size > 8 * 1024 * 1024) { alert('Файл ' + f.name + ' слишком большой (макс. 8 МБ)'); return; }
+    var reader = new FileReader();
+    reader.onload = function(e) { _kidsGallery.push(e.target.result); renderKidsGalleryGrid(); };
+    reader.readAsDataURL(f);
+  });
+  input.value = '';
+}
+
+function removeKidsPhoto(i) { _kidsGallery.splice(i, 1); renderKidsGalleryGrid(); }
+
+function renderKidsReviews() {
+  document.getElementById('kidsReviewsList').innerHTML = _kidsReviews.map(function(r, i) {
+    return '<div class="review-card">' +
+      '<div class="review-card__author">' + esc(r.author || 'Аноним') + '</div>' +
+      '<div class="review-card__text">' + esc(r.text) + '</div>' +
+      '<button class="review-card__del" onclick="removeKidsReview(' + i + ')">×</button>' +
+    '</div>';
+  }).join('') || '<div style="font-size:12px;color:#aaa;padding:8px 0;">Отзывов пока нет</div>';
+}
+
+function addKidsReview() {
+  var author = document.getElementById('reviewAuthor').value.trim();
+  var text   = document.getElementById('reviewText').value.trim();
+  if (!text) return;
+  _kidsReviews.push({ author: author || 'Аноним', text: text });
+  document.getElementById('reviewAuthor').value = '';
+  document.getElementById('reviewText').value = '';
+  renderKidsReviews();
+}
+
+function removeKidsReview(i) { _kidsReviews.splice(i, 1); renderKidsReviews(); }
+
 function renderKidsCards() {
   document.getElementById('kidsCardsGrid').innerHTML = KIDS_LANDINGS.map(function(k) {
-    return '<div class="kids-card">' +
+    var data = getKidsMedia(k.id);
+    var galCnt = data.gallery.length;
+    var revCnt = data.reviews.length;
+    var badge = (galCnt || revCnt) ?
+      '<span style="font-size:10px;color:#fff;background:#2E47A6;border-radius:4px;padding:2px 6px;margin-left:6px;">' +
+        (galCnt ? galCnt + ' фото' : '') + (galCnt && revCnt ? ' · ' : '') + (revCnt ? revCnt + ' отз.' : '') +
+      '</span>' : '';
+    return '<div class="kids-card" onclick="openKidsDetail(\'' + k.id + '\')">' +
       '<div class="kids-card__color" style="background:' + k.color + '"></div>' +
       '<div class="kids-card__body">' +
-        '<div class="kids-card__tc">' + k.label + '</div>' +
+        '<div class="kids-card__tc">' + k.label + badge + '</div>' +
         '<img class="kids-card__hero" src="' + k.hero + '" alt="" onerror="this.style.display=\'none\'">' +
         '<div class="kids-card__info">' + k.desc + '</div>' +
-        '<a class="kids-card__link" href="' + k.link + '" target="_blank">Открыть лендинг →</a>' +
+        '<div style="background:#F0F4FF;color:#2E47A6;border-radius:8px;font-size:12px;font-weight:700;text-align:center;padding:8px;">Нажмите для управления →</div>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -1015,7 +1259,7 @@ var POPUP_DEFS = [
 ];
 
 function getPopupConfigs() {
-  var defs = POPUP_DEFS.map(function(d) { return { id:d.id, enabled:false, size:'medium', blur:true, url:'' }; });
+  var defs = POPUP_DEFS.map(function(d) { return { id:d.id, enabled:false, size:'medium', blur:true, url:'', trigger:'scroll', triggerValue:'60', frequency:'session' }; });
   try {
     var raw = localStorage.getItem('afisha_popup_v2');
     if (!raw) return defs;
@@ -1031,7 +1275,11 @@ function savePopupConfigs(arr) { localStorage.setItem('afisha_popup_v2', JSON.st
 function syncLegacyConfig(arr) {
   var active = arr.find(function(c) { return c.enabled; });
   if (!active) { localStorage.removeItem('afisha_popup_config'); return; }
-  var cfg = { enabled:true, content:active.id, size:active.size, blur:active.blur };
+  var cfg = {
+    enabled: true, content: active.id, size: active.size, blur: active.blur,
+    trigger: active.trigger || 'scroll', triggerValue: active.triggerValue || '60',
+    frequency: active.frequency || 'session'
+  };
   if (active.id === 'telegram') cfg.tgUrl = active.url;
   else cfg.kidsUrl = active.url;
   localStorage.setItem('afisha_popup_config', JSON.stringify(cfg));
@@ -1066,8 +1314,30 @@ function renderPpList() {
           '</div>' +
         '</div>' +
         '<div class="pp-row-detail" id="ppDetail_'+def.id+'">' +
-          '<label>'+esc(def.urlLabel)+'</label>' +
-          '<input type="url" id="ppUrl_'+def.id+'" value="'+esc(cfg.url||'')+'" placeholder="'+esc(def.urlPlaceholder)+'" oninput="ppSetUrl(\''+def.id+'\',this.value)">' +
+          '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px;">' +
+            '<div>' +
+              '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#787878;">Триггер</label>' +
+              '<select id="ppTrigger_'+def.id+'" style="width:100%;margin-top:4px;" class="toolbar__select" onchange="ppSetTrigger(\''+def.id+'\',this.value)">' +
+                '<option value="scroll"'+(cfg.trigger==='scroll'?' selected':'')+'>Прокрутка страницы</option>' +
+                '<option value="delay"'+(cfg.trigger==='delay'?' selected':'')+'>Задержка времени</option>' +
+                '<option value="exit"'+(cfg.trigger==='exit'?' selected':'')+'>При попытке уйти</option>' +
+              '</select>' +
+            '</div>' +
+            '<div>' +
+              '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#787878;">Значение триггера</label>' +
+              '<input id="ppTriggerVal_'+def.id+'" type="text" class="form-input" style="margin-top:4px;font-size:12px;" value="'+esc(cfg.triggerValue||'60')+'" placeholder="60% или 30с" oninput="ppSetTriggerVal(\''+def.id+'\',this.value)">' +
+            '</div>' +
+            '<div>' +
+              '<label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#787878;">Частота показа</label>' +
+              '<select id="ppFreq_'+def.id+'" style="width:100%;margin-top:4px;" class="toolbar__select" onchange="ppSetFrequency(\''+def.id+'\',this.value)">' +
+                '<option value="session"'+(cfg.frequency==='session'?' selected':'')+'>Каждую сессию</option>' +
+                '<option value="daily"'+(cfg.frequency==='daily'?' selected':'')+'>Раз в день</option>' +
+                '<option value="weekly"'+(cfg.frequency==='weekly'?' selected':'')+'>Раз в неделю</option>' +
+              '</select>' +
+            '</div>' +
+          '</div>' +
+          '<label style="font-size:11px;font-weight:700;color:#787878;">'+esc(def.urlLabel)+'</label>' +
+          '<input type="url" id="ppUrl_'+def.id+'" value="'+esc(cfg.url||'')+'" placeholder="'+esc(def.urlPlaceholder)+'" style="margin-top:4px;" oninput="ppSetUrl(\''+def.id+'\',this.value)">' +
         '</div>' +
       '</div>';
   });
@@ -1105,6 +1375,18 @@ function ppSetEnabled(id, val) {
 function ppSetUrl(id, val) {
   var cfg=_ppConfigs.find(function(c){ return c.id===id; });
   if(cfg) cfg.url=val;
+}
+function ppSetTrigger(id, val) {
+  var cfg=_ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.trigger=val;
+}
+function ppSetTriggerVal(id, val) {
+  var cfg=_ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.triggerValue=val;
+}
+function ppSetFrequency(id, val) {
+  var cfg=_ppConfigs.find(function(c){ return c.id===id; });
+  if(cfg) cfg.frequency=val;
 }
 
 function refreshPreview() {
